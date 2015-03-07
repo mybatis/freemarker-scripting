@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.mybatis.scripting.freemarker">
+    <!-- All there tests are 100% equivalent to tests with annotations -->
+    <!-- There are some notes in NameMapper class, all of them are actual for there tests too -->
+
+    <!-- This is handled by FreeMarker too, because it is included into select nodes AS IS -->
+    <sql id="cols">id, ${r"firstName"}, lastName</sql>
+
+    <!-- If there are no whitespaces in script (after trim) it is interpreted as template name.
+         Otherwise it is interpreted as inline script body
+    -->
+    <select id="getAllNames" resultType="org.mybatis.scripting.freemarker.Name">
+        getAllNames.ftl
+    </select>
+
+    <select id="findName" resultType="org.mybatis.scripting.freemarker.Name">
+        findName.ftl
+    </select>
+
+    <select id="findNamesByIds" resultType="org.mybatis.scripting.freemarker.Name">
+        select <include refid="cols"/> from names where id in (${ids?join(',')})
+    </select>
+
+    <!-- It is not very convenient - to use CDATA blocks. Better is to create external template.
+         But you can do this too.
+    -->
+    <select id="find" resultType="org.mybatis.scripting.freemarker.Name">
+        select * from names where id = <![CDATA[ <@p name='id'/> ]]> and id = ${id}
+    </select>
+
+    <select id="getNamesOddBehaviourStdLang" lang="xml" resultType="org.mybatis.scripting.freemarker.Name">
+        select * from names
+        where firstName = #{noSuchPropertyOnString}
+        or firstName = #{oneMoreUnexistingProperty}
+    </select>
+
+    <select id="getNamesOddBehaviourFreeMarkerLang" lang="freemarker" resultType="org.mybatis.scripting.freemarker.Name">
+        select * from names
+        where firstName = <![CDATA[ <@p name='noSuchPropertyOnString'/> ]]>
+        or firstName = <![CDATA[ <@p name='oneMoreUnexistingProperty'/> ]]>
+    </select>
+</mapper>
