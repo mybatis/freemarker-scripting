@@ -90,6 +90,7 @@ public class FreeMarkerLanguageDriver implements LanguageDriver {
     private SqlSource createSqlSource(Configuration configuration, String scriptText) {
         Template template;
         freemarker.template.Configuration cfg = new freemarker.template.Configuration(freemarker.template.Configuration.VERSION_2_3_22);
+        cfg.setNumberFormat("computer");
         if (scriptText.trim().contains(" ")) {
             // Consider that script is inline script
             try {
