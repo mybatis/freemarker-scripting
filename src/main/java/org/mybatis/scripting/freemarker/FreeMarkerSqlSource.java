@@ -9,6 +9,7 @@ import org.apache.ibatis.session.Configuration;
 
 import java.io.CharArrayWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,17 +34,20 @@ public class FreeMarkerSqlSource implements SqlSource {
         // Add to passed parameterObject our predefined directive - MyBatisParamDirective
         // It will be available as "p" inside templates
         Object dataContext;
+        ArrayList additionalParams = new ArrayList();
         if (parameterObject != null) {
             if (parameterObject instanceof Map) {
                 HashMap<String, Object> map = new HashMap<>((Map<String, Object>) parameterObject);
                 map.put(MyBatisParamDirective.DEFAULT_KEY, new MyBatisParamDirective());
+                map.put("__additional_params__", additionalParams);
                 dataContext = map;
             } else {
-                dataContext = new ParamObjectAdapter(parameterObject);
+                dataContext = new ParamObjectAdapter(parameterObject, additionalParams);
             }
         } else {
             HashMap<Object, Object> map = new HashMap<>();
             map.put(MyBatisParamDirective.DEFAULT_KEY, new MyBatisParamDirective());
+            map.put("__additional_params__", additionalParams);
             dataContext = map;
         }
 
@@ -57,6 +61,18 @@ public class FreeMarkerSqlSource implements SqlSource {
         // We got SQL ready for MyBatis here. This SQL contains params declarations like "#{param}",
         // they will be replaced to '?' by MyBatis engine further
         String sql = writer.toString();
+
+        if (!additionalParams.isEmpty()) {
+            if (!(parameterObject instanceof Map)) {
+                throw new UnsupportedOperationException("Auto-generated prepared statements parameters" +
+                        " are not available if using parameters object. Use @Param-annotated parameters instead.");
+            }
+
+            Map<String, Object> parametersMap = (Map<String, Object>) parameterObject;
+            for (int i = 0; i < additionalParams.size(); i++) {
+                parametersMap.put("_p" + i, additionalParams.get(i));
+            }
+        }
 
         // Pass retrieved SQL into MyBatis engine, it will substitute prepared-statements parameters
         SqlSourceBuilder sqlSourceParser = new SqlSourceBuilder(configuration);

@@ -2,10 +2,10 @@ package org.mybatis.scripting.freemarker;
 
 import freemarker.ext.beans.BeanModel;
 import freemarker.ext.beans.BeansWrapperBuilder;
-import freemarker.template.Configuration;
-import freemarker.template.TemplateHashModel;
-import freemarker.template.TemplateModel;
-import freemarker.template.TemplateModelException;
+import freemarker.ext.util.WrapperTemplateModel;
+import freemarker.template.*;
+
+import java.util.ArrayList;
 
 /**
  * Important: if you are using some object that already has property "p", then
@@ -15,9 +15,15 @@ import freemarker.template.TemplateModelException;
  */
 public class ParamObjectAdapter implements TemplateHashModel {
     private final BeanModel beanModel;
+    private final ArrayList additionalParams;
 
-    public ParamObjectAdapter(Object paramObject) {
+    public ParamObjectAdapter(Object paramObject, ArrayList additionalParams) {
         beanModel = new BeanModel(paramObject, new BeansWrapperBuilder(Configuration.VERSION_2_3_22).build());
+        this.additionalParams = additionalParams;
+    }
+
+    public ArrayList getAdditionalParams() {
+        return additionalParams;
     }
 
     @Override
@@ -25,6 +31,9 @@ public class ParamObjectAdapter implements TemplateHashModel {
         TemplateModel value = beanModel.get(key);
         if (value == null && MyBatisParamDirective.DEFAULT_KEY.equals(key)) {
             return new MyBatisParamDirective();
+        }
+        if (value == null && "__additional_params__".equals(key)) {
+            return new AdditionalParamsTemplateModel(additionalParams);
         }
         return value;
     }
