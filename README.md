@@ -32,7 +32,7 @@ mybatis-freemarker is available in [jcenter](https://bintray.com/bintray/jcenter
     <dependency>
         <groupId>org.mybatis.scripting</groupId>
         <artifactId>mybatis-freemarker</artifactId>
-        <version>1.0</version>
+        <version>1.1</version>
     </dependency>
 </dependencies>
 ```
@@ -45,7 +45,7 @@ repositories {
 }
 
 dependencies {
-    compile("org.mybatis.scripting:mybatis-freemarker:1.0")
+    compile("org.mybatis.scripting:mybatis-freemarker:1.1")
 }
 ```
 
@@ -155,6 +155,37 @@ As in annotations, you can write inline scripts or template names.
     select * from names where id = <![CDATA[ <@p name='id'/> ]]> and id = ${id}
 </select>
 ```
+
+## Prepared statements parameters
+
+`<@p/>` directive can be used in two scenarios:
+
+- To pass parameters to prepared statements AS IS:
+
+`<@p name='id'/>` (will be translated to `#{id}`, and value already presents in parameter object)
+
+- To pass any value as prepared statements parameter
+
+`<@p value=someValue/>` will be converted to `#{_p0}`, and `_p0` parameter will be automatically added to parameters map. It is convenient to use in loops like this:
+
+```ftl
+select * from names where firstName in (
+    <#list ids as id>
+        <@p value=id/>
+        <#if id_has_next>,</#if>
+    </#list>
+)
+```
+
+This markup will be translated to
+
+```sql
+select * from names where firstName in (#{_p0}, #{_p1}, #{_p2})
+```
+
+and there are no need to care about escaping. All this stuff will be done automatically by JDBC driver.
+
+Unfortunately, you can't use this syntax if passing one object as parameter and without `@Param` annotation. The `UnsupportedOperationException` will be thrown. It is because appending additional parameters to some object in general is very hard. When you are using `@Param` annotated args, MyBatis will use `Map` to store parameters, and it is easy to add some generated params. So, if you want to use auto-generated prepared parameters, please don't forget about `@Param` annotation.
 
 ## Examples
 
