@@ -63,17 +63,17 @@ public class MyBatisParamDirective implements TemplateDirectiveModel {
                                 valueObject.getClass().getSimpleName()));
             }
 
-            TemplateModel additionalParamsObject = env.getGlobalVariables().get("__additional_params__");
-            List additionalParams;
-            if (additionalParamsObject instanceof DefaultListAdapter) {
-                additionalParams = (List) ((DefaultListAdapter) additionalParamsObject).getWrappedObject();
+            TemplateModel generatedParamsObject = env.getGlobalVariables().get(FreeMarkerSqlSource.GENERATED_PARAMS_KEY);
+            List generatedParams;
+            if (generatedParamsObject instanceof DefaultListAdapter) {
+                generatedParams = (List) ((DefaultListAdapter) generatedParamsObject).getWrappedObject();
             } else {
-                additionalParams = ((AdditionalParamsTemplateModel) additionalParamsObject)
-                        .getAdditionalParams();
+                generatedParams = ((GeneratedParamsTemplateModel) generatedParamsObject)
+                        .getGeneratedParams();
             }
-            String generatedParamName = "_p" + additionalParams.size();
+            String generatedParamName = "_p" + generatedParams.size();
             env.getOut().write(String.format("#{%s}", generatedParamName));
-            additionalParams.add(value);
+            generatedParams.add(value);
         } else {
             env.getOut().write(String.format("#{%s}", name));
         }

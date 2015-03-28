@@ -24,9 +24,24 @@ public class FreeMarkerSqlSource implements SqlSource {
     private final Template template;
     private final Configuration configuration;
 
+    public final static String GENERATED_PARAMS_KEY = "__GENERATED__";
+
     public FreeMarkerSqlSource(Template template, Configuration configuration) {
         this.template = template;
         this.configuration = configuration;
+    }
+
+    /**
+     * Populates additional parameters to data context.
+     * Data context can be {@link java.util.Map} or {@link org.mybatis.scripting.freemarker.ParamObjectAdapter} instance.
+     */
+    protected Object preProcessDataContext(Object dataContext, boolean isMap) {
+        if (isMap) {
+            ((Map<String, Object>) dataContext).put(MyBatisParamDirective.DEFAULT_KEY, new MyBatisParamDirective());
+        } else {
+            ((ParamObjectAdapter) dataContext).putAdditionalParam(MyBatisParamDirective.DEFAULT_KEY, new MyBatisParamDirective());
+        }
+        return dataContext;
     }
 
     @Override
@@ -34,21 +49,20 @@ public class FreeMarkerSqlSource implements SqlSource {
         // Add to passed parameterObject our predefined directive - MyBatisParamDirective
         // It will be available as "p" inside templates
         Object dataContext;
-        ArrayList additionalParams = new ArrayList();
+        ArrayList generatedParams = new ArrayList();
         if (parameterObject != null) {
             if (parameterObject instanceof Map) {
                 HashMap<String, Object> map = new HashMap<>((Map<String, Object>) parameterObject);
-                map.put(MyBatisParamDirective.DEFAULT_KEY, new MyBatisParamDirective());
-                map.put("__additional_params__", additionalParams);
-                dataContext = map;
+                map.put(GENERATED_PARAMS_KEY, generatedParams);
+                dataContext = preProcessDataContext(map, true);
             } else {
-                dataContext = new ParamObjectAdapter(parameterObject, additionalParams);
+                ParamObjectAdapter adapter = new ParamObjectAdapter(parameterObject, generatedParams);
+                dataContext = preProcessDataContext(adapter, false);
             }
         } else {
             HashMap<Object, Object> map = new HashMap<>();
-            map.put(MyBatisParamDirective.DEFAULT_KEY, new MyBatisParamDirective());
-            map.put("__additional_params__", additionalParams);
-            dataContext = map;
+            map.put(GENERATED_PARAMS_KEY, generatedParams);
+            dataContext = preProcessDataContext(map, true);
         }
 
         CharArrayWriter writer = new CharArrayWriter();
@@ -62,15 +76,15 @@ public class FreeMarkerSqlSource implements SqlSource {
         // they will be replaced to '?' by MyBatis engine further
         String sql = writer.toString();
 
-        if (!additionalParams.isEmpty()) {
+        if (!generatedParams.isEmpty()) {
             if (!(parameterObject instanceof Map)) {
                 throw new UnsupportedOperationException("Auto-generated prepared statements parameters" +
                         " are not available if using parameters object. Use @Param-annotated parameters instead.");
             }
 
             Map<String, Object> parametersMap = (Map<String, Object>) parameterObject;
-            for (int i = 0; i < additionalParams.size(); i++) {
-                parametersMap.put("_p" + i, additionalParams.get(i));
+            for (int i = 0; i < generatedParams.size(); i++) {
+                parametersMap.put("_p" + i, generatedParams.get(i));
             }
         }
 

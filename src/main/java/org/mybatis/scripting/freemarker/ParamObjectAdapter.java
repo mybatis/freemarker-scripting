@@ -2,10 +2,10 @@ package org.mybatis.scripting.freemarker;
 
 import freemarker.ext.beans.BeanModel;
 import freemarker.ext.beans.BeansWrapperBuilder;
-import freemarker.ext.util.WrapperTemplateModel;
 import freemarker.template.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Important: if you are using some object that already has property "p", then
@@ -15,26 +15,43 @@ import java.util.ArrayList;
  */
 public class ParamObjectAdapter implements TemplateHashModel {
     private final BeanModel beanModel;
-    private final ArrayList additionalParams;
+    private final ArrayList generatedParams;
+    private HashMap<String, TemplateModel> additionalParams;
 
-    public ParamObjectAdapter(Object paramObject, ArrayList additionalParams) {
+    public ParamObjectAdapter(Object paramObject, ArrayList generatedParams) {
         beanModel = new BeanModel(paramObject, new BeansWrapperBuilder(Configuration.VERSION_2_3_22).build());
-        this.additionalParams = additionalParams;
+        this.generatedParams = generatedParams;
     }
 
-    public ArrayList getAdditionalParams() {
-        return additionalParams;
+    /**
+     * Puts the additional parameter into adapter, it will be available if no
+     * existing property with same key exists. For example, it is suitable to add
+     * custom objects and directives into dataContext.
+     */
+    public void putAdditionalParam(String key, TemplateModel value) {
+        if (additionalParams == null) additionalParams = new HashMap<>();
+        additionalParams.put(key, value);
+    }
+
+    public ArrayList getGeneratedParams() {
+        return generatedParams;
     }
 
     @Override
     public TemplateModel get(String key) throws TemplateModelException {
+        // Trying to get bean property
         TemplateModel value = beanModel.get(key);
-        if (value == null && MyBatisParamDirective.DEFAULT_KEY.equals(key)) {
-            return new MyBatisParamDirective();
+
+        // If no value retrieved, trying to find the key in additional params
+        if (value == null && additionalParams != null && additionalParams.containsKey(key)) {
+            return additionalParams.get(key);
         }
-        if (value == null && "__additional_params__".equals(key)) {
-            return new AdditionalParamsTemplateModel(additionalParams);
+
+        // If it is GENERATED_PARAMS_KEY, returning wrapper of generated params list
+        if (value == null && FreeMarkerSqlSource.GENERATED_PARAMS_KEY.equals(key)) {
+            return new GeneratedParamsTemplateModel(generatedParams);
         }
+
         return value;
     }
 

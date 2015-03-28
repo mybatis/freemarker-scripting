@@ -19,6 +19,8 @@ import java.util.Properties;
 
 /**
  * Adds FreeMarker templates support to scripting in MyBatis.
+ * If you want to change or extend template loader configuration, use can
+ * inherit from this class and override {@link #createFreeMarkerConfiguration()} method.
  *
  * @author elwood
  */
@@ -45,6 +47,12 @@ public class FreeMarkerLanguageDriver implements LanguageDriver {
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }
+    }
+
+    protected freemarker.template.Configuration freemarkerCfg;
+
+    public FreeMarkerLanguageDriver() {
+        freemarkerCfg = createFreeMarkerConfiguration();
     }
 
     /**
@@ -87,28 +95,48 @@ public class FreeMarkerLanguageDriver implements LanguageDriver {
         return createSqlSource(configuration, script);
     }
 
+    /**
+     * Creates the {@link freemarker.template.Configuration} instance and sets it up.
+     * If you want to change it (set another props, for example), you can override it in
+     * inherited class and use your own class in @Lang directive.
+     */
+    protected freemarker.template.Configuration createFreeMarkerConfiguration() {
+        freemarker.template.Configuration cfg = new freemarker.template.Configuration(freemarker.template.Configuration.VERSION_2_3_22);
+
+        TemplateLoader templateLoader = new ClassTemplateLoader(this.getClass().getClassLoader(), basePackage);
+        cfg.setTemplateLoader(templateLoader);
+
+        // To avoid formatting numbers using spaces and commas in SQL
+        cfg.setNumberFormat("computer");
+
+        // Because it defaults to default system encoding, we should set it always explicitly
+        cfg.setDefaultEncoding("utf-8");
+
+        return cfg;
+    }
+
+    protected SqlSource createSqlSource(Template template, Configuration configuration) {
+        return new FreeMarkerSqlSource(template, configuration);
+    }
+
     private SqlSource createSqlSource(Configuration configuration, String scriptText) {
         Template template;
-        freemarker.template.Configuration cfg = new freemarker.template.Configuration(freemarker.template.Configuration.VERSION_2_3_22);
-        cfg.setNumberFormat("computer");
         if (scriptText.trim().contains(" ")) {
             // Consider that script is inline script
             try {
-                template = new Template(null, new StringReader(scriptText), cfg);
+                template = new Template(null, new StringReader(scriptText), freemarkerCfg);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         } else {
             // Consider that script is template name, trying to find the template in classpath
-            TemplateLoader templateLoader = new ClassTemplateLoader(this.getClass().getClassLoader(), basePackage);
-            cfg.setTemplateLoader(templateLoader);
             try {
-                template = cfg.getTemplate(scriptText.trim());
+                template = freemarkerCfg.getTemplate(scriptText.trim());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
 
-        return new FreeMarkerSqlSource(template, configuration);
+        return createSqlSource(template, configuration);
     }
 }
