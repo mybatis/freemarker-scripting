@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document xmlns="http://maven.apache.org/XDOC/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
+  <properties>
+    <title>MyBatis FreeMarker</title>
+    <author email="mybatis-dev@googlegroups.com">The MyBatis Team</author>
+  </properties>
+
+  <body>
+    <section name="Introduction">
+      <p>
+      mybatis-freemarker is a plugin that helps creating big dynamic SQL queries. You can use it selectively, to only queries that need if statmenets or foreach-loops, for example. But it is possible to use this syntax by default too.
+      </p>
+      <p>
+        If you are not familiar with FreeMarker syntax, you can view
+        <ul>
+          <li>
+            <a href="http://freemarker.org/docs/ref.html">Template Language Reference</a>
+          </li>
+        </ul>
+      </p>
+    </section>
+
+    <section name="Install">
+      <p>
+        mybatis-freemarker is available in <a href="https://bintray.com/bintray/jcenter">jcenter</a> maven repository. So, if you are using maven, you can add this:
+      </p>
+      <source><![CDATA[
+<repositories>
+    <repository>
+        <id>jcenter</id>
+        <url>http://jcenter.bintray.com</url>
+    </repository>
+</repositories>
+
+<dependencies>
+    <dependency>
+        <groupId>org.mybatis.scripting</groupId>
+        <artifactId>mybatis-freemarker</artifactId>
+        <version>1.1</version>
+    </dependency>
+</dependencies>]]></source>
+
+      <p>If you are using gradle, you can use this snippet:</p>
+
+      <source><![CDATA[
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile("org.mybatis.scripting:mybatis-freemarker:1.1")
+}]]></source>
+
+    </section>
+
+    <section name="Install from sources">
+      <ul>
+        <li>Checkout the source code</li>
+        <li>Run <code>mvn install</code> to build and to automatically install it to your local maven repo</li>
+        <li>Add maven dependency to your project
+          <source><![CDATA[
+<dependency>
+  <groupId>org.mybatis.scripting</groupId>
+  <artifactId>mybatis-freemarker</artifactId>
+  <version>1.2-SNAPSHOT</version>
+</dependency>]]></source>
+        </li>
+      </ul>
+    </section>
+
+    <section name="Configuring">
+      <subsection name="Common">
+        <ul>
+          <li>(Optional) Create <code>mybatis-freemarker.properties</code> file in your classpath:
+            <source>basePackage=sql</source>
+            This will define base package to search FreeMarker templates. By default it is empty string, so you will need to provide full path to template every time.
+          </li>
+        </ul>
+      </subsection>
+      <subsection name="XML-driven mappers">
+        <p>If your are using annotations-driven mappers, you don't need to do anything more. If you are using XML-driven mappers too, you may need to do next steps:</p>
+        <ul>
+          <li>Register the language driver alias in your mybatis configuration file:
+            <source><![CDATA[
+<configuration>
+  ...
+  <typeAliases>
+    <typeAlias alias="freemarker" type="org.mybatis.scripting.freemarker.FreeMarkerLanguageDriver"/>
+  </typeAliases>
+  ...
+</configuration>]]></source>
+          </li>
+          <li>(Optional) Set the freemarker as your default scripting language:
+            <source><![CDATA[[
+<configuration>
+  ...
+  <settings>
+      <setting name="defaultScriptingLanguage" value="freemarker"/>
+  </settings>
+  ...
+</configuration>]]></source>
+          </li>
+        </ul>
+      </subsection>
+    </section>
+
+    <section name="Usage in annotations-driven mappers">
+      <p>Just write your queries using FreeMarker syntax:</p>
+      <source><![CDATA[
+@Lang(FreeMarkerLanguageDriver.class)
+@Select("select * from names where id in (${ids?join(',')})")
+List<Name> findNamesByIds(@Param("ids") List<Integer> ids);]]></source>
+      <p>If any whitespace found inside <code>@Select</code> text, it is interpreted as inline script, not template name. It is convenient to avoid creating templates when script is really small. If you have a large SQL script, you can place it in distinct template and write next code:</p>
+      <source><![CDATA[
+@Lang(FreeMarkerLanguageDriver.class)
+@Select("findName.ftl")
+Name findName(@Param("n") String name);]]></source>
+      <p>Template will be searched in classpath using <code>basePackage</code> property that has already been described above.</p>
+      <p><code>findName.ftl</code> content can be:</p>
+      <source><![CDATA[
+SELECT *
+FROM names
+where firstName = <@p name="n"/>]]></source>
+      <p><code><![CDATA[<@p name="n"/>]]></code> is a custom directive to generate <code>#{n}</code> markup.
+        This markup further will be passed into MyBatis engine, and it will replace this to <code>?</code>-parameter.
+        You can't write <code>#{paramName}</code> directly, because FreeMarker supports this syntax natively
+        (alghough it is deprecated). So, to get <code>?</code>-parameters to prepared statements works, you need
+        to use <code>${r"#{paramName}"}</code> verbose syntax, or this directive. By the way, in XML
+        files <code>${r"#{paramName}"}</code> is more preferrable because you don't need wrap it using
+        <code>CDATA</code> statements. In annotations and in external templates <code>&lt;@p/&gt;</code>
+        directive is more neat.</p>
+    </section>
+
+    <section name="Usage in XML-driven mappers">
+      <p>As in annotations, you can write inline scripts or template names.</p>
+      <source><![CDATA[
+<!-- This is handled by FreeMarker too, because it is included into select nodes AS IS -->
+<sql id="cols">id, ${r"firstName"}, lastName</sql>
+
+<select id="findName" resultType="org.mybatis.scripting.freemarker.Name" lang="freemarker">
+    findName.ftl
+</select>
+
+<select id="findNamesByIds" resultType="org.mybatis.scripting.freemarker.Name" lang="freemarker">
+    select <include refid="cols"/> from names where id in (${ids?join(',')})
+</select>
+
+<!-- It is not very convenient - to use CDATA blocks. Better is to create external template
+    or use more verbose syntax: ${r"#{id}"}. -->
+<select id="find" resultType="org.mybatis.scripting.freemarker.Name" lang="freemarker">
+    select * from names where id = <![CDATA[ <@p name='id'/>]]>]]&gt;<![CDATA[ and id = ${id}
+</select>]]></source>
+    </section>
+
+    <section name="Prepared statements parameters">
+      <p><code>&lt;@p/&gt;</code> directive can be used in two scenarios:</p>
+      <ul>
+        <li>To pass parameters to prepared statements AS IS:
+          <code>&lt;@p name='id'/&gt;</code> (will be translated to <code>#{id}</code>, and value already presents in parameter object)
+        </li>
+        <li>
+          To pass any value as prepared statements parameter
+          <code>&lt;@p value=someValue/&gt;</code> will be converted to <code>#{_p0}</code>, and
+          <code>_p0</code> parameter will be automatically added to parameters map.
+          It is convenient to use in loops like this:
+          <source><![CDATA[
+select * from names where firstName in (
+    <#list ids as id>
+        <@p value=id/>
+        <#if id_has_next>,</#if>
+    </#list>
+)]]></source>
+          This markup will be translated to
+          <source>select * from names where firstName in (#{_p0}, #{_p1}, #{_p2})</source>
+          and there are no need to care about escaping. All this stuff will be done automatically by JDBC driver.
+          Unfortunately, you can't use this syntax if passing one object as parameter and without
+          <code>@Param</code> annotation. The <code>UnsupportedOperationException</code> will be thrown.
+          It is because appending additional parameters to some object in general is very hard.
+          When you are using <code>@Param</code> annotated args, MyBatis will use <code>Map</code> to store parameters,
+          and it is easy to add some generated params. So, if you want to use auto-generated prepared
+          parameters, please don't forget about <code>@Param</code> annotation.
+        </li>
+      </ul>
+    </section>
+
+    <section name="Examples">
+      <p>You can view full-featured example of configuring and of both XML-mapper and annotations-driven mapper usage
+        in <a href="https://github.com/elw00d/mybatis-freemarker/tree/master/src/test">test suite</a></p>
+    </section>
+  </body>
+</document>

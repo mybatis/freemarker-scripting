@@ -13,6 +13,42 @@
     <description>FreeMarker support for MyBatis</description>
     <url>https://github.com/elw00d/mybatis-freemarker</url>
 
+	<contributors>
+        <contributor>
+            <name>Igor Kostromin</name>
+            <email>elwood.su@gmail.com</email>
+        </contributor>
+        <contributor>
+            <name>Eduardo Macarron</name>
+            <email>eduardo.macarron@gmail.com</email>
+        </contributor>
+        <contributor>
+            <name>Frank Martinez</name>
+            <email>mnesarco@gmail.com</email>
+        </contributor>
+    </contributors>
+
+    <scm>
+        <url>https://github.com/elw00d/mybatis-freemarker</url>
+        <connection>scm:git:ssh://github.com/elw00d/mybatis-freemarker.git</connection>
+        <developerConnection>scm:git:git+ssh://git@github.com/elw00d/mybatis-freemarker.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
+    <issueManagement>
+        <system>GitHub Issue Management</system>
+        <url>https://github.com/elw00d/mybatis-freemarker/issues</url>
+    </issueManagement>
+    <ciManagement>
+        <system>Travis CI</system>
+        <url>https://travis-ci.org/elw00d/mybatis-freemarker</url>
+    </ciManagement>
+    <distributionManagement>
+        <site>
+            <id>github</id>
+            <url>gitsite:git@github.com/elw00d/mybatis-freemarker.git</url>
+        </site>
+    </distributionManagement>
+
     <dependencies>
         <dependency>
             <groupId>org.mybatis</groupId>
@@ -59,4 +95,57 @@
             </plugin>
         </plugins>
     </build>
+
+	<reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.10.2</version>
+                <reportSets>
+                    <reportSet>
+                        <id>default</id>
+                        <reports>
+                            <report>javadoc</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jxr-plugin</artifactId>
+                <version>2.5</version>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>jdepend-maven-plugin</artifactId>
+                <version>2.0</version>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>findbugs-maven-plugin</artifactId>
+                <version>3.0.1</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-report-plugin</artifactId>
+                <version>2.18.1</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <version>3.4</version>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>taglist-maven-plugin</artifactId>
+                <version>2.4</version>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>clirr-maven-plugin</artifactId>
+                <version>2.6.1</version>
+            </plugin>
+        </plugins>
+    </reporting>
 </project>
