@@ -2,6 +2,8 @@ MyBatis FreeMarker Support
 ========================
 
 [![Build Status](https://travis-ci.org/elw00d/mybatis-freemarker.svg?branch=master)](https://travis-ci.org/elw00d/mybatis-freemarker)
+[![jCenter](https://img.shields.io/badge/jcenter-1.1-green.svg)](https://bintray.com/elwood-home/main/mybatis-freemarker/1.1/view)
+![](https://img.shields.io/badge/License-MIT-blue.svg)
 
 ![mybatis-velocity](http://mybatis.github.io/images/mybatis-logo.png)
 

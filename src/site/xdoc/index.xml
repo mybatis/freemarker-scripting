@@ -92,7 +92,7 @@ dependencies {
 </configuration>]]></source>
           </li>
           <li>(Optional) Set the freemarker as your default scripting language:
-            <source><![CDATA[[
+            <source><![CDATA[
 <configuration>
   ...
   <settings>
