@@ -51,12 +51,14 @@ public class MyBatisParamDirective implements TemplateDirectiveModel {
                 value = null;
             } else if (valueObject instanceof WrapperTemplateModel) {
                 value = ((WrapperTemplateModel) valueObject).getWrappedObject();
-            } else if (valueObject instanceof SimpleScalar) {
-                value = ((SimpleScalar) valueObject).getAsString();
-            } else if (valueObject instanceof SimpleNumber) {
-                value = ((SimpleNumber) valueObject).getAsNumber();
-            } else if (valueObject instanceof SimpleDate) {
-                value = ((SimpleDate) valueObject).getAsDate();
+            } else if (valueObject instanceof TemplateScalarModel) {
+                value = ((TemplateScalarModel) valueObject).getAsString();
+            } else if (valueObject instanceof TemplateNumberModel) {
+                value = ((TemplateNumberModel) valueObject).getAsNumber();
+            } else if (valueObject instanceof TemplateDateModel) {
+                value = ((TemplateDateModel) valueObject).getAsDate();
+            } else if (valueObject instanceof TemplateBooleanModel) {
+                value = ((TemplateBooleanModel) valueObject).getAsBoolean();
             } else {
                 throw new UnsupportedOperationException(
                         String.format("Type %s is not supported yet in this context.",
