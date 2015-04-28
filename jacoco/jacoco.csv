@@ -1,0 +1,6 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+MyBatis FreeMarker,org.mybatis.scripting.freemarker,FreeMarkerSqlSource,6,154,0,14,1,36,0,10,0,3
+MyBatis FreeMarker,org.mybatis.scripting.freemarker,FreeMarkerLanguageDriver,41,115,8,4,5,28,5,9,0,8
+MyBatis FreeMarker,org.mybatis.scripting.freemarker,GeneratedParamsTemplateModel,0,9,0,0,0,4,0,2,0,2
+MyBatis FreeMarker,org.mybatis.scripting.freemarker,ParamObjectAdapter,7,67,3,9,2,13,5,6,2,3
+MyBatis FreeMarker,org.mybatis.scripting.freemarker,MyBatisParamDirective,34,100,6,10,8,25,4,7,0,3

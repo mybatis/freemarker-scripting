@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>FreeMarkerLanguageDriver.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MyBatis FreeMarker</a> &gt; <a href="index.source.html" class="el_package">org.mybatis.scripting.freemarker</a> &gt; <span class="el_source">FreeMarkerLanguageDriver.java</span></div><h1>FreeMarkerLanguageDriver.java</h1><pre class="source lang-java linenums">package org.mybatis.scripting.freemarker;
+
+import freemarker.cache.ClassTemplateLoader;
+import freemarker.cache.TemplateLoader;
+import freemarker.template.Template;
+import org.apache.ibatis.executor.parameter.ParameterHandler;
+import org.apache.ibatis.mapping.BoundSql;
+import org.apache.ibatis.mapping.MappedStatement;
+import org.apache.ibatis.mapping.SqlSource;
+import org.apache.ibatis.parsing.XNode;
+import org.apache.ibatis.scripting.LanguageDriver;
+import org.apache.ibatis.scripting.defaults.DefaultParameterHandler;
+import org.apache.ibatis.session.Configuration;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringReader;
+import java.util.Properties;
+
+/**
+ * Adds FreeMarker templates support to scripting in MyBatis.
+ * If you want to change or extend template loader configuration, use can
+ * inherit from this class and override {@link #createFreeMarkerConfiguration()} method.
+ *
+ * @author elwood
+ */
+public class FreeMarkerLanguageDriver implements LanguageDriver {
+    /**
+     * Base package for all FreeMarker templates.
+     */
+    public static final String basePackage;
+
+    public static final String DEFAULT_BASE_PACKAGE = &quot;&quot;;
+
+    static {
+<span class="fc" id="L36">        Properties properties = new Properties();</span>
+        try {
+<span class="fc" id="L38">            try (InputStream stream = FreeMarkerLanguageDriver.class.getClassLoader()</span>
+<span class="fc" id="L39">                    .getResourceAsStream(&quot;mybatis-freemarker.properties&quot;)) {</span>
+<span class="pc bpc" id="L40" title="1 of 2 branches missed.">                if (stream != null) {</span>
+<span class="fc" id="L41">                    properties.load(stream);</span>
+<span class="fc" id="L42">                    basePackage = properties.getProperty(&quot;basePackage&quot;, DEFAULT_BASE_PACKAGE);</span>
+<span class="fc" id="L43">                } else {</span>
+<span class="nc" id="L44">                    basePackage = DEFAULT_BASE_PACKAGE;</span>
+                }
+<span class="pc bpc" id="L46" title="7 of 8 branches missed.">            }</span>
+<span class="nc" id="L47">        } catch (IOException e) {</span>
+<span class="nc" id="L48">            throw new IllegalStateException(e);</span>
+        }
+<span class="fc" id="L50">    }</span>
+
+    protected freemarker.template.Configuration freemarkerCfg;
+
+<span class="fc" id="L54">    public FreeMarkerLanguageDriver() {</span>
+<span class="fc" id="L55">        freemarkerCfg = createFreeMarkerConfiguration();</span>
+<span class="fc" id="L56">    }</span>
+
+    /**
+     * Creates a {@link ParameterHandler} that passes the actual parameters to the the JDBC statement.
+     *
+     * @see DefaultParameterHandler
+     * @param mappedStatement The mapped statement that is being executed
+     * @param parameterObject The input parameter object (can be null)
+     * @param boundSql The resulting SQL once the dynamic language has been executed.
+     */
+    @Override
+    public ParameterHandler createParameterHandler(MappedStatement mappedStatement, Object parameterObject, BoundSql boundSql) {
+        // As default XMLLanguageDriver
+<span class="fc" id="L69">        return new DefaultParameterHandler(mappedStatement, parameterObject, boundSql);</span>
+    }
+
+    /**
+     * Creates an {@link SqlSource} that will hold the statement read from a mapper xml file.
+     * It is called during startup, when the mapped statement is read from a class or an xml file.
+     *
+     * @param configuration The MyBatis configuration
+     * @param script XNode parsed from a XML file
+     * @param parameterType input parameter type got from a mapper method or specified in the parameterType xml attribute. Can be null.
+     */
+    @Override
+    public SqlSource createSqlSource(Configuration configuration, XNode script, Class&lt;?&gt; parameterType) {
+<span class="fc" id="L82">        return createSqlSource(configuration, script.getNode().getTextContent());</span>
+    }
+
+    /**
+     * Creates an {@link SqlSource} that will hold the statement read from an annotation.
+     * It is called during startup, when the mapped statement is read from a class or an xml file.
+     *
+     * @param configuration The MyBatis configuration
+     * @param script The content of the annotation
+     * @param parameterType input parameter type got from a mapper method or specified in the parameterType xml attribute. Can be null.
+     */
+    @Override
+    public SqlSource createSqlSource(Configuration configuration, String script, Class&lt;?&gt; parameterType) {
+<span class="fc" id="L95">        return createSqlSource(configuration, script);</span>
+    }
+
+    /**
+     * Creates the {@link freemarker.template.Configuration} instance and sets it up.
+     * If you want to change it (set another props, for example), you can override it in
+     * inherited class and use your own class in @Lang directive.
+     */
+    protected freemarker.template.Configuration createFreeMarkerConfiguration() {
+<span class="fc" id="L104">        freemarker.template.Configuration cfg = new freemarker.template.Configuration(freemarker.template.Configuration.VERSION_2_3_22);</span>
+
+<span class="fc" id="L106">        TemplateLoader templateLoader = new ClassTemplateLoader(this.getClass().getClassLoader(), basePackage);</span>
+<span class="fc" id="L107">        cfg.setTemplateLoader(templateLoader);</span>
+
+        // To avoid formatting numbers using spaces and commas in SQL
+<span class="fc" id="L110">        cfg.setNumberFormat(&quot;computer&quot;);</span>
+
+        // Because it defaults to default system encoding, we should set it always explicitly
+<span class="fc" id="L113">        cfg.setDefaultEncoding(&quot;utf-8&quot;);</span>
+
+<span class="fc" id="L115">        return cfg;</span>
+    }
+
+    protected SqlSource createSqlSource(Template template, Configuration configuration) {
+<span class="fc" id="L119">        return new FreeMarkerSqlSource(template, configuration);</span>
+    }
+
+    private SqlSource createSqlSource(Configuration configuration, String scriptText) {
+        Template template;
+<span class="fc bfc" id="L124" title="All 2 branches covered.">        if (scriptText.trim().contains(&quot; &quot;)) {</span>
+            // Consider that script is inline script
+            try {
+<span class="fc" id="L127">                template = new Template(null, new StringReader(scriptText), freemarkerCfg);</span>
+<span class="pc" id="L128">            } catch (IOException e) {</span>
+<span class="nc" id="L129">                throw new RuntimeException(e);</span>
+            }
+        } else {
+            // Consider that script is template name, trying to find the template in classpath
+            try {
+<span class="fc" id="L134">                template = freemarkerCfg.getTemplate(scriptText.trim());</span>
+<span class="pc" id="L135">            } catch (IOException e) {</span>
+<span class="nc" id="L136">                throw new RuntimeException(e);</span>
+            }
+        }
+
+<span class="fc" id="L140">        return createSqlSource(template, configuration);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.4.201502262128</span></div></body></html>
