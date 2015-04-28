@@ -1,151 +1,125 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.mybatis.scripting</groupId>
-    <artifactId>mybatis-freemarker</artifactId>
-    <version>1.2-SNAPSHOT</version>
-    <packaging>jar</packaging>
+	<parent>
+		<groupId>org.mybatis</groupId>
+		<artifactId>mybatis-parent</artifactId>
+		<version>24-SNAPSHOT</version>
+	</parent>
 
-    <name>MyBatis FreeMarker</name>
-    <description>FreeMarker support for MyBatis</description>
-    <url>https://github.com/elw00d/mybatis-freemarker</url>
+	<groupId>org.mybatis.scripting</groupId>
+	<artifactId>mybatis-freemarker</artifactId>
+	<version>1.2-SNAPSHOT</version>
+	<packaging>jar</packaging>
+
+	<name>MyBatis FreeMarker</name>
+	<description>FreeMarker support for MyBatis</description>
+	<url>https://github.com/mybatis/freemarker-scripting</url>
 
 	<contributors>
-        <contributor>
-            <name>Igor Kostromin</name>
-            <email>elwood.su@gmail.com</email>
-        </contributor>
-        <contributor>
-            <name>Eduardo Macarron</name>
-            <email>eduardo.macarron@gmail.com</email>
-        </contributor>
-        <contributor>
-            <name>Frank Martinez</name>
-            <email>mnesarco@gmail.com</email>
-        </contributor>
-    </contributors>
+		<contributor>
+			<name>Igor Kostromin</name>
+			<email>elwood.su@gmail.com</email>
+		</contributor>
+		<contributor>
+			<name>Eduardo Macarron</name>
+			<email>eduardo.macarron@gmail.com</email>
+		</contributor>
+		<contributor>
+			<name>Frank Martinez</name>
+			<email>mnesarco@gmail.com</email>
+		</contributor>
+	</contributors>
 
-    <scm>
-        <url>https://github.com/elw00d/mybatis-freemarker</url>
-        <connection>scm:git:ssh://github.com/elw00d/mybatis-freemarker.git</connection>
-        <developerConnection>scm:git:git+ssh://git@github.com/elw00d/mybatis-freemarker.git</developerConnection>
-        <tag>HEAD</tag>
-    </scm>
-    <issueManagement>
-        <system>GitHub Issue Management</system>
-        <url>https://github.com/elw00d/mybatis-freemarker/issues</url>
-    </issueManagement>
-    <ciManagement>
-        <system>Travis CI</system>
-        <url>https://travis-ci.org/elw00d/mybatis-freemarker</url>
-    </ciManagement>
-    <distributionManagement>
-        <site>
-            <id>github</id>
-            <url>gitsite:git@github.com/elw00d/mybatis-freemarker.git</url>
-        </site>
-    </distributionManagement>
+	<scm>
+		<url>http://github.com/mybatis/freemarker-scripting</url>
+		<connection>scm:git:ssh://github.com/mybatis/freemarker-scripting.git</connection>
+		<developerConnection>scm:git:git+ssh://git@github.com/mybatis/freemarker-scripting.git</developerConnection>
+		<tag>HEAD</tag>
+	</scm>
+	<issueManagement>
+		<system>GitHub Issue Management</system>
+		<url>https://github.com/mybatis/freemarker-scripting/issues</url>
+	</issueManagement>
+	<ciManagement>
+		<system>Travis CI</system>
+		<url>https://travis-ci.org/mybatis/freemarker-scripting</url>
+	</ciManagement>
+	<distributionManagement>
+		<site>
+			<id>github</id>
+			<url>gitsite:git@github.com/mybatis/freemarker-scripting.git</url>
+		</site>
+	</distributionManagement>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.mybatis</groupId>
-            <artifactId>mybatis</artifactId>
-            <version>3.2.8</version>
-        </dependency>
-        <dependency>
-            <groupId>org.freemarker</groupId>
-            <artifactId>freemarker</artifactId>
-            <version>2.3.22</version>
-        </dependency>
+	<dependencies>
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis</artifactId>
+			<version>3.2.8</version>
+		</dependency>
+		<dependency>
+			<groupId>org.freemarker</groupId>
+			<artifactId>freemarker</artifactId>
+			<version>2.3.22</version>
+		</dependency>
 
-        <!-- TEST -->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.12</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.hsqldb</groupId>
-            <artifactId>hsqldb</artifactId>
-            <version>2.3.2</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>1.2.17</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
+		<!-- TEST -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.hsqldb</groupId>
+			<artifactId>hsqldb</artifactId>
+			<version>2.3.2</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.17</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.2</version>
-                <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.2</version>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>animal-sniffer-maven-plugin</artifactId>
+				<version>1.14</version>
+				<configuration>
+					<signature>
+						<groupId>org.codehaus.mojo.signature</groupId>
+						<artifactId>java17</artifactId>
+						<version>1.0</version>
+					</signature>
+				</configuration>
+				<executions>
+					<execution>
+						<id>check-java-1.7-compat</id>
+						<phase>process-classes</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 
-	<reporting>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.10.2</version>
-                <reportSets>
-                    <reportSet>
-                        <id>default</id>
-                        <reports>
-                            <report>javadoc</report>
-                        </reports>
-                    </reportSet>
-                </reportSets>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jxr-plugin</artifactId>
-                <version>2.5</version>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>jdepend-maven-plugin</artifactId>
-                <version>2.0</version>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>findbugs-maven-plugin</artifactId>
-                <version>3.0.1</version>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-report-plugin</artifactId>
-                <version>2.18.1</version>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-pmd-plugin</artifactId>
-                <version>3.4</version>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>taglist-maven-plugin</artifactId>
-                <version>2.4</version>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>clirr-maven-plugin</artifactId>
-                <version>2.6.1</version>
-            </plugin>
-        </plugins>
-    </reporting>
 </project>
