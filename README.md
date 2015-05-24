@@ -2,7 +2,7 @@ MyBatis FreeMarker Support
 ========================
 
 [![Build Status](https://travis-ci.org/mybatis/freemarker-scripting.svg?branch=master)](https://travis-ci.org/mybatis/freemarker-scripting)
-[![Maven central](https://maven-badges.herokuapp.com/maven-central/org.mybatis/mybatis/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.mybatis/mybatis)
+[![Maven central](https://maven-badges.herokuapp.com/maven-central/org.mybatis.scripting/mybatis-freemarker/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.mybatis.scripting/mybatis-freemarker)
 [![Apache 2](http://img.shields.io/badge/license-Apache%202-red.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 
 ![freemarker-scripting](http://mybatis.github.io/images/mybatis-logo.png)
