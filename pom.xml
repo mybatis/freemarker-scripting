@@ -14,8 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
@@ -26,7 +25,7 @@
 
 	<groupId>org.mybatis.scripting</groupId>
 	<artifactId>mybatis-freemarker</artifactId>
-	<version>1.1.1-SNAPSHOT</version>
+	<version>1.1.1</version>
 	<packaging>jar</packaging>
 
 	<name>MyBatis FreeMarker</name>
@@ -52,7 +51,7 @@
 		<url>http://github.com/mybatis/freemarker-scripting</url>
 		<connection>scm:git:ssh://github.com/mybatis/freemarker-scripting.git</connection>
 		<developerConnection>scm:git:ssh://git@github.com/mybatis/freemarker-scripting.git</developerConnection>
-		<tag>HEAD</tag>
+		<tag>mybatis-freemarker-1.1.1</tag>
 	</scm>
 	<issueManagement>
 		<system>GitHub Issue Management</system>
