@@ -1,11 +1,11 @@
 MyBatis FreeMarker Support
 ========================
 
-[![Build Status](https://travis-ci.org/elw00d/mybatis-freemarker.svg?branch=master)](https://travis-ci.org/elw00d/mybatis-freemarker)
-[![jCenter](https://img.shields.io/badge/jcenter-1.1-green.svg)](https://bintray.com/elwood-home/main/mybatis-freemarker/1.1/view)
-![](https://img.shields.io/badge/License-MIT-blue.svg)
+[![Build Status](https://travis-ci.org/mybatis/freemarker-scripting.svg?branch=master)](https://travis-ci.org/mybatis/freemarker-scripting)
+[![Maven central](https://maven-badges.herokuapp.com/maven-central/org.mybatis/mybatis/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.mybatis/mybatis)
+[![Apache 2](http://img.shields.io/badge/license-Apache%202-red.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 
-![mybatis-velocity](http://mybatis.github.io/images/mybatis-logo.png)
+![freemarker-scripting](http://mybatis.github.io/images/mybatis-logo.png)
 
 MyBatis FreeMarker Scripting Support.
 
