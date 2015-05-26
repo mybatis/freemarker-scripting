@@ -20,21 +20,14 @@ If you are not familiar with FreeMarker syntax, you can view [Template Language 
 
 ## Install
 
-mybatis-freemarker is available in [jcenter](https://bintray.com/bintray/jcenter) maven repository. So, if you are using maven, you can add this:
+mybatis-freemarker is available in Maven Central. So, if you are using maven, you can add this:
 
 ```xml
-<repositories>
-    <repository>
-        <id>jcenter</id>
-        <url>http://jcenter.bintray.com</url>
-    </repository>
-</repositories>
-
 <dependencies>
     <dependency>
         <groupId>org.mybatis.scripting</groupId>
         <artifactId>mybatis-freemarker</artifactId>
-        <version>1.1</version>
+        <version>1.1.1</version>
     </dependency>
 </dependencies>
 ```
@@ -42,12 +35,8 @@ mybatis-freemarker is available in [jcenter](https://bintray.com/bintray/jcenter
 If you are using gradle, you can use this snippet:
 
 ```groovy
-repositories {
-    jcenter()
-}
-
 dependencies {
-    compile("org.mybatis.scripting:mybatis-freemarker:1.1")
+    compile("org.mybatis.scripting:mybatis-freemarker:1.1.1")
 }
 ```
 
@@ -61,7 +50,7 @@ dependencies {
 <dependency>
   <groupId>org.mybatis.scripting</groupId>
   <artifactId>mybatis-freemarker</artifactId>
-  <version>1.2-SNAPSHOT</version>
+  <version>1.1.2-SNAPSHOT</version>
 </dependency>
 ```
 
