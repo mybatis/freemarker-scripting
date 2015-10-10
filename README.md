@@ -183,3 +183,9 @@ Unfortunately, you can't use this syntax if passing one object as parameter and 
 ## Examples
 
 You can view full-featured example of configuring and of both XML-mapper and annotations-driven mapper usage in [test suite](https://github.com/elw00d/mybatis-freemarker/tree/master/src/test)
+
+Essentials
+----------
+
+* [See the docs](http://mybatis.github.io/freemarker-scripting/)
+
