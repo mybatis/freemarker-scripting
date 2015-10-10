@@ -1,4 +1,19 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>FreeMarkerSqlSource.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MyBatis FreeMarker</a> &gt; <a href="index.source.html" class="el_package">org.mybatis.scripting.freemarker</a> &gt; <span class="el_source">FreeMarkerSqlSource.java</span></div><h1>FreeMarkerSqlSource.java</h1><pre class="source lang-java linenums">package org.mybatis.scripting.freemarker;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>FreeMarkerSqlSource.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MyBatis FreeMarker</a> &gt; <a href="index.source.html" class="el_package">org.mybatis.scripting.freemarker</a> &gt; <span class="el_source">FreeMarkerSqlSource.java</span></div><h1>FreeMarkerSqlSource.java</h1><pre class="source lang-java linenums">/**
+ *    Copyright 2015 the original author or authors.
+ *
+ *    Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
+package org.mybatis.scripting.freemarker;
 
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -26,22 +41,22 @@ public class FreeMarkerSqlSource implements SqlSource {
 
     public final static String GENERATED_PARAMS_KEY = &quot;__GENERATED__&quot;;
 
-<span class="fc" id="L29">    public FreeMarkerSqlSource(Template template, Configuration configuration) {</span>
-<span class="fc" id="L30">        this.template = template;</span>
-<span class="fc" id="L31">        this.configuration = configuration;</span>
-<span class="fc" id="L32">    }</span>
+<span class="fc" id="L44">    public FreeMarkerSqlSource(Template template, Configuration configuration) {</span>
+<span class="fc" id="L45">        this.template = template;</span>
+<span class="fc" id="L46">        this.configuration = configuration;</span>
+<span class="fc" id="L47">    }</span>
 
     /**
      * Populates additional parameters to data context.
      * Data context can be {@link java.util.Map} or {@link org.mybatis.scripting.freemarker.ParamObjectAdapter} instance.
      */
     protected Object preProcessDataContext(Object dataContext, boolean isMap) {
-<span class="fc bfc" id="L39" title="All 2 branches covered.">        if (isMap) {</span>
-<span class="fc" id="L40">            ((Map&lt;String, Object&gt;) dataContext).put(MyBatisParamDirective.DEFAULT_KEY, new MyBatisParamDirective());</span>
-<span class="fc" id="L41">        } else {</span>
-<span class="fc" id="L42">            ((ParamObjectAdapter) dataContext).putAdditionalParam(MyBatisParamDirective.DEFAULT_KEY, new MyBatisParamDirective());</span>
+<span class="fc bfc" id="L54" title="All 2 branches covered.">        if (isMap) {</span>
+<span class="fc" id="L55">            ((Map&lt;String, Object&gt;) dataContext).put(MyBatisParamDirective.DEFAULT_KEY, new MyBatisParamDirective());</span>
+        } else {
+<span class="fc" id="L57">            ((ParamObjectAdapter) dataContext).putAdditionalParam(MyBatisParamDirective.DEFAULT_KEY, new MyBatisParamDirective());</span>
         }
-<span class="fc" id="L44">        return dataContext;</span>
+<span class="fc" id="L59">        return dataContext;</span>
     }
 
     @Override
@@ -49,50 +64,50 @@ public class FreeMarkerSqlSource implements SqlSource {
         // Add to passed parameterObject our predefined directive - MyBatisParamDirective
         // It will be available as &quot;p&quot; inside templates
         Object dataContext;
-<span class="fc" id="L52">        ArrayList generatedParams = new ArrayList();</span>
-<span class="fc bfc" id="L53" title="All 2 branches covered.">        if (parameterObject != null) {</span>
-<span class="fc bfc" id="L54" title="All 2 branches covered.">            if (parameterObject instanceof Map) {</span>
-<span class="fc" id="L55">                HashMap&lt;String, Object&gt; map = new HashMap&lt;&gt;((Map&lt;String, Object&gt;) parameterObject);</span>
-<span class="fc" id="L56">                map.put(GENERATED_PARAMS_KEY, generatedParams);</span>
-<span class="fc" id="L57">                dataContext = preProcessDataContext(map, true);</span>
-<span class="fc" id="L58">            } else {</span>
-<span class="fc" id="L59">                ParamObjectAdapter adapter = new ParamObjectAdapter(parameterObject, generatedParams);</span>
-<span class="fc" id="L60">                dataContext = preProcessDataContext(adapter, false);</span>
-            }
-<span class="fc" id="L62">        } else {</span>
-<span class="fc" id="L63">            HashMap&lt;Object, Object&gt; map = new HashMap&lt;&gt;();</span>
-<span class="fc" id="L64">            map.put(GENERATED_PARAMS_KEY, generatedParams);</span>
-<span class="fc" id="L65">            dataContext = preProcessDataContext(map, true);</span>
+<span class="fc" id="L67">        ArrayList generatedParams = new ArrayList();</span>
+<span class="fc bfc" id="L68" title="All 2 branches covered.">        if (parameterObject != null) {</span>
+<span class="fc bfc" id="L69" title="All 2 branches covered.">            if (parameterObject instanceof Map) {</span>
+<span class="fc" id="L70">                HashMap&lt;String, Object&gt; map = new HashMap&lt;&gt;((Map&lt;String, Object&gt;) parameterObject);</span>
+<span class="fc" id="L71">                map.put(GENERATED_PARAMS_KEY, generatedParams);</span>
+<span class="fc" id="L72">                dataContext = preProcessDataContext(map, true);</span>
+<span class="fc" id="L73">            } else {</span>
+<span class="fc" id="L74">                ParamObjectAdapter adapter = new ParamObjectAdapter(parameterObject, generatedParams);</span>
+<span class="fc" id="L75">                dataContext = preProcessDataContext(adapter, false);</span>
+<span class="fc" id="L76">            }</span>
+        } else {
+<span class="fc" id="L78">            HashMap&lt;Object, Object&gt; map = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L79">            map.put(GENERATED_PARAMS_KEY, generatedParams);</span>
+<span class="fc" id="L80">            dataContext = preProcessDataContext(map, true);</span>
         }
 
-<span class="fc" id="L68">        CharArrayWriter writer = new CharArrayWriter();</span>
+<span class="fc" id="L83">        CharArrayWriter writer = new CharArrayWriter();</span>
         try {
-<span class="fc" id="L70">            template.process(dataContext, writer);</span>
-<span class="pc" id="L71">        } catch (TemplateException | IOException e) {</span>
-<span class="nc" id="L72">            throw new RuntimeException(e);</span>
-        }
+<span class="fc" id="L85">            template.process(dataContext, writer);</span>
+<span class="nc" id="L86">        } catch (TemplateException | IOException e) {</span>
+<span class="nc" id="L87">            throw new RuntimeException(e);</span>
+<span class="fc" id="L88">        }</span>
 
         // We got SQL ready for MyBatis here. This SQL contains params declarations like &quot;#{param}&quot;,
         // they will be replaced to '?' by MyBatis engine further
-<span class="fc" id="L77">        String sql = writer.toString();</span>
+<span class="fc" id="L92">        String sql = writer.toString();</span>
 
-<span class="fc bfc" id="L79" title="All 2 branches covered.">        if (!generatedParams.isEmpty()) {</span>
-<span class="fc bfc" id="L80" title="All 2 branches covered.">            if (!(parameterObject instanceof Map)) {</span>
-<span class="fc" id="L81">                throw new UnsupportedOperationException(&quot;Auto-generated prepared statements parameters&quot; +</span>
+<span class="fc bfc" id="L94" title="All 2 branches covered.">        if (!generatedParams.isEmpty()) {</span>
+<span class="fc bfc" id="L95" title="All 2 branches covered.">            if (!(parameterObject instanceof Map)) {</span>
+<span class="fc" id="L96">                throw new UnsupportedOperationException(&quot;Auto-generated prepared statements parameters&quot; +</span>
                         &quot; are not available if using parameters object. Use @Param-annotated parameters instead.&quot;);
             }
 
-<span class="fc" id="L85">            Map&lt;String, Object&gt; parametersMap = (Map&lt;String, Object&gt;) parameterObject;</span>
-<span class="fc bfc" id="L86" title="All 2 branches covered.">            for (int i = 0; i &lt; generatedParams.size(); i++) {</span>
-<span class="fc" id="L87">                parametersMap.put(&quot;_p&quot; + i, generatedParams.get(i));</span>
+<span class="fc" id="L100">            Map&lt;String, Object&gt; parametersMap = (Map&lt;String, Object&gt;) parameterObject;</span>
+<span class="fc bfc" id="L101" title="All 2 branches covered.">            for (int i = 0; i &lt; generatedParams.size(); i++) {</span>
+<span class="fc" id="L102">                parametersMap.put(&quot;_p&quot; + i, generatedParams.get(i));</span>
             }
         }
 
         // Pass retrieved SQL into MyBatis engine, it will substitute prepared-statements parameters
-<span class="fc" id="L92">        SqlSourceBuilder sqlSourceParser = new SqlSourceBuilder(configuration);</span>
-<span class="fc bfc" id="L93" title="All 2 branches covered.">        Class&lt;?&gt; parameterType1 = parameterObject == null ? Object.class : parameterObject.getClass();</span>
-<span class="fc" id="L94">        SqlSource sqlSource = sqlSourceParser.parse(sql, parameterType1, new HashMap&lt;String, Object&gt;());</span>
-<span class="fc" id="L95">        return sqlSource.getBoundSql(parameterObject);</span>
+<span class="fc" id="L107">        SqlSourceBuilder sqlSourceParser = new SqlSourceBuilder(configuration);</span>
+<span class="fc bfc" id="L108" title="All 2 branches covered.">        Class&lt;?&gt; parameterType1 = parameterObject == null ? Object.class : parameterObject.getClass();</span>
+<span class="fc" id="L109">        SqlSource sqlSource = sqlSourceParser.parse(sql, parameterType1, new HashMap&lt;String, Object&gt;());</span>
+<span class="fc" id="L110">        return sqlSource.getBoundSql(parameterObject);</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.4.201502262128</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

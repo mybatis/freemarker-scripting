@@ -1,4 +1,19 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>MyBatisParamDirective.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MyBatis FreeMarker</a> &gt; <a href="index.source.html" class="el_package">org.mybatis.scripting.freemarker</a> &gt; <span class="el_source">MyBatisParamDirective.java</span></div><h1>MyBatisParamDirective.java</h1><pre class="source lang-java linenums">package org.mybatis.scripting.freemarker;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>MyBatisParamDirective.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MyBatis FreeMarker</a> &gt; <a href="index.source.html" class="el_package">org.mybatis.scripting.freemarker</a> &gt; <span class="el_source">MyBatisParamDirective.java</span></div><h1>MyBatisParamDirective.java</h1><pre class="source lang-java linenums">/**
+ *    Copyright 2015 the original author or authors.
+ *
+ *    Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
+package org.mybatis.scripting.freemarker;
 
 import freemarker.core.Environment;
 import freemarker.ext.util.WrapperTemplateModel;
@@ -38,47 +53,47 @@ import java.util.Map;
  *
  * @author elwood
  */
-<span class="fc" id="L41">public class MyBatisParamDirective implements TemplateDirectiveModel {</span>
-<span class="fc" id="L42">    public static String DEFAULT_KEY = &quot;p&quot;;</span>
+<span class="fc" id="L56">public class MyBatisParamDirective implements TemplateDirectiveModel {</span>
+<span class="fc" id="L57">    public static String DEFAULT_KEY = &quot;p&quot;;</span>
 
     @Override
     public void execute(Environment env, Map params, TemplateModel[] loopVars, TemplateDirectiveBody body) throws TemplateException, IOException {
-<span class="fc" id="L46">        SimpleScalar name = (SimpleScalar) params.get(&quot;name&quot;);</span>
-<span class="fc bfc" id="L47" title="All 2 branches covered.">        if (params.containsKey(&quot;value&quot;)) {</span>
-<span class="fc" id="L48">            Object valueObject = params.get(&quot;value&quot;);</span>
+<span class="fc" id="L61">        SimpleScalar name = (SimpleScalar) params.get(&quot;name&quot;);</span>
+<span class="fc bfc" id="L62" title="All 2 branches covered.">        if (params.containsKey(&quot;value&quot;)) {</span>
+<span class="fc" id="L63">            Object valueObject = params.get(&quot;value&quot;);</span>
             Object value;
-<span class="pc bpc" id="L50" title="1 of 2 branches missed.">            if (valueObject == null) {</span>
-<span class="nc" id="L51">                value = null;</span>
-<span class="pc bfc" id="L52" title="All 2 branches covered.">            } else if (valueObject instanceof WrapperTemplateModel) {</span>
-<span class="fc" id="L53">                value = ((WrapperTemplateModel) valueObject).getWrappedObject();</span>
-<span class="fc bfc" id="L54" title="All 2 branches covered.">            } else if (valueObject instanceof TemplateScalarModel) {</span>
-<span class="fc" id="L55">                value = ((TemplateScalarModel) valueObject).getAsString();</span>
-<span class="pc bpc" id="L56" title="1 of 2 branches missed.">            } else if (valueObject instanceof TemplateNumberModel) {</span>
-<span class="fc" id="L57">                value = ((TemplateNumberModel) valueObject).getAsNumber();</span>
-<span class="pc bnc" id="L58" title="All 2 branches missed.">            } else if (valueObject instanceof TemplateDateModel) {</span>
-<span class="nc" id="L59">                value = ((TemplateDateModel) valueObject).getAsDate();</span>
-<span class="nc bnc" id="L60" title="All 2 branches missed.">            } else if (valueObject instanceof TemplateBooleanModel) {</span>
-<span class="nc" id="L61">                value = ((TemplateBooleanModel) valueObject).getAsBoolean();</span>
-<span class="nc" id="L62">            } else {</span>
-<span class="nc" id="L63">                throw new UnsupportedOperationException(</span>
-<span class="nc" id="L64">                        String.format(&quot;Type %s is not supported yet in this context.&quot;,</span>
-<span class="nc" id="L65">                                valueObject.getClass().getSimpleName()));</span>
+<span class="pc bpc" id="L65" title="1 of 2 branches missed.">            if (valueObject == null) {</span>
+<span class="nc" id="L66">                value = null;</span>
+<span class="fc bfc" id="L67" title="All 2 branches covered.">            } else if (valueObject instanceof WrapperTemplateModel) {</span>
+<span class="fc" id="L68">                value = ((WrapperTemplateModel) valueObject).getWrappedObject();</span>
+<span class="fc bfc" id="L69" title="All 2 branches covered.">            } else if (valueObject instanceof TemplateScalarModel) {</span>
+<span class="fc" id="L70">                value = ((TemplateScalarModel) valueObject).getAsString();</span>
+<span class="pc bpc" id="L71" title="1 of 2 branches missed.">            } else if (valueObject instanceof TemplateNumberModel) {</span>
+<span class="fc" id="L72">                value = ((TemplateNumberModel) valueObject).getAsNumber();</span>
+<span class="nc bnc" id="L73" title="All 2 branches missed.">            } else if (valueObject instanceof TemplateDateModel) {</span>
+<span class="nc" id="L74">                value = ((TemplateDateModel) valueObject).getAsDate();</span>
+<span class="nc bnc" id="L75" title="All 2 branches missed.">            } else if (valueObject instanceof TemplateBooleanModel) {</span>
+<span class="nc" id="L76">                value = ((TemplateBooleanModel) valueObject).getAsBoolean();</span>
+            } else {
+<span class="nc" id="L78">                throw new UnsupportedOperationException(</span>
+                        String.format(&quot;Type %s is not supported yet in this context.&quot;,
+                                valueObject.getClass().getSimpleName()));
             }
 
-<span class="fc" id="L68">            TemplateModel generatedParamsObject = env.getGlobalVariables().get(FreeMarkerSqlSource.GENERATED_PARAMS_KEY);</span>
+<span class="fc" id="L83">            TemplateModel generatedParamsObject = env.getGlobalVariables().get(FreeMarkerSqlSource.GENERATED_PARAMS_KEY);</span>
             List generatedParams;
-<span class="fc bfc" id="L70" title="All 2 branches covered.">            if (generatedParamsObject instanceof DefaultListAdapter) {</span>
-<span class="fc" id="L71">                generatedParams = (List) ((DefaultListAdapter) generatedParamsObject).getWrappedObject();</span>
-<span class="fc" id="L72">            } else {</span>
-<span class="fc" id="L73">                generatedParams = ((GeneratedParamsTemplateModel) generatedParamsObject)</span>
-<span class="fc" id="L74">                        .getGeneratedParams();</span>
+<span class="fc bfc" id="L85" title="All 2 branches covered.">            if (generatedParamsObject instanceof DefaultListAdapter) {</span>
+<span class="fc" id="L86">                generatedParams = (List) ((DefaultListAdapter) generatedParamsObject).getWrappedObject();</span>
+            } else {
+<span class="fc" id="L88">                generatedParams = ((GeneratedParamsTemplateModel) generatedParamsObject)</span>
+                        .getGeneratedParams();
             }
-<span class="fc" id="L76">            String generatedParamName = &quot;_p&quot; + generatedParams.size();</span>
-<span class="fc" id="L77">            env.getOut().write(String.format(&quot;#{%s}&quot;, generatedParamName));</span>
-<span class="fc" id="L78">            generatedParams.add(value);</span>
-<span class="fc" id="L79">        } else {</span>
-<span class="fc" id="L80">            env.getOut().write(String.format(&quot;#{%s}&quot;, name));</span>
+<span class="fc" id="L91">            String generatedParamName = &quot;_p&quot; + generatedParams.size();</span>
+<span class="fc" id="L92">            env.getOut().write(String.format(&quot;#{%s}&quot;, generatedParamName));</span>
+<span class="fc" id="L93">            generatedParams.add(value);</span>
+<span class="fc" id="L94">        } else {</span>
+<span class="fc" id="L95">            env.getOut().write(String.format(&quot;#{%s}&quot;, name));</span>
         }
-<span class="fc" id="L82">    }</span>
+<span class="fc" id="L97">    }</span>
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.4.201502262128</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>
