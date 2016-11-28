@@ -23,7 +23,7 @@
   <parent>
     <groupId>org.mybatis</groupId>
     <artifactId>mybatis-parent</artifactId>
-    <version>27</version>
+    <version>28</version>
     <relativePath />
   </parent>
 
@@ -78,6 +78,8 @@
   <properties>
     <maven.compiler.source>1.7</maven.compiler.source>
     <maven.compiler.target>1.7</maven.compiler.target>
+    <maven.compiler.testTarget>1.7</maven.compiler.testTarget>
+    <maven.compiler.testSource>1.7</maven.compiler.testSource>
   </properties>
 
   <dependencies>
