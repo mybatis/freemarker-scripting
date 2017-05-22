@@ -53,7 +53,7 @@
   </contributors>
 
   <scm>
-    <url>http://github.com/mybatis/freemarker-scripting</url>
+    <url>https://github.com/mybatis/freemarker-scripting</url>
     <connection>scm:git:ssh://github.com/mybatis/freemarker-scripting.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/mybatis/freemarker-scripting.git</developerConnection>
     <tag>HEAD</tag>
@@ -79,6 +79,8 @@
     <maven.compiler.target>1.7</maven.compiler.target>
     <maven.compiler.testTarget>1.7</maven.compiler.testTarget>
     <maven.compiler.testSource>1.7</maven.compiler.testSource>
+
+    <clirr.comparisonVersion>1.1.2</clirr.comparisonVersion>
   </properties>
 
   <dependencies>
