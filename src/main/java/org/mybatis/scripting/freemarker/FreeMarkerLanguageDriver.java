@@ -22,6 +22,7 @@ import freemarker.template.Template;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
+import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
 import org.apache.ibatis.executor.parameter.ParameterHandler;
@@ -88,7 +89,7 @@ public class FreeMarkerLanguageDriver implements LanguageDriver {
     cfg.setNumberFormat("computer");
 
     // Because it defaults to default system encoding, we should set it always explicitly
-    cfg.setDefaultEncoding("utf-8");
+    cfg.setDefaultEncoding(StandardCharsets.UTF_8.name());
 
     return cfg;
   }
