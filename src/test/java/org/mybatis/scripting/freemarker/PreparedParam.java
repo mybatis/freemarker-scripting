@@ -1,5 +1,5 @@
 /**
- *    Copyright 2015 the original author or authors.
+ *    Copyright 2015-2017 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -21,34 +21,34 @@ package org.mybatis.scripting.freemarker;
  * @author elwood
  */
 public class PreparedParam {
-    public static class InnerClass {
-        private String strValue = "InnerString";
+  public static class InnerClass {
+    private String strValue = "InnerString";
 
-        public String getStrValue() {
-            return strValue;
-        }
-
-        public void setStrValue(String strValue) {
-            this.strValue = strValue;
-        }
+    public String getStrValue() {
+      return strValue;
     }
 
-    private InnerClass innerObject = new InnerClass();
-    private Object nullValue = null;
-
-    public InnerClass getInnerObject() {
-        return innerObject;
+    public void setStrValue(String strValue) {
+      this.strValue = strValue;
     }
+  }
 
-    public void setInnerObject(InnerClass innerObject) {
-        this.innerObject = innerObject;
-    }
+  private InnerClass innerObject = new InnerClass();
+  private Object nullValue = null;
 
-    public Object getNullValue() {
-        return nullValue;
-    }
+  public InnerClass getInnerObject() {
+    return innerObject;
+  }
 
-    public void setNullValue(Object nullValue) {
-        this.nullValue = nullValue;
-    }
+  public void setInnerObject(InnerClass innerObject) {
+    this.innerObject = innerObject;
+  }
+
+  public Object getNullValue() {
+    return nullValue;
+  }
+
+  public void setNullValue(Object nullValue) {
+    this.nullValue = nullValue;
+  }
 }

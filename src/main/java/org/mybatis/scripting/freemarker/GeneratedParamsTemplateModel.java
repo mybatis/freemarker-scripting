@@ -1,5 +1,5 @@
 /**
- *    Copyright 2015 the original author or authors.
+ *    Copyright 2015-2017 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -26,13 +26,13 @@ import java.util.List;
  * @author elwood
  */
 public class GeneratedParamsTemplateModel implements TemplateModel {
-    private final List generatedParams;
+  private final List generatedParams;
 
-    public GeneratedParamsTemplateModel(List generatedParams) {
-        this.generatedParams = generatedParams;
-    }
+  public GeneratedParamsTemplateModel(List generatedParams) {
+    this.generatedParams = generatedParams;
+  }
 
-    public List getGeneratedParams() {
-        return generatedParams;
-    }
+  public List getGeneratedParams() {
+    return generatedParams;
+  }
 }

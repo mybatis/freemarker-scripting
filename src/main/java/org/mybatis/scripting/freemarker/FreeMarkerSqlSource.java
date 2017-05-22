@@ -1,5 +1,5 @@
 /**
- *    Copyright 2015 the original author or authors.
+ *    Copyright 2015-2017 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -36,77 +36,78 @@ import java.util.Map;
  * @author elwood
  */
 public class FreeMarkerSqlSource implements SqlSource {
-    private final Template template;
-    private final Configuration configuration;
+  private final Template template;
+  private final Configuration configuration;
 
-    public final static String GENERATED_PARAMS_KEY = "__GENERATED__";
+  public final static String GENERATED_PARAMS_KEY = "__GENERATED__";
 
-    public FreeMarkerSqlSource(Template template, Configuration configuration) {
-        this.template = template;
-        this.configuration = configuration;
+  public FreeMarkerSqlSource(Template template, Configuration configuration) {
+    this.template = template;
+    this.configuration = configuration;
+  }
+
+  /**
+   * Populates additional parameters to data context.
+   * Data context can be {@link java.util.Map} or {@link org.mybatis.scripting.freemarker.ParamObjectAdapter} instance.
+   */
+  protected Object preProcessDataContext(Object dataContext, boolean isMap) {
+    if (isMap) {
+      ((Map<String, Object>) dataContext).put(MyBatisParamDirective.DEFAULT_KEY, new MyBatisParamDirective());
+    } else {
+      ((ParamObjectAdapter) dataContext).putAdditionalParam(MyBatisParamDirective.DEFAULT_KEY,
+          new MyBatisParamDirective());
+    }
+    return dataContext;
+  }
+
+  @Override
+  public BoundSql getBoundSql(Object parameterObject) {
+    // Add to passed parameterObject our predefined directive - MyBatisParamDirective
+    // It will be available as "p" inside templates
+    Object dataContext;
+    ArrayList generatedParams = new ArrayList();
+    if (parameterObject != null) {
+      if (parameterObject instanceof Map) {
+        HashMap<String, Object> map = new HashMap<>((Map<String, Object>) parameterObject);
+        map.put(GENERATED_PARAMS_KEY, generatedParams);
+        dataContext = preProcessDataContext(map, true);
+      } else {
+        ParamObjectAdapter adapter = new ParamObjectAdapter(parameterObject, generatedParams);
+        dataContext = preProcessDataContext(adapter, false);
+      }
+    } else {
+      HashMap<Object, Object> map = new HashMap<>();
+      map.put(GENERATED_PARAMS_KEY, generatedParams);
+      dataContext = preProcessDataContext(map, true);
     }
 
-    /**
-     * Populates additional parameters to data context.
-     * Data context can be {@link java.util.Map} or {@link org.mybatis.scripting.freemarker.ParamObjectAdapter} instance.
-     */
-    protected Object preProcessDataContext(Object dataContext, boolean isMap) {
-        if (isMap) {
-            ((Map<String, Object>) dataContext).put(MyBatisParamDirective.DEFAULT_KEY, new MyBatisParamDirective());
-        } else {
-            ((ParamObjectAdapter) dataContext).putAdditionalParam(MyBatisParamDirective.DEFAULT_KEY, new MyBatisParamDirective());
-        }
-        return dataContext;
+    CharArrayWriter writer = new CharArrayWriter();
+    try {
+      template.process(dataContext, writer);
+    } catch (TemplateException | IOException e) {
+      throw new RuntimeException(e);
     }
 
-    @Override
-    public BoundSql getBoundSql(Object parameterObject) {
-        // Add to passed parameterObject our predefined directive - MyBatisParamDirective
-        // It will be available as "p" inside templates
-        Object dataContext;
-        ArrayList generatedParams = new ArrayList();
-        if (parameterObject != null) {
-            if (parameterObject instanceof Map) {
-                HashMap<String, Object> map = new HashMap<>((Map<String, Object>) parameterObject);
-                map.put(GENERATED_PARAMS_KEY, generatedParams);
-                dataContext = preProcessDataContext(map, true);
-            } else {
-                ParamObjectAdapter adapter = new ParamObjectAdapter(parameterObject, generatedParams);
-                dataContext = preProcessDataContext(adapter, false);
-            }
-        } else {
-            HashMap<Object, Object> map = new HashMap<>();
-            map.put(GENERATED_PARAMS_KEY, generatedParams);
-            dataContext = preProcessDataContext(map, true);
-        }
+    // We got SQL ready for MyBatis here. This SQL contains params declarations like "#{param}",
+    // they will be replaced to '?' by MyBatis engine further
+    String sql = writer.toString();
 
-        CharArrayWriter writer = new CharArrayWriter();
-        try {
-            template.process(dataContext, writer);
-        } catch (TemplateException | IOException e) {
-            throw new RuntimeException(e);
-        }
+    if (!generatedParams.isEmpty()) {
+      if (!(parameterObject instanceof Map)) {
+        throw new UnsupportedOperationException("Auto-generated prepared statements parameters"
+            + " are not available if using parameters object. Use @Param-annotated parameters instead.");
+      }
 
-        // We got SQL ready for MyBatis here. This SQL contains params declarations like "#{param}",
-        // they will be replaced to '?' by MyBatis engine further
-        String sql = writer.toString();
-
-        if (!generatedParams.isEmpty()) {
-            if (!(parameterObject instanceof Map)) {
-                throw new UnsupportedOperationException("Auto-generated prepared statements parameters" +
-                        " are not available if using parameters object. Use @Param-annotated parameters instead.");
-            }
-
-            Map<String, Object> parametersMap = (Map<String, Object>) parameterObject;
-            for (int i = 0; i < generatedParams.size(); i++) {
-                parametersMap.put("_p" + i, generatedParams.get(i));
-            }
-        }
-
-        // Pass retrieved SQL into MyBatis engine, it will substitute prepared-statements parameters
-        SqlSourceBuilder sqlSourceParser = new SqlSourceBuilder(configuration);
-        Class<?> parameterType1 = parameterObject == null ? Object.class : parameterObject.getClass();
-        SqlSource sqlSource = sqlSourceParser.parse(sql, parameterType1, new HashMap<String, Object>());
-        return sqlSource.getBoundSql(parameterObject);
+      Map<String, Object> parametersMap = (Map<String, Object>) parameterObject;
+      for (int i = 0; i < generatedParams.size(); i++) {
+        parametersMap.put("_p" + i, generatedParams.get(i));
+      }
     }
+
+    // Pass retrieved SQL into MyBatis engine, it will substitute prepared-statements parameters
+    SqlSourceBuilder sqlSourceParser = new SqlSourceBuilder(configuration);
+    Class<?> parameterType1 = parameterObject == null ? Object.class : parameterObject.getClass();
+    SqlSource sqlSource = sqlSourceParser.parse(sql, parameterType1, new HashMap<String, Object>());
+    return sqlSource.getBoundSql(parameterObject);
+  }
 }
