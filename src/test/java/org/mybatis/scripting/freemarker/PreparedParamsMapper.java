@@ -1,5 +1,5 @@
 /**
- *    Copyright 2015 the original author or authors.
+ *    Copyright 2015-2017 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -28,20 +28,20 @@ import java.util.List;
  * @author elwood
  */
 public interface PreparedParamsMapper {
-    @Lang(FreeMarkerLanguageDriver.class)
-    @Select("preparedIn.ftl")
-    List<Name> findByNames(@Param("ids") List<String> ids);
+  @Lang(FreeMarkerLanguageDriver.class)
+  @Select("preparedIn.ftl")
+  List<Name> findByNames(@Param("ids") List<String> ids);
 
-    /**
-     * This is doesn't work - because params objects are unsupported when using
-     * auto-generated prepared parameters (it is impossible to add parameters
-     * to MyBatis engine). This call will throw exception.
-     */
-    @Lang(FreeMarkerLanguageDriver.class)
-    @Select("prepared.ftl")
-    Name findUsingParamsObject(PreparedParam param);
+  /**
+   * This is doesn't work - because params objects are unsupported when using
+   * auto-generated prepared parameters (it is impossible to add parameters
+   * to MyBatis engine). This call will throw exception.
+   */
+  @Lang(FreeMarkerLanguageDriver.class)
+  @Select("prepared.ftl")
+  Name findUsingParamsObject(PreparedParam param);
 
-    @Lang(FreeMarkerLanguageDriver.class)
-    @Select("prepared.ftl")
-    Name findUsingParams(@Param("innerObject") PreparedParam.InnerClass innerClass);
+  @Lang(FreeMarkerLanguageDriver.class)
+  @Select("prepared.ftl")
+  Name findUsingParams(@Param("innerObject") PreparedParam.InnerClass innerClass);
 }

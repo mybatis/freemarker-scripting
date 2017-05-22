@@ -1,5 +1,5 @@
 /**
- *    Copyright 2015 the original author or authors.
+ *    Copyright 2015-2017 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -54,45 +54,44 @@ import java.util.Map;
  * @author elwood
  */
 public class MyBatisParamDirective implements TemplateDirectiveModel {
-    public static String DEFAULT_KEY = "p";
+  public static String DEFAULT_KEY = "p";
 
-    @Override
-    public void execute(Environment env, Map params, TemplateModel[] loopVars, TemplateDirectiveBody body) throws TemplateException, IOException {
-        SimpleScalar name = (SimpleScalar) params.get("name");
-        if (params.containsKey("value")) {
-            Object valueObject = params.get("value");
-            Object value;
-            if (valueObject == null) {
-                value = null;
-            } else if (valueObject instanceof WrapperTemplateModel) {
-                value = ((WrapperTemplateModel) valueObject).getWrappedObject();
-            } else if (valueObject instanceof TemplateScalarModel) {
-                value = ((TemplateScalarModel) valueObject).getAsString();
-            } else if (valueObject instanceof TemplateNumberModel) {
-                value = ((TemplateNumberModel) valueObject).getAsNumber();
-            } else if (valueObject instanceof TemplateDateModel) {
-                value = ((TemplateDateModel) valueObject).getAsDate();
-            } else if (valueObject instanceof TemplateBooleanModel) {
-                value = ((TemplateBooleanModel) valueObject).getAsBoolean();
-            } else {
-                throw new UnsupportedOperationException(
-                        String.format("Type %s is not supported yet in this context.",
-                                valueObject.getClass().getSimpleName()));
-            }
+  @Override
+  public void execute(Environment env, Map params, TemplateModel[] loopVars, TemplateDirectiveBody body)
+      throws TemplateException, IOException {
+    SimpleScalar name = (SimpleScalar) params.get("name");
+    if (params.containsKey("value")) {
+      Object valueObject = params.get("value");
+      Object value;
+      if (valueObject == null) {
+        value = null;
+      } else if (valueObject instanceof WrapperTemplateModel) {
+        value = ((WrapperTemplateModel) valueObject).getWrappedObject();
+      } else if (valueObject instanceof TemplateScalarModel) {
+        value = ((TemplateScalarModel) valueObject).getAsString();
+      } else if (valueObject instanceof TemplateNumberModel) {
+        value = ((TemplateNumberModel) valueObject).getAsNumber();
+      } else if (valueObject instanceof TemplateDateModel) {
+        value = ((TemplateDateModel) valueObject).getAsDate();
+      } else if (valueObject instanceof TemplateBooleanModel) {
+        value = ((TemplateBooleanModel) valueObject).getAsBoolean();
+      } else {
+        throw new UnsupportedOperationException(
+            String.format("Type %s is not supported yet in this context.", valueObject.getClass().getSimpleName()));
+      }
 
-            TemplateModel generatedParamsObject = env.getGlobalVariables().get(FreeMarkerSqlSource.GENERATED_PARAMS_KEY);
-            List generatedParams;
-            if (generatedParamsObject instanceof DefaultListAdapter) {
-                generatedParams = (List) ((DefaultListAdapter) generatedParamsObject).getWrappedObject();
-            } else {
-                generatedParams = ((GeneratedParamsTemplateModel) generatedParamsObject)
-                        .getGeneratedParams();
-            }
-            String generatedParamName = "_p" + generatedParams.size();
-            env.getOut().write(String.format("#{%s}", generatedParamName));
-            generatedParams.add(value);
-        } else {
-            env.getOut().write(String.format("#{%s}", name));
-        }
+      TemplateModel generatedParamsObject = env.getGlobalVariables().get(FreeMarkerSqlSource.GENERATED_PARAMS_KEY);
+      List generatedParams;
+      if (generatedParamsObject instanceof DefaultListAdapter) {
+        generatedParams = (List) ((DefaultListAdapter) generatedParamsObject).getWrappedObject();
+      } else {
+        generatedParams = ((GeneratedParamsTemplateModel) generatedParamsObject).getGeneratedParams();
+      }
+      String generatedParamName = "_p" + generatedParams.size();
+      env.getOut().write(String.format("#{%s}", generatedParamName));
+      generatedParams.add(value);
+    } else {
+      env.getOut().write(String.format("#{%s}", name));
     }
+  }
 }

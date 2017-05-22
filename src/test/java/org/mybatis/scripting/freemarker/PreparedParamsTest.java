@@ -1,5 +1,5 @@
 /**
- *    Copyright 2015 the original author or authors.
+ *    Copyright 2015-2017 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -41,68 +41,70 @@ import java.util.List;
  * @author elwood
  */
 public class PreparedParamsTest {
-    protected static SqlSessionFactory sqlSessionFactory;
+  protected static SqlSessionFactory sqlSessionFactory;
 
-    @BeforeClass
-    public static void setUp() throws Exception {
-        Class.forName("org.hsqldb.jdbcDriver");
+  @BeforeClass
+  public static void setUp() throws Exception {
+    Class.forName("org.hsqldb.jdbcDriver");
 
-        JDBCDataSource dataSource = new JDBCDataSource();
-        dataSource.setUrl("jdbc:hsqldb:mem:db3");
-        dataSource.setUser("sa");
-        dataSource.setPassword("");
+    JDBCDataSource dataSource = new JDBCDataSource();
+    dataSource.setUrl("jdbc:hsqldb:mem:db3");
+    dataSource.setUser("sa");
+    dataSource.setPassword("");
 
-        try (Connection conn = dataSource.getConnection()) {
-            try (Reader reader = Resources.getResourceAsReader("org/mybatis/scripting/freemarker/create-db.sql")) {
-                ScriptRunner runner = new ScriptRunner(conn);
-                runner.setLogWriter(null);
-                runner.setErrorLogWriter(null);
-                runner.runScript(reader);
-                conn.commit();
-            }
-        }
-
-        TransactionFactory transactionFactory = new JdbcTransactionFactory();
-        Environment environment = new Environment("development", transactionFactory, dataSource);
-
-        // You can call configuration.setDefaultScriptingLanguage(FreeMarkerLanguageDriver.class)
-        // after this to use FreeMarker driver by default.
-        Configuration configuration = new Configuration(environment);
-
-        configuration.addMapper(PreparedParamsMapper.class);
-        sqlSessionFactory = new SqlSessionFactoryBuilder().build(configuration);
+    try (Connection conn = dataSource.getConnection()) {
+      try (Reader reader = Resources.getResourceAsReader("org/mybatis/scripting/freemarker/create-db.sql")) {
+        ScriptRunner runner = new ScriptRunner(conn);
+        runner.setLogWriter(null);
+        runner.setErrorLogWriter(null);
+        runner.runScript(reader);
+        conn.commit();
+      }
     }
 
-    @Test
-    public void testInCall() {
-        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
-            PreparedParamsMapper mapper = sqlSession.getMapper(PreparedParamsMapper.class);
-            List<Name> names = mapper.findByNames(new ArrayList<String>() {{
-                add("Pebbles");
-                add("Barney");
-                add("Betty");
-            }});
-            Assert.assertTrue(names.size() == 3);
-        }
-    }
+    TransactionFactory transactionFactory = new JdbcTransactionFactory();
+    Environment environment = new Environment("development", transactionFactory, dataSource);
 
-    /**
-     * PersistenceException will be thrown with cause of UnsupportedOperationException
-     */
-    @Test(expected = PersistenceException.class)
-    public void testParamsObjectCall() {
-        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
-            PreparedParamsMapper mapper = sqlSession.getMapper(PreparedParamsMapper.class);
-            mapper.findUsingParamsObject(new PreparedParam());
-        }
-    }
+    // You can call configuration.setDefaultScriptingLanguage(FreeMarkerLanguageDriver.class)
+    // after this to use FreeMarker driver by default.
+    Configuration configuration = new Configuration(environment);
 
-    @Test
-    public void testNoParamsCall() {
-        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
-            PreparedParamsMapper mapper = sqlSession.getMapper(PreparedParamsMapper.class);
-            Name name = mapper.findUsingParams(new PreparedParam.InnerClass());
-            Assert.assertTrue(name != null && name.getFirstName().equals("Wilma"));
+    configuration.addMapper(PreparedParamsMapper.class);
+    sqlSessionFactory = new SqlSessionFactoryBuilder().build(configuration);
+  }
+
+  @Test
+  public void testInCall() {
+    try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+      PreparedParamsMapper mapper = sqlSession.getMapper(PreparedParamsMapper.class);
+      List<Name> names = mapper.findByNames(new ArrayList<String>() {
+        {
+          add("Pebbles");
+          add("Barney");
+          add("Betty");
         }
+      });
+      Assert.assertTrue(names.size() == 3);
     }
+  }
+
+  /**
+   * PersistenceException will be thrown with cause of UnsupportedOperationException
+   */
+  @Test(expected = PersistenceException.class)
+  public void testParamsObjectCall() {
+    try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+      PreparedParamsMapper mapper = sqlSession.getMapper(PreparedParamsMapper.class);
+      mapper.findUsingParamsObject(new PreparedParam());
+    }
+  }
+
+  @Test
+  public void testNoParamsCall() {
+    try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+      PreparedParamsMapper mapper = sqlSession.getMapper(PreparedParamsMapper.class);
+      Name name = mapper.findUsingParams(new PreparedParam.InnerClass());
+      Assert.assertTrue(name != null && name.getFirstName().equals("Wilma"));
+    }
+  }
 }

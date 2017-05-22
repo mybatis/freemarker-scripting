@@ -1,5 +1,5 @@
 /**
- *    Copyright 2015 the original author or authors.
+ *    Copyright 2015-2017 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -40,89 +40,90 @@ import java.util.List;
  * @author elwood
  */
 public class FreeMarkerInAnnotationsTest {
-    protected static SqlSessionFactory sqlSessionFactory;
+  protected static SqlSessionFactory sqlSessionFactory;
 
-    @BeforeClass
-    public static void setUp() throws Exception {
-        Class.forName("org.hsqldb.jdbcDriver");
+  @BeforeClass
+  public static void setUp() throws Exception {
+    Class.forName("org.hsqldb.jdbcDriver");
 
-        JDBCDataSource dataSource = new JDBCDataSource();
-        dataSource.setUrl("jdbc:hsqldb:mem:db1");
-        dataSource.setUser("sa");
-        dataSource.setPassword("");
+    JDBCDataSource dataSource = new JDBCDataSource();
+    dataSource.setUrl("jdbc:hsqldb:mem:db1");
+    dataSource.setUser("sa");
+    dataSource.setPassword("");
 
-        try (Connection conn = dataSource.getConnection()) {
-            try (Reader reader = Resources.getResourceAsReader("org/mybatis/scripting/freemarker/create-db.sql")) {
-                ScriptRunner runner = new ScriptRunner(conn);
-                runner.setLogWriter(null);
-                runner.setErrorLogWriter(null);
-                runner.runScript(reader);
-                conn.commit();
-            }
-        }
-
-        TransactionFactory transactionFactory = new JdbcTransactionFactory();
-        Environment environment = new Environment("development", transactionFactory, dataSource);
-
-        // You can call configuration.setDefaultScriptingLanguage(FreeMarkerLanguageDriver.class)
-        // after this to use FreeMarker driver by default.
-        Configuration configuration = new Configuration(environment);
-
-        configuration.addMapper(NameMapper.class);
-        sqlSessionFactory = new SqlSessionFactoryBuilder().build(configuration);
+    try (Connection conn = dataSource.getConnection()) {
+      try (Reader reader = Resources.getResourceAsReader("org/mybatis/scripting/freemarker/create-db.sql")) {
+        ScriptRunner runner = new ScriptRunner(conn);
+        runner.setLogWriter(null);
+        runner.setErrorLogWriter(null);
+        runner.runScript(reader);
+        conn.commit();
+      }
     }
 
-    @Test
-    public void testNoParamsCall() {
-        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
-            NameMapper mapper = sqlSession.getMapper(NameMapper.class);
-            List<Name> allNames = mapper.getAllNames();
-            Assert.assertTrue(allNames.size() == 5);
-        }
-    }
+    TransactionFactory transactionFactory = new JdbcTransactionFactory();
+    Environment environment = new Environment("development", transactionFactory, dataSource);
 
-    @Test
-    public void testMyBatisParamCall() {
-        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
-            NameMapper mapper = sqlSession.getMapper(NameMapper.class);
-            Name pebble = mapper.findName("Pebbles");
-            Assert.assertTrue(pebble != null && pebble.getFirstName().equals("Pebbles"));
-        }
-    }
+    // You can call configuration.setDefaultScriptingLanguage(FreeMarkerLanguageDriver.class)
+    // after this to use FreeMarker driver by default.
+    Configuration configuration = new Configuration(environment);
 
-    @Test
-    public void testInQuery() {
-        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
-            NameMapper mapper = sqlSession.getMapper(NameMapper.class);
-            List<Name> namesByIds = mapper.findNamesByIds(new ArrayList<Integer>() {{
-                                                              add(1);
-                                                              add(3);
-                                                              add(4);
-                                                          }}
-            );
-            Assert.assertTrue(namesByIds.size() == 3);
-        }
-    }
+    configuration.addMapper(NameMapper.class);
+    sqlSessionFactory = new SqlSessionFactoryBuilder().build(configuration);
+  }
 
-    @Test
-    public void testParamObject() {
-        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
-            NameMapper mapper = sqlSession.getMapper(NameMapper.class);
-            Name name = mapper.find(new NameParam(4));
-            Assert.assertTrue(name != null && name.getId() == 4);
-        }
+  @Test
+  public void testNoParamsCall() {
+    try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+      NameMapper mapper = sqlSession.getMapper(NameMapper.class);
+      List<Name> allNames = mapper.getAllNames();
+      Assert.assertTrue(allNames.size() == 5);
     }
+  }
 
-    @Test
-    public void testStringParam() {
-        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
-            NameMapper mapper = sqlSession.getMapper(NameMapper.class);
-            List<Name> stdLangResult = mapper.getNamesOddBehaviourStdLang("Pebbles");
-            List<Name> freeMarkerLangResult = mapper.getNamesOddBehaviourFreeMarkerLang("Pebbles");
-            Assert.assertTrue(stdLangResult.size() == 1);
-            Assert.assertTrue(stdLangResult.get(0).getFirstName().equals("Pebbles"));
-            Assert.assertTrue(freeMarkerLangResult.size() == 1);
-            Assert.assertTrue(freeMarkerLangResult.get(0).getFirstName().equals("Pebbles"));
-        }
+  @Test
+  public void testMyBatisParamCall() {
+    try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+      NameMapper mapper = sqlSession.getMapper(NameMapper.class);
+      Name pebble = mapper.findName("Pebbles");
+      Assert.assertTrue(pebble != null && pebble.getFirstName().equals("Pebbles"));
     }
+  }
+
+  @Test
+  public void testInQuery() {
+    try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+      NameMapper mapper = sqlSession.getMapper(NameMapper.class);
+      List<Name> namesByIds = mapper.findNamesByIds(new ArrayList<Integer>() {
+        {
+          add(1);
+          add(3);
+          add(4);
+        }
+      });
+      Assert.assertTrue(namesByIds.size() == 3);
+    }
+  }
+
+  @Test
+  public void testParamObject() {
+    try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+      NameMapper mapper = sqlSession.getMapper(NameMapper.class);
+      Name name = mapper.find(new NameParam(4));
+      Assert.assertTrue(name != null && name.getId() == 4);
+    }
+  }
+
+  @Test
+  public void testStringParam() {
+    try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+      NameMapper mapper = sqlSession.getMapper(NameMapper.class);
+      List<Name> stdLangResult = mapper.getNamesOddBehaviourStdLang("Pebbles");
+      List<Name> freeMarkerLangResult = mapper.getNamesOddBehaviourFreeMarkerLang("Pebbles");
+      Assert.assertTrue(stdLangResult.size() == 1);
+      Assert.assertTrue(stdLangResult.get(0).getFirstName().equals("Pebbles"));
+      Assert.assertTrue(freeMarkerLangResult.size() == 1);
+      Assert.assertTrue(freeMarkerLangResult.get(0).getFirstName().equals("Pebbles"));
+    }
+  }
 }

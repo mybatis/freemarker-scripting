@@ -1,5 +1,5 @@
 /**
- *    Copyright 2015 the original author or authors.
+ *    Copyright 2015-2017 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -21,17 +21,17 @@ package org.mybatis.scripting.freemarker;
  * @author elwood
  */
 public class NameParam {
-    private int id;
+  private int id;
 
-    public NameParam(int id) {
-        this.id = id;
-    }
+  public NameParam(int id) {
+    this.id = id;
+  }
 
-    public int getId() {
-        return id;
-    }
+  public int getId() {
+    return id;
+  }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+  public void setId(int id) {
+    this.id = id;
+  }
 }
