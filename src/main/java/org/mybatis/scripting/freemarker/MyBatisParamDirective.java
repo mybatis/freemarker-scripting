@@ -17,7 +17,16 @@ package org.mybatis.scripting.freemarker;
 
 import freemarker.core.Environment;
 import freemarker.ext.util.WrapperTemplateModel;
-import freemarker.template.*;
+import freemarker.template.DefaultListAdapter;
+import freemarker.template.SimpleScalar;
+import freemarker.template.TemplateBooleanModel;
+import freemarker.template.TemplateDateModel;
+import freemarker.template.TemplateDirectiveBody;
+import freemarker.template.TemplateDirectiveModel;
+import freemarker.template.TemplateException;
+import freemarker.template.TemplateModel;
+import freemarker.template.TemplateNumberModel;
+import freemarker.template.TemplateScalarModel;
 
 import java.io.IOException;
 import java.util.List;
@@ -33,8 +42,10 @@ import java.util.Map;
  *     &lt;@p name="paramName"/&gt;
  * </pre></blockquote>
  *
+ * <p>
  * Also directive supports `value` attribute. If it is specified, param will take passed value
  * and create the corresponding #{}-parameter. This is useful in loops:
+ * </p>
  *
  * <blockquote><pre>
  *     &lt;#list ids as id&gt;
@@ -43,13 +54,17 @@ import java.util.Map;
  *     &lt;/#list&gt;
  * </pre></blockquote>
  *
+ * <p>
  * will be translated into
+ * </p>
  *
  * <blockquote><pre>
  *     #{_p0},#{_p1},#{_p2}
  * </pre></blockquote>
  *
+ * <p>
  * And MyBatis engine will convert it to `?`-params finally.
+ * </p>
  *
  * @author elwood
  */

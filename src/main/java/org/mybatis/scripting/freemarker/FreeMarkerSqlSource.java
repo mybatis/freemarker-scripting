@@ -17,10 +17,6 @@ package org.mybatis.scripting.freemarker;
 
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
-import org.apache.ibatis.builder.SqlSourceBuilder;
-import org.apache.ibatis.mapping.BoundSql;
-import org.apache.ibatis.mapping.SqlSource;
-import org.apache.ibatis.session.Configuration;
 
 import java.io.CharArrayWriter;
 import java.io.IOException;
@@ -28,9 +24,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.ibatis.builder.SqlSourceBuilder;
+import org.apache.ibatis.mapping.BoundSql;
+import org.apache.ibatis.mapping.SqlSource;
+import org.apache.ibatis.session.Configuration;
+
 /**
  * Applies provided parameter(s) to FreeMarker template.
- * Then passes the result into default MyBatis engine (and it finally replaces #{}-params to '?'-params).
+ * Then passes the result into default MyBatis engine
+ * (and it finally replaces #{}-params to '?'-params).
  * So, FreeMarker is used as preprocessor for MyBatis engine.
  *
  * @author elwood
@@ -39,7 +41,7 @@ public class FreeMarkerSqlSource implements SqlSource {
   private final Template template;
   private final Configuration configuration;
 
-  public final static String GENERATED_PARAMS_KEY = "__GENERATED__";
+  public static final String GENERATED_PARAMS_KEY = "__GENERATED__";
 
   public FreeMarkerSqlSource(Template template, Configuration configuration) {
     this.template = template;
@@ -48,7 +50,9 @@ public class FreeMarkerSqlSource implements SqlSource {
 
   /**
    * Populates additional parameters to data context.
-   * Data context can be {@link java.util.Map} or {@link org.mybatis.scripting.freemarker.ParamObjectAdapter} instance.
+   * Data context can be {@link java.util.Map}
+   * or {@link org.mybatis.scripting.freemarker.ParamObjectAdapter}
+   * instance.
    */
   protected Object preProcessDataContext(Object dataContext, boolean isMap) {
     if (isMap) {
@@ -65,7 +69,7 @@ public class FreeMarkerSqlSource implements SqlSource {
     // Add to passed parameterObject our predefined directive - MyBatisParamDirective
     // It will be available as "p" inside templates
     Object dataContext;
-    ArrayList generatedParams = new ArrayList();
+    ArrayList generatedParams = new ArrayList<>();
     if (parameterObject != null) {
       if (parameterObject instanceof Map) {
         HashMap<String, Object> map = new HashMap<>((Map<String, Object>) parameterObject);
@@ -88,14 +92,15 @@ public class FreeMarkerSqlSource implements SqlSource {
       throw new RuntimeException(e);
     }
 
-    // We got SQL ready for MyBatis here. This SQL contains params declarations like "#{param}",
+    // We got SQL ready for MyBatis here. This SQL contains
+    // params declarations like "#{param}",
     // they will be replaced to '?' by MyBatis engine further
     String sql = writer.toString();
 
     if (!generatedParams.isEmpty()) {
       if (!(parameterObject instanceof Map)) {
         throw new UnsupportedOperationException("Auto-generated prepared statements parameters"
-            + " are not available if using parameters object. Use @Param-annotated parameters instead.");
+            + " are not available if using parameters object. Use @Param-annotated parameters" + " instead.");
       }
 
       Map<String, Object> parametersMap = (Map<String, Object>) parameterObject;

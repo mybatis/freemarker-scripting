@@ -89,6 +89,7 @@ public class FreeMarkerInXmlTest {
     try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
       HashMap<String, Object> paramsMap = new HashMap<>();
       paramsMap.put("ids", new ArrayList<Integer>() {
+        private static final long serialVersionUID = 1L;
         {
           add(1);
           add(3);
