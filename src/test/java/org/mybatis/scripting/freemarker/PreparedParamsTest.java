@@ -78,6 +78,7 @@ public class PreparedParamsTest {
     try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
       PreparedParamsMapper mapper = sqlSession.getMapper(PreparedParamsMapper.class);
       List<Name> names = mapper.findByNames(new ArrayList<String>() {
+        private static final long serialVersionUID = 1L;
         {
           add("Pebbles");
           add("Barney");

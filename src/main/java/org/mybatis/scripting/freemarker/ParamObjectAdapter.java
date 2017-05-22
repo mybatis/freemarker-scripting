@@ -17,7 +17,10 @@ package org.mybatis.scripting.freemarker;
 
 import freemarker.ext.beans.BeanModel;
 import freemarker.ext.beans.BeansWrapperBuilder;
-import freemarker.template.*;
+import freemarker.template.Configuration;
+import freemarker.template.TemplateHashModel;
+import freemarker.template.TemplateModel;
+import freemarker.template.TemplateModelException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,8 +47,9 @@ public class ParamObjectAdapter implements TemplateHashModel {
    * custom objects and directives into dataContext.
    */
   public void putAdditionalParam(String key, TemplateModel value) {
-    if (additionalParams == null)
+    if (additionalParams == null) {
       additionalParams = new HashMap<>();
+    }
     additionalParams.put(key, value);
   }
 

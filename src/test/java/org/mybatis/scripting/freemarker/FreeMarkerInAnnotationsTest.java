@@ -95,6 +95,7 @@ public class FreeMarkerInAnnotationsTest {
     try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
       NameMapper mapper = sqlSession.getMapper(NameMapper.class);
       List<Name> namesByIds = mapper.findNamesByIds(new ArrayList<Integer>() {
+        private static final long serialVersionUID = 1L;
         {
           add(1);
           add(3);
