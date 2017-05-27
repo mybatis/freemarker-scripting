@@ -54,7 +54,7 @@
     <dependency>
         <groupId>org.mybatis.scripting</groupId>
         <artifactId>mybatis-freemarker</artifactId>
-        <version>1.1</version>
+        <version>${project.version}</version>
     </dependency>
 </dependencies>]]></source>
 
@@ -66,7 +66,7 @@ repositories {
 }
 
 dependencies {
-    compile("org.mybatis.scripting:mybatis-freemarker:1.1")
+    compile("org.mybatis.scripting:mybatis-freemarker:${project.version}")
 }]]></source>
 
     </section>
@@ -80,7 +80,7 @@ dependencies {
 <dependency>
   <groupId>org.mybatis.scripting</groupId>
   <artifactId>mybatis-freemarker</artifactId>
-  <version>1.2-SNAPSHOT</version>
+  <version>${project.version}</version>
 </dependency>]]></source>
         </li>
       </ul>
