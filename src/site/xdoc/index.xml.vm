@@ -16,6 +16,8 @@
        limitations under the License.
 
 -->
+#set( $D = '$' )
+#set( $N = '#if' )
 <document xmlns="http://maven.apache.org/XDOC/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
   <properties>
@@ -126,7 +128,7 @@ dependencies {
       <p>Just write your queries using FreeMarker syntax:</p>
       <source><![CDATA[
 @Lang(FreeMarkerLanguageDriver.class)
-@Select("select * from names where id in (${ids?join(',')})")
+@Select("select * from names where id in (${D}{ids?join(',')})")
 List<Name> findNamesByIds(@Param("ids") List<Integer> ids);]]></source>
       <p>If any whitespace found inside <code>@Select</code> text, it is interpreted as inline script, not template name. It is convenient to avoid creating templates when script is really small. If you have a large SQL script, you can place it in distinct template and write next code:</p>
       <source><![CDATA[
@@ -143,8 +145,8 @@ where firstName = <@p name="n"/>]]></source>
         This markup further will be passed into MyBatis engine, and it will replace this to <code>?</code>-parameter.
         You can't write <code>#{paramName}</code> directly, because FreeMarker supports this syntax natively
         (alghough it is deprecated). So, to get <code>?</code>-parameters to prepared statements works, you need
-        to use <code>${r"#{paramName}"}</code> verbose syntax, or this directive. By the way, in XML
-        files <code>${r"#{paramName}"}</code> is more preferrable because you don't need wrap it using
+        to use <code>${D}{r"#{paramName}"}</code> verbose syntax, or this directive. By the way, in XML
+        files <code>${D}{r"#{paramName}"}</code> is more preferrable because you don't need wrap it using
         <code>CDATA</code> statements. In annotations and in external templates <code>&lt;@p/&gt;</code>
         directive is more neat.</p>
     </section>
@@ -153,20 +155,20 @@ where firstName = <@p name="n"/>]]></source>
       <p>As in annotations, you can write inline scripts or template names.</p>
       <source><![CDATA[
 <!-- This is handled by FreeMarker too, because it is included into select nodes AS IS -->
-<sql id="cols">id, ${r"firstName"}, lastName</sql>
+<sql id="cols">id, ${D}{r"firstName"}, lastName</sql>
 
 <select id="findName" resultType="org.mybatis.scripting.freemarker.Name" lang="freemarker">
     findName.ftl
 </select>
 
 <select id="findNamesByIds" resultType="org.mybatis.scripting.freemarker.Name" lang="freemarker">
-    select <include refid="cols"/> from names where id in (${ids?join(',')})
+    select <include refid="cols"/> from names where id in (${D}{ids?join(',')})
 </select>
 
 <!-- It is not very convenient - to use CDATA blocks. Better is to create external template
-    or use more verbose syntax: ${r"#{id}"}. -->
+    or use more verbose syntax: ${D}{r"#{id}"}. -->
 <select id="find" resultType="org.mybatis.scripting.freemarker.Name" lang="freemarker">
-    select * from names where id = <![CDATA[ <@p name='id'/>]]>]]&gt;<![CDATA[ and id = ${id}
+    select * from names where id = <![CDATA[ <@p name='id'/>]]>]]&gt;<![CDATA[ and id = ${D}{id}
 </select>]]></source>
     </section>
 
@@ -185,7 +187,7 @@ where firstName = <@p name="n"/>]]></source>
 select * from names where firstName in (
     <#list ids as id>
         <@p value=id/>
-        <#if id_has_next>,</#if>
+        <${N} id_has_next>,</${N}>
     </#list>
 )]]></source>
           This markup will be translated to
