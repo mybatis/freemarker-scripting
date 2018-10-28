@@ -1,5 +1,5 @@
 /**
- *    Copyright 2015-2017 the original author or authors.
+ *    Copyright 2015-2018 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -25,9 +25,9 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.ibatis.transaction.TransactionFactory;
 import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
 import org.hsqldb.jdbc.JDBCDataSource;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.io.Reader;
 import java.sql.Connection;
@@ -42,7 +42,7 @@ import java.util.List;
 public class FreeMarkerInAnnotationsTest {
   protected static SqlSessionFactory sqlSessionFactory;
 
-  @BeforeClass
+  @BeforeAll
   public static void setUp() throws Exception {
     Class.forName("org.hsqldb.jdbcDriver");
 
@@ -77,7 +77,7 @@ public class FreeMarkerInAnnotationsTest {
     try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
       NameMapper mapper = sqlSession.getMapper(NameMapper.class);
       List<Name> allNames = mapper.getAllNames();
-      Assert.assertTrue(allNames.size() == 5);
+      Assertions.assertTrue(allNames.size() == 5);
     }
   }
 
@@ -86,7 +86,7 @@ public class FreeMarkerInAnnotationsTest {
     try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
       NameMapper mapper = sqlSession.getMapper(NameMapper.class);
       Name pebble = mapper.findName("Pebbles");
-      Assert.assertTrue(pebble != null && pebble.getFirstName().equals("Pebbles"));
+      Assertions.assertTrue(pebble != null && pebble.getFirstName().equals("Pebbles"));
     }
   }
 
@@ -102,7 +102,7 @@ public class FreeMarkerInAnnotationsTest {
           add(4);
         }
       });
-      Assert.assertTrue(namesByIds.size() == 3);
+      Assertions.assertTrue(namesByIds.size() == 3);
     }
   }
 
@@ -111,7 +111,7 @@ public class FreeMarkerInAnnotationsTest {
     try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
       NameMapper mapper = sqlSession.getMapper(NameMapper.class);
       Name name = mapper.find(new NameParam(4));
-      Assert.assertTrue(name != null && name.getId() == 4);
+      Assertions.assertTrue(name != null && name.getId() == 4);
     }
   }
 
@@ -121,10 +121,10 @@ public class FreeMarkerInAnnotationsTest {
       NameMapper mapper = sqlSession.getMapper(NameMapper.class);
       List<Name> stdLangResult = mapper.getNamesOddBehaviourStdLang("Pebbles");
       List<Name> freeMarkerLangResult = mapper.getNamesOddBehaviourFreeMarkerLang("Pebbles");
-      Assert.assertTrue(stdLangResult.size() == 1);
-      Assert.assertTrue(stdLangResult.get(0).getFirstName().equals("Pebbles"));
-      Assert.assertTrue(freeMarkerLangResult.size() == 1);
-      Assert.assertTrue(freeMarkerLangResult.get(0).getFirstName().equals("Pebbles"));
+      Assertions.assertTrue(stdLangResult.size() == 1);
+      Assertions.assertTrue(stdLangResult.get(0).getFirstName().equals("Pebbles"));
+      Assertions.assertTrue(freeMarkerLangResult.size() == 1);
+      Assertions.assertTrue(freeMarkerLangResult.get(0).getFirstName().equals("Pebbles"));
     }
   }
 }
