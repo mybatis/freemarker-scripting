@@ -1,5 +1,5 @@
 /**
- *    Copyright 2015-2017 the original author or authors.
+ *    Copyright 2015-2018 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -20,9 +20,9 @@ import org.apache.ibatis.jdbc.ScriptRunner;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.io.Reader;
 import java.sql.Connection;
@@ -39,7 +39,7 @@ import java.util.List;
 public class FreeMarkerInXmlTest {
   protected static SqlSessionFactory sqlSessionFactory;
 
-  @BeforeClass
+  @BeforeAll
   public static void setUp() throws Exception {
     Connection conn = null;
 
@@ -70,7 +70,7 @@ public class FreeMarkerInXmlTest {
   public void testNoParamsCall() {
     try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
       List<Name> allNames = sqlSession.selectList("getAllNames");
-      Assert.assertTrue(allNames.size() == 5);
+      Assertions.assertTrue(allNames.size() == 5);
     }
   }
 
@@ -80,7 +80,7 @@ public class FreeMarkerInXmlTest {
       HashMap<String, Object> paramsMap = new HashMap<>();
       paramsMap.put("name", "Pebbles");
       Name pebble = sqlSession.selectOne("findName", paramsMap);
-      Assert.assertTrue(pebble != null && pebble.getFirstName().equals("Pebbles"));
+      Assertions.assertTrue(pebble != null && pebble.getFirstName().equals("Pebbles"));
     }
   }
 
@@ -97,7 +97,7 @@ public class FreeMarkerInXmlTest {
         }
       });
       List<Name> namesByIds = sqlSession.selectList("findNamesByIds", paramsMap);
-      Assert.assertTrue(namesByIds.size() == 3);
+      Assertions.assertTrue(namesByIds.size() == 3);
     }
   }
 
@@ -105,7 +105,7 @@ public class FreeMarkerInXmlTest {
   public void testParamObject() {
     try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
       Name name = sqlSession.selectOne("find", new NameParam(4));
-      Assert.assertTrue(name != null && name.getId() == 4);
+      Assertions.assertTrue(name != null && name.getId() == 4);
     }
   }
 
@@ -114,10 +114,10 @@ public class FreeMarkerInXmlTest {
     try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
       List<Name> stdLangResult = sqlSession.selectList("getNamesOddBehaviourStdLang", "Pebbles");
       List<Name> freeMarkerLangResult = sqlSession.selectList("getNamesOddBehaviourFreeMarkerLang", "Pebbles");
-      Assert.assertTrue(stdLangResult.size() == 1);
-      Assert.assertTrue(stdLangResult.get(0).getFirstName().equals("Pebbles"));
-      Assert.assertTrue(freeMarkerLangResult.size() == 1);
-      Assert.assertTrue(freeMarkerLangResult.get(0).getFirstName().equals("Pebbles"));
+      Assertions.assertTrue(stdLangResult.size() == 1);
+      Assertions.assertTrue(stdLangResult.get(0).getFirstName().equals("Pebbles"));
+      Assertions.assertTrue(freeMarkerLangResult.size() == 1);
+      Assertions.assertTrue(freeMarkerLangResult.get(0).getFirstName().equals("Pebbles"));
     }
   }
 }

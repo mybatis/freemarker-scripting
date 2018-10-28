@@ -1,5 +1,5 @@
 /**
- *    Copyright 2015-2017 the original author or authors.
+ *    Copyright 2015-2018 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -26,8 +26,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * Important: if you are using some object that already has property "p", then
- * MyBatisParamDirective will be unavailable from script.
+ * Important: if you are using some object that already has property "p", then MyBatisParamDirective will be unavailable
+ * from script.
  *
  * @author elwood
  */
@@ -42,9 +42,8 @@ public class ParamObjectAdapter implements TemplateHashModel {
   }
 
   /**
-   * Puts the additional parameter into adapter, it will be available if no
-   * existing property with same key exists. For example, it is suitable to add
-   * custom objects and directives into dataContext.
+   * Puts the additional parameter into adapter, it will be available if no existing property with same key exists. For
+   * example, it is suitable to add custom objects and directives into dataContext.
    */
   public void putAdditionalParam(String key, TemplateModel value) {
     if (additionalParams == null) {

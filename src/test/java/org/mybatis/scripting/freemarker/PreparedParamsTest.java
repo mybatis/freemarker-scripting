@@ -1,5 +1,5 @@
 /**
- *    Copyright 2015-2017 the original author or authors.
+ *    Copyright 2015-2018 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -26,9 +26,9 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.ibatis.transaction.TransactionFactory;
 import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
 import org.hsqldb.jdbc.JDBCDataSource;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.io.Reader;
 import java.sql.Connection;
@@ -43,7 +43,7 @@ import java.util.List;
 public class PreparedParamsTest {
   protected static SqlSessionFactory sqlSessionFactory;
 
-  @BeforeClass
+  @BeforeAll
   public static void setUp() throws Exception {
     Class.forName("org.hsqldb.jdbcDriver");
 
@@ -85,18 +85,20 @@ public class PreparedParamsTest {
           add("Betty");
         }
       });
-      Assert.assertTrue(names.size() == 3);
+      Assertions.assertTrue(names.size() == 3);
     }
   }
 
   /**
    * PersistenceException will be thrown with cause of UnsupportedOperationException
    */
-  @Test(expected = PersistenceException.class)
+  @Test
   public void testParamsObjectCall() {
     try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
-      PreparedParamsMapper mapper = sqlSession.getMapper(PreparedParamsMapper.class);
-      mapper.findUsingParamsObject(new PreparedParam());
+      final PreparedParamsMapper mapper = sqlSession.getMapper(PreparedParamsMapper.class);
+      Assertions.assertThrows(PersistenceException.class, () -> {
+        mapper.findUsingParamsObject(new PreparedParam());
+      });
     }
   }
 
@@ -105,7 +107,7 @@ public class PreparedParamsTest {
     try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
       PreparedParamsMapper mapper = sqlSession.getMapper(PreparedParamsMapper.class);
       Name name = mapper.findUsingParams(new PreparedParam.InnerClass());
-      Assert.assertTrue(name != null && name.getFirstName().equals("Wilma"));
+      Assertions.assertTrue(name != null && name.getFirstName().equals("Wilma"));
     }
   }
 }

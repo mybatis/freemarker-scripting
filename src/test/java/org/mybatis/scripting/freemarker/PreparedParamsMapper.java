@@ -1,5 +1,5 @@
 /**
- *    Copyright 2015-2017 the original author or authors.
+ *    Copyright 2015-2018 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -22,8 +22,7 @@ import org.apache.ibatis.annotations.Select;
 import java.util.List;
 
 /**
- * This mapper demonstrates the usage of auto-generating prepared statement
- * parameters instead of usual inline strategy.
+ * This mapper demonstrates the usage of auto-generating prepared statement parameters instead of usual inline strategy.
  *
  * @author elwood
  */
@@ -33,9 +32,8 @@ public interface PreparedParamsMapper {
   List<Name> findByNames(@Param("ids") List<String> ids);
 
   /**
-   * This is doesn't work - because params objects are unsupported when using
-   * auto-generated prepared parameters (it is impossible to add parameters
-   * to MyBatis engine). This call will throw exception.
+   * This is doesn't work - because params objects are unsupported when using auto-generated prepared parameters (it is
+   * impossible to add parameters to MyBatis engine). This call will throw exception.
    */
   @Lang(FreeMarkerLanguageDriver.class)
   @Select("prepared.ftl")

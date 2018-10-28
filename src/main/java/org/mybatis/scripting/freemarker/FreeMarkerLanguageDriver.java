@@ -1,5 +1,5 @@
 /**
- *    Copyright 2015-2017 the original author or authors.
+ *    Copyright 2015-2018 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -35,9 +35,8 @@ import org.apache.ibatis.scripting.defaults.DefaultParameterHandler;
 import org.apache.ibatis.session.Configuration;
 
 /**
- * Adds FreeMarker templates support to scripting in MyBatis.
- * If you want to change or extend template loader configuration, use can
- * inherit from this class and override {@link #createFreeMarkerConfiguration()} method.
+ * Adds FreeMarker templates support to scripting in MyBatis. If you want to change or extend template loader
+ * configuration, use can inherit from this class and override {@link #createFreeMarkerConfiguration()} method.
  *
  * @author elwood
  */
@@ -73,10 +72,8 @@ public class FreeMarkerLanguageDriver implements LanguageDriver {
   }
 
   /**
-   * Creates the {@link freemarker.template.Configuration} instance
-   * and sets it up. If you want to change it (set another props, for
-   * example), you can override it in inherited class and use your own
-   * class in @Lang directive.
+   * Creates the {@link freemarker.template.Configuration} instance and sets it up. If you want to change it (set
+   * another props, for example), you can override it in inherited class and use your own class in @Lang directive.
    */
   protected freemarker.template.Configuration createFreeMarkerConfiguration() {
     freemarker.template.Configuration cfg = new freemarker.template.Configuration(
@@ -95,13 +92,15 @@ public class FreeMarkerLanguageDriver implements LanguageDriver {
   }
 
   /**
-   * Creates a {@link ParameterHandler} that passes the actual parameters
-   * to the the JDBC statement.
+   * Creates a {@link ParameterHandler} that passes the actual parameters to the the JDBC statement.
    *
    * @see DefaultParameterHandler
-   * @param mappedStatement The mapped statement that is being executed
-   * @param parameterObject The input parameter object (can be null)
-   * @param boundSql The resulting SQL once the dynamic language has been executed.
+   * @param mappedStatement
+   *          The mapped statement that is being executed
+   * @param parameterObject
+   *          The input parameter object (can be null)
+   * @param boundSql
+   *          The resulting SQL once the dynamic language has been executed.
    */
   @Override
   public ParameterHandler createParameterHandler(MappedStatement mappedStatement, Object parameterObject,
@@ -111,14 +110,16 @@ public class FreeMarkerLanguageDriver implements LanguageDriver {
   }
 
   /**
-   * Creates an {@link SqlSource} that will hold the statement read
-   * from a mapper xml file. It is called during startup, when the
-   * mapped statement is read from a class or an xml file.
+   * Creates an {@link SqlSource} that will hold the statement read from a mapper xml file. It is called during startup,
+   * when the mapped statement is read from a class or an xml file.
    *
-   * @param configuration The MyBatis configuration
-   * @param script XNode parsed from a XML file
-   * @param parameterType input parameter type got from a mapper method
-   *        or specified in the parameterType xml attribute. Can be null.
+   * @param configuration
+   *          The MyBatis configuration
+   * @param script
+   *          XNode parsed from a XML file
+   * @param parameterType
+   *          input parameter type got from a mapper method or specified in the parameterType xml attribute. Can be
+   *          null.
    */
   @Override
   public SqlSource createSqlSource(Configuration configuration, XNode script, Class<?> parameterType) {
@@ -126,14 +127,16 @@ public class FreeMarkerLanguageDriver implements LanguageDriver {
   }
 
   /**
-   * Creates an {@link SqlSource} that will hold the statement read
-   * from an annotation. It is called during startup, when the mapped
-   * statement is read from a class or an xml file.
+   * Creates an {@link SqlSource} that will hold the statement read from an annotation. It is called during startup,
+   * when the mapped statement is read from a class or an xml file.
    *
-   * @param configuration The MyBatis configuration
-   * @param script The content of the annotation
-   * @param parameterType input parameter type got from a mapper method
-   *        or specified in the parameterType xml attribute. Can be null.
+   * @param configuration
+   *          The MyBatis configuration
+   * @param script
+   *          The content of the annotation
+   * @param parameterType
+   *          input parameter type got from a mapper method or specified in the parameterType xml attribute. Can be
+   *          null.
    */
   @Override
   public SqlSource createSqlSource(Configuration configuration, String script, Class<?> parameterType) {

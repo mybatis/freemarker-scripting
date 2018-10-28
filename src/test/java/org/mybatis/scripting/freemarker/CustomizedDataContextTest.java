@@ -1,5 +1,5 @@
 /**
- *    Copyright 2015-2017 the original author or authors.
+ *    Copyright 2015-2018 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -28,9 +28,9 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.ibatis.transaction.TransactionFactory;
 import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
 import org.hsqldb.jdbc.JDBCDataSource;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.io.Reader;
 import java.sql.Connection;
@@ -43,7 +43,7 @@ import java.util.Map;
 public class CustomizedDataContextTest {
   protected static SqlSessionFactory sqlSessionFactory;
 
-  @BeforeClass
+  @BeforeAll
   public static void setUp() throws Exception {
     Class.forName("org.hsqldb.jdbcDriver");
 
@@ -102,7 +102,7 @@ public class CustomizedDataContextTest {
     try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
       CustomizedDataContextMapper mapper = sqlSession.getMapper(CustomizedDataContextMapper.class);
       List<Name> names = mapper.find();
-      Assert.assertTrue(names.size() == 1);
+      Assertions.assertTrue(names.size() == 1);
     }
   }
 }
