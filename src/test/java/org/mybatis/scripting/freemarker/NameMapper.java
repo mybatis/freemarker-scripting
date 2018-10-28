@@ -1,5 +1,5 @@
 /**
- *    Copyright 2015-2017 the original author or authors.
+ *    Copyright 2015-2018 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -42,18 +42,17 @@ public interface NameMapper {
   Name findName(@Param("name") String name);
 
   /**
-   * If any whitespace found inside @Select text, it is interpreted as inline script, not template name.
-   * It is convenient to avoid creating templates when script is really small.
+   * If any whitespace found inside @Select text, it is interpreted as inline script, not template name. It is
+   * convenient to avoid creating templates when script is really small.
    */
   @Lang(FreeMarkerLanguageDriver.class)
   @Select("select * from names where id in (${ids?join(',')})")
   List<Name> findNamesByIds(@Param("ids") List<Integer> ids);
 
   /**
-   * There are no @Param annotation on argument. This means NameParam instance
-   * will be passed into driver as is, not as Map entry. So, we need to support this case.
-   * Because in driver we need to add some another properties into template model,
-   * and NameParam is not Map, we are need to wrap passed parameter object into
+   * There are no @Param annotation on argument. This means NameParam instance will be passed into driver as is, not as
+   * Map entry. So, we need to support this case. Because in driver we need to add some another properties into template
+   * model, and NameParam is not Map, we are need to wrap passed parameter object into
    * {@link org.mybatis.scripting.freemarker.ParamObjectAdapter} before processing template.
    */
   @Lang(FreeMarkerLanguageDriver.class)
@@ -61,9 +60,9 @@ public interface NameMapper {
   Name find(NameParam nameParam);
 
   /**
-   * This query is to demonstrate MyBatis odd behaviour when using String as parameter
-   * and can use properties that not exist. Both props will be use provided `name` parameter value.
-   * Goal is to write FreeMarker lang plugin to support this behaviour too (although it is confusing one).
+   * This query is to demonstrate MyBatis odd behaviour when using String as parameter and can use properties that not
+   * exist. Both props will be use provided `name` parameter value. Goal is to write FreeMarker lang plugin to support
+   * this behaviour too (although it is confusing one).
    */
   @Select("select * from names" + " where firstName = #{noSuchPropertyOnString}"
       + " or firstName = #{oneMoreUnexistingProperty}")

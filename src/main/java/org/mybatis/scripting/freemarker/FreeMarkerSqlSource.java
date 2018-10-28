@@ -1,5 +1,5 @@
 /**
- *    Copyright 2015-2017 the original author or authors.
+ *    Copyright 2015-2018 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -30,10 +30,8 @@ import org.apache.ibatis.mapping.SqlSource;
 import org.apache.ibatis.session.Configuration;
 
 /**
- * Applies provided parameter(s) to FreeMarker template.
- * Then passes the result into default MyBatis engine
- * (and it finally replaces #{}-params to '?'-params).
- * So, FreeMarker is used as preprocessor for MyBatis engine.
+ * Applies provided parameter(s) to FreeMarker template. Then passes the result into default MyBatis engine (and it
+ * finally replaces #{}-params to '?'-params). So, FreeMarker is used as preprocessor for MyBatis engine.
  *
  * @author elwood
  */
@@ -49,10 +47,8 @@ public class FreeMarkerSqlSource implements SqlSource {
   }
 
   /**
-   * Populates additional parameters to data context.
-   * Data context can be {@link java.util.Map}
-   * or {@link org.mybatis.scripting.freemarker.ParamObjectAdapter}
-   * instance.
+   * Populates additional parameters to data context. Data context can be {@link java.util.Map} or
+   * {@link org.mybatis.scripting.freemarker.ParamObjectAdapter} instance.
    */
   protected Object preProcessDataContext(Object dataContext, boolean isMap) {
     if (isMap) {
