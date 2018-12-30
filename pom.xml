@@ -76,6 +76,7 @@
 
   <properties>
     <clirr.comparisonVersion>1.1.2</clirr.comparisonVersion>
+    <module.name>org.mybatis.scripting.freemarker</module.name>
   </properties>
 
   <dependencies>
