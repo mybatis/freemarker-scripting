@@ -1,5 +1,5 @@
 /**
- *    Copyright 2015-2018 the original author or authors.
+ *    Copyright 2015-2019 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import freemarker.template.Version;
 import org.apache.ibatis.builder.SqlSourceBuilder;
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.SqlSource;
@@ -38,12 +39,14 @@ import org.apache.ibatis.session.Configuration;
 public class FreeMarkerSqlSource implements SqlSource {
   private final Template template;
   private final Configuration configuration;
+  private final Version incompatibleImprovementsVersion;
 
   public static final String GENERATED_PARAMS_KEY = "__GENERATED__";
 
-  public FreeMarkerSqlSource(Template template, Configuration configuration) {
+  public FreeMarkerSqlSource(Template template, Configuration configuration, Version incompatibleImprovementsVersion) {
     this.template = template;
     this.configuration = configuration;
+    this.incompatibleImprovementsVersion = incompatibleImprovementsVersion;
   }
 
   /**
@@ -72,7 +75,8 @@ public class FreeMarkerSqlSource implements SqlSource {
         map.put(GENERATED_PARAMS_KEY, generatedParams);
         dataContext = preProcessDataContext(map, true);
       } else {
-        ParamObjectAdapter adapter = new ParamObjectAdapter(parameterObject, generatedParams);
+        ParamObjectAdapter adapter = new ParamObjectAdapter(parameterObject, generatedParams,
+            incompatibleImprovementsVersion);
         dataContext = preProcessDataContext(adapter, false);
       }
     } else {

@@ -138,7 +138,7 @@ public class FreeMarkerLanguageDriver implements LanguageDriver {
   }
 
   protected SqlSource createSqlSource(Template template, Configuration configuration) {
-    return new FreeMarkerSqlSource(template, configuration);
+    return new FreeMarkerSqlSource(template, configuration, driverConfig.getIncompatibleImprovementsVersion());
   }
 
   private SqlSource createSqlSource(Configuration configuration, String scriptText) {

@@ -1,5 +1,5 @@
 /**
- *    Copyright 2015-2018 the original author or authors.
+ *    Copyright 2015-2019 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ package org.mybatis.scripting.freemarker;
 
 import freemarker.template.SimpleScalar;
 import freemarker.template.Template;
+import freemarker.template.Version;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.jdbc.ScriptRunner;
 import org.apache.ibatis.mapping.Environment;
@@ -74,8 +75,8 @@ public class CustomizedDataContextTest {
   }
 
   public static class CustomSqlSource extends FreeMarkerSqlSource {
-    public CustomSqlSource(Template template, Configuration configuration) {
-      super(template, configuration);
+    public CustomSqlSource(Template template, Configuration configuration, Version version) {
+      super(template, configuration, version);
     }
 
     @Override
@@ -93,7 +94,7 @@ public class CustomizedDataContextTest {
   public static class CustomFreeMarkerLanguageDriver extends FreeMarkerLanguageDriver {
     @Override
     protected SqlSource createSqlSource(Template template, Configuration configuration) {
-      return new CustomSqlSource(template, configuration);
+      return new CustomSqlSource(template, configuration, driverConfig.getIncompatibleImprovementsVersion());
     }
   }
 

@@ -1,5 +1,5 @@
 /**
- *    Copyright 2015-2018 the original author or authors.
+ *    Copyright 2015-2019 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -17,10 +17,10 @@ package org.mybatis.scripting.freemarker;
 
 import freemarker.ext.beans.BeanModel;
 import freemarker.ext.beans.BeansWrapperBuilder;
-import freemarker.template.Configuration;
 import freemarker.template.TemplateHashModel;
 import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
+import freemarker.template.Version;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,8 +36,8 @@ public class ParamObjectAdapter implements TemplateHashModel {
   private final ArrayList generatedParams;
   private HashMap<String, TemplateModel> additionalParams;
 
-  public ParamObjectAdapter(Object paramObject, ArrayList generatedParams) {
-    beanModel = new BeanModel(paramObject, new BeansWrapperBuilder(Configuration.VERSION_2_3_22).build());
+  public ParamObjectAdapter(Object paramObject, ArrayList generatedParams, Version incompatibleImprovementsVersion) {
+    beanModel = new BeanModel(paramObject, new BeansWrapperBuilder(incompatibleImprovementsVersion).build());
     this.generatedParams = generatedParams;
   }
 
