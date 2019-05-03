@@ -84,7 +84,7 @@
     <signature.version>1.0</signature.version>
 
     <clirr.comparisonVersion>1.1.2</clirr.comparisonVersion>
-    <surefire.version>3.0.0-M3</surefire.version>
+    <surefire.version>2.21.0</surefire.version>
   </properties>
 
   <dependencies>
