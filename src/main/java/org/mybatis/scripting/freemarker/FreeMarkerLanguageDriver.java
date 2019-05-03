@@ -1,5 +1,5 @@
 /**
- *    Copyright 2015-2018 the original author or authors.
+ *    Copyright 2015-2019 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -20,10 +20,7 @@ import freemarker.cache.TemplateLoader;
 import freemarker.template.Template;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.StringReader;
-import java.nio.charset.StandardCharsets;
-import java.util.Properties;
 
 import org.apache.ibatis.executor.parameter.ParameterHandler;
 import org.apache.ibatis.mapping.BoundSql;
@@ -39,36 +36,32 @@ import org.apache.ibatis.session.Configuration;
  * configuration, use can inherit from this class and override {@link #createFreeMarkerConfiguration()} method.
  *
  * @author elwood
+ * @author Kazuki Shimizu
  */
 public class FreeMarkerLanguageDriver implements LanguageDriver {
+
+  protected final FreeMarkerLanguageDriverConfig driverConfig;
+  protected final freemarker.template.Configuration freemarkerCfg;
+
   /**
-   * Base package for all FreeMarker templates.
+   * Constructor.
+   *
+   * @see FreeMarkerLanguageDriverConfig#newInstance()
    */
-  public static final String basePackage;
-
-  public static final String DEFAULT_BASE_PACKAGE = "";
-
-  static {
-    Properties properties = new Properties();
-    try {
-      try (InputStream stream = FreeMarkerLanguageDriver.class.getClassLoader()
-          .getResourceAsStream("mybatis-freemarker.properties")) {
-        if (stream != null) {
-          properties.load(stream);
-          basePackage = properties.getProperty("basePackage", DEFAULT_BASE_PACKAGE);
-        } else {
-          basePackage = DEFAULT_BASE_PACKAGE;
-        }
-      }
-    } catch (IOException e) {
-      throw new IllegalStateException(e);
-    }
+  public FreeMarkerLanguageDriver() {
+    this(FreeMarkerLanguageDriverConfig.newInstance());
   }
 
-  protected freemarker.template.Configuration freemarkerCfg;
-
-  public FreeMarkerLanguageDriver() {
-    freemarkerCfg = createFreeMarkerConfiguration();
+  /**
+   * Constructor.
+   *
+   * @param driverConfig
+   *          a language driver configuration
+   * @since 1.2.0
+   */
+  public FreeMarkerLanguageDriver(FreeMarkerLanguageDriverConfig driverConfig) {
+    this.driverConfig = driverConfig;
+    this.freemarkerCfg = createFreeMarkerConfiguration();
   }
 
   /**
@@ -77,16 +70,17 @@ public class FreeMarkerLanguageDriver implements LanguageDriver {
    */
   protected freemarker.template.Configuration createFreeMarkerConfiguration() {
     freemarker.template.Configuration cfg = new freemarker.template.Configuration(
-        freemarker.template.Configuration.VERSION_2_3_22);
+        driverConfig.getIncompatibleImprovementsVersion());
 
-    TemplateLoader templateLoader = new ClassTemplateLoader(this.getClass().getClassLoader(), basePackage);
+    TemplateLoader templateLoader = new ClassTemplateLoader(this.getClass().getClassLoader(),
+        driverConfig.getBasePackage());
     cfg.setTemplateLoader(templateLoader);
 
     // To avoid formatting numbers using spaces and commas in SQL
     cfg.setNumberFormat("computer");
 
     // Because it defaults to default system encoding, we should set it always explicitly
-    cfg.setDefaultEncoding(StandardCharsets.UTF_8.name());
+    cfg.setDefaultEncoding(driverConfig.getDefaultEncoding().name());
 
     return cfg;
   }
