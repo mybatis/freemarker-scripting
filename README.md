@@ -28,7 +28,7 @@ mybatis-freemarker is available in Maven Central. So, if you are using maven, yo
     <dependency>
         <groupId>org.mybatis.scripting</groupId>
         <artifactId>mybatis-freemarker</artifactId>
-        <version>1.1.1</version>
+        <version>1.1.2</version>
     </dependency>
 </dependencies>
 ```
@@ -37,7 +37,7 @@ If you are using gradle, you can use this snippet:
 
 ```groovy
 dependencies {
-    compile("org.mybatis.scripting:mybatis-freemarker:1.1.1")
+    compile("org.mybatis.scripting:mybatis-freemarker:1.1.2")
 }
 ```
 
@@ -51,7 +51,7 @@ dependencies {
 <dependency>
   <groupId>org.mybatis.scripting</groupId>
   <artifactId>mybatis-freemarker</artifactId>
-  <version>1.1.2-SNAPSHOT</version>
+  <version>1.1.3-SNAPSHOT</version>
 </dependency>
 ```
 
