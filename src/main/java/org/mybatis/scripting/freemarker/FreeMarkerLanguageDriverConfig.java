@@ -57,8 +57,14 @@ public class FreeMarkerLanguageDriverConfig {
     converters.put(String.class, String::trim);
     converters.put(Version.class, v -> new Version(v.trim()));
     converters.put(Charset.class, v -> Charset.forName(v.trim()));
+    converters.put(Object.class, v -> v);
     TYPE_CONVERTERS = Collections.unmodifiableMap(converters);
   }
+
+  /**
+   * The configuration properties.
+   */
+  private Map<String, String> freemarkerSettings = new HashMap<>();
 
   /**
    * The base directory for reading template resources.
@@ -74,6 +80,25 @@ public class FreeMarkerLanguageDriverConfig {
    * The incompatible improvements version of freemarker.
    */
   private Version incompatibleImprovementsVersion = Configuration.VERSION_2_3_22;
+
+  /**
+   * Get FreeMarker settings.
+   *
+   * @return FreeMarker settings
+   */
+  public Map<String, String> getFreemarkerSettings() {
+    return freemarkerSettings;
+  }
+
+  /**
+   * Set FreeMarker settings.
+   *
+   * @param freemarkerSettings
+   *          FreeMarker settings
+   */
+  public void setFreemarkerSettings(Map<String, String> freemarkerSettings) {
+    this.freemarkerSettings = freemarkerSettings;
+  }
 
   /**
    * Get a base directory for reading template resources.
@@ -168,9 +193,14 @@ public class FreeMarkerLanguageDriverConfig {
    * <td>UTF-8</td>
    * </tr>
    * <tr>
-   * <td>freemarker-incompatible-improvements-version</td>
+   * <td>incompatible-improvements-version</td>
    * <td>The incompatible improvements version of freemarker</td>
    * <td>2.3.22</td>
+   * </tr>
+   * <tr>
+   * <td>freemarker-settings.*</td>
+   * <td>The settings of freemarker {@link Configuration#setSetting(String, String)}).</td>
+   * <td>-</td>
    * </tr>
    * </table>
    *

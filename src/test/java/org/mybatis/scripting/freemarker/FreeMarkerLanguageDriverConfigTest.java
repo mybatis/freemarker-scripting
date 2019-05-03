@@ -75,6 +75,9 @@ class FreeMarkerLanguageDriverConfigTest {
     Assertions.assertEquals("sqls", config.getBasePackage());
     Assertions.assertEquals(Charset.forName("Windows-31J"), config.getDefaultEncoding());
     Assertions.assertEquals(Configuration.VERSION_2_3_28, config.getIncompatibleImprovementsVersion());
+    Assertions.assertEquals(2, config.getFreemarkerSettings().size());
+    Assertions.assertEquals("dollar", config.getFreemarkerSettings().get("interpolation_syntax"));
+    Assertions.assertEquals("yes", config.getFreemarkerSettings().get("whitespace_stripping"));
   }
 
   @Test
@@ -82,10 +85,15 @@ class FreeMarkerLanguageDriverConfigTest {
     Properties properties = new Properties();
     properties.setProperty("defaultEncoding", " " + StandardCharsets.ISO_8859_1.name() + " ");
     properties.setProperty("incompatibleImprovementsVersion", " 2.3.27 ");
+    properties.setProperty("freemarkerSettings.interpolation_syntax", "dollar");
+    properties.setProperty("freemarkerSettings.whitespace_stripping", "yes");
+
     FreeMarkerLanguageDriverConfig config = FreeMarkerLanguageDriverConfig.newInstance(properties);
     Assertions.assertEquals("sql", config.getBasePackage());
     Assertions.assertEquals(StandardCharsets.ISO_8859_1, config.getDefaultEncoding());
     Assertions.assertEquals(Configuration.VERSION_2_3_27, config.getIncompatibleImprovementsVersion());
+    Assertions.assertEquals("dollar", config.getFreemarkerSettings().get("interpolation_syntax"));
+    Assertions.assertEquals("yes", config.getFreemarkerSettings().get("whitespace_stripping"));
   }
 
   @Test
