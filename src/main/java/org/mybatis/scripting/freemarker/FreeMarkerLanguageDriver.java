@@ -22,6 +22,7 @@ import freemarker.template.Template;
 import java.io.IOException;
 import java.io.StringReader;
 
+import freemarker.template.TemplateException;
 import org.apache.ibatis.executor.parameter.ParameterHandler;
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;
@@ -71,6 +72,14 @@ public class FreeMarkerLanguageDriver implements LanguageDriver {
   protected freemarker.template.Configuration createFreeMarkerConfiguration() {
     freemarker.template.Configuration cfg = new freemarker.template.Configuration(
         driverConfig.getIncompatibleImprovementsVersion());
+    driverConfig.getFreemarkerSettings().forEach((name, value) -> {
+      try {
+        cfg.setSetting(name, value);
+      } catch (TemplateException e) {
+        throw new IllegalStateException(
+            String.format("Fail to configure FreeMarker template setting. name[%s] value[%s]", name, value), e);
+      }
+    });
 
     TemplateLoader templateLoader = new ClassTemplateLoader(this.getClass().getClassLoader(),
         driverConfig.getBasePackage());
