@@ -51,7 +51,7 @@ dependencies {
 <dependency>
   <groupId>org.mybatis.scripting</groupId>
   <artifactId>mybatis-freemarker</artifactId>
-  <version>1.1.3-SNAPSHOT</version>
+  <version>1.2.0-SNAPSHOT</version>
 </dependency>
 ```
 
