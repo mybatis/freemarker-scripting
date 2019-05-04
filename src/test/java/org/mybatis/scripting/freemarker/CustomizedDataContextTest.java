@@ -41,11 +41,11 @@ import java.util.Map;
 /**
  * @author elwood
  */
-public class CustomizedDataContextTest {
-  protected static SqlSessionFactory sqlSessionFactory;
+class CustomizedDataContextTest {
+  private static SqlSessionFactory sqlSessionFactory;
 
   @BeforeAll
-  public static void setUp() throws Exception {
+  static void setUp() throws Exception {
     Class.forName("org.hsqldb.jdbcDriver");
 
     JDBCDataSource dataSource = new JDBCDataSource();
@@ -75,11 +75,12 @@ public class CustomizedDataContextTest {
   }
 
   public static class CustomSqlSource extends FreeMarkerSqlSource {
-    public CustomSqlSource(Template template, Configuration configuration, Version version) {
+    CustomSqlSource(Template template, Configuration configuration, Version version) {
       super(template, configuration, version);
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     protected Object preProcessDataContext(Object dataContext, boolean isMap) {
       dataContext = super.preProcessDataContext(dataContext, isMap);
       if (isMap) {
@@ -99,11 +100,11 @@ public class CustomizedDataContextTest {
   }
 
   @Test
-  public void test() {
+  void test() {
     try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
       CustomizedDataContextMapper mapper = sqlSession.getMapper(CustomizedDataContextMapper.class);
       List<Name> names = mapper.find();
-      Assertions.assertTrue(names.size() == 1);
+      Assertions.assertEquals(1, names.size());
     }
   }
 }

@@ -1,5 +1,5 @@
 /**
- *    Copyright 2015-2018 the original author or authors.
+ *    Copyright 2015-2019 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -40,11 +40,11 @@ import java.util.List;
  *
  * @author elwood
  */
-public class PreparedParamsTest {
-  protected static SqlSessionFactory sqlSessionFactory;
+class PreparedParamsTest {
+  private static SqlSessionFactory sqlSessionFactory;
 
   @BeforeAll
-  public static void setUp() throws Exception {
+  static void setUp() throws Exception {
     Class.forName("org.hsqldb.jdbcDriver");
 
     JDBCDataSource dataSource = new JDBCDataSource();
@@ -74,7 +74,7 @@ public class PreparedParamsTest {
   }
 
   @Test
-  public void testInCall() {
+  void testInCall() {
     try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
       PreparedParamsMapper mapper = sqlSession.getMapper(PreparedParamsMapper.class);
       List<Name> names = mapper.findByNames(new ArrayList<String>() {
@@ -85,7 +85,7 @@ public class PreparedParamsTest {
           add("Betty");
         }
       });
-      Assertions.assertTrue(names.size() == 3);
+      Assertions.assertEquals(3, names.size());
     }
   }
 
@@ -93,17 +93,15 @@ public class PreparedParamsTest {
    * PersistenceException will be thrown with cause of UnsupportedOperationException
    */
   @Test
-  public void testParamsObjectCall() {
+  void testParamsObjectCall() {
     try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
       final PreparedParamsMapper mapper = sqlSession.getMapper(PreparedParamsMapper.class);
-      Assertions.assertThrows(PersistenceException.class, () -> {
-        mapper.findUsingParamsObject(new PreparedParam());
-      });
+      Assertions.assertThrows(PersistenceException.class, () -> mapper.findUsingParamsObject(new PreparedParam()));
     }
   }
 
   @Test
-  public void testNoParamsCall() {
+  void testNoParamsCall() {
     try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
       PreparedParamsMapper mapper = sqlSession.getMapper(PreparedParamsMapper.class);
       Name name = mapper.findUsingParams(new PreparedParam.InnerClass());
