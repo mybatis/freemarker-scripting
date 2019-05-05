@@ -76,7 +76,7 @@ dependencies {
       </ul>
     </section>
 
-    <section name="Configuring">
+    <section name="Configuration">
       <subsection name="Common">
         <p>
           By default, the <code>mybatis-freemarker.properties</code> file create in your classpath.
@@ -91,7 +91,7 @@ basePackage = sql
 ]]></source>
           </li>
           <li>
-            Since 2.1.0, you configure the FreeMarker configuration as follow:
+            Since 1.2.0, you configure the FreeMarker configuration.
             About available setting name, please refer to <a href="https://freemarker.apache.org/docs/api/freemarker/template/Configuration.html#setSetting-java.lang.String-java.lang.String-">the API documentation of FreeMarker</a>.
             <source><![CDATA[
 # freemarkerSettings.{name} = {value}
@@ -100,24 +100,18 @@ freemarkerSettings.interpolation_syntax = dollar
 ]]></source>
           </li>
           <li>
-            Since 2.1.0, you can use an any properties file instead of the default properties file.
-            If you use an any properties file, please specify a properties file using the special system properties(<code>mybatis-freemarker.config.file</code>) as follow:
+            Since 1.2.0, you can use an any properties file or encoding as follow:
             <source><![CDATA[
-$ java -Dmybatis-freemarker.config.file=mybatis-freemarker_production.properties ...
-]]></source>
-          </li>
-          <li>
-            Since 2.1.0, you can use an any file encoding instead of the default file encoding(UTF-8).
-            If you use an any file encoding, please specify a file encoding using the special system properties(<code>mybatis-freemarker.config.encoding</code>) as follow:
-            <source><![CDATA[
-$ java -Dmybatis-freemarker.config.encoding=Windows-31J ...
+$ java -Dmybatis-freemarker.config.file=mybatis-freemarker_production.properties -Dmybatis-freemarker.config.encoding=Windows-31J ...
 ]]></source>
           </li>
         </ul>
 
       </subsection>
-      <subsection name="XML-driven mappers">
-        <p>If your are using annotations-driven mappers, you don't need to do anything more. If you are using XML-driven mappers too, you may need to do next steps:</p>
+      <subsection name="Scripting Language Driver">
+        <p>
+          You may need to do next steps:
+        </p>
         <ul>
           <li>Register the language driver alias in your mybatis configuration file:
             <source><![CDATA[
