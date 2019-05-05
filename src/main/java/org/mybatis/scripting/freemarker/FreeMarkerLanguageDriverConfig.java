@@ -64,7 +64,7 @@ public class FreeMarkerLanguageDriverConfig {
   /**
    * The configuration properties.
    */
-  private Map<String, String> freemarkerSettings = new HashMap<>();
+  private final Map<String, String> freemarkerSettings = new HashMap<>();
 
   /**
    * The base directory for reading template resources.
@@ -88,16 +88,6 @@ public class FreeMarkerLanguageDriverConfig {
    */
   public Map<String, String> getFreemarkerSettings() {
     return freemarkerSettings;
-  }
-
-  /**
-   * Set FreeMarker settings.
-   *
-   * @param freemarkerSettings
-   *          FreeMarker settings
-   */
-  public void setFreemarkerSettings(Map<String, String> freemarkerSettings) {
-    this.freemarkerSettings = freemarkerSettings;
   }
 
   /**
