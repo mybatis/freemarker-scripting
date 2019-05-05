@@ -13,8 +13,8 @@ MyBatis FreeMarker Scripting Support.
 Requirements
 ----------
 
-* master(under active development) : Version 1.2.0-SNAPSHOT requires MyBatis 3.5+, FreeMarker 2.3.22+ and Java 8+
-* 1.1.x(latest released line) : Version 1.1.2 requires MyBatis 3.4+, FreeMarker 2.3.22+ and Java 7+
+* master(1.2.x) : MyBatis 3.5+, FreeMarker 2.3.22+ and Java 8+
+* 1.1.x : MyBatis 3.4+, FreeMarker 2.3.22+ and Java 7+
 
 
 Essentials
