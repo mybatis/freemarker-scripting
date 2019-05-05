@@ -55,8 +55,6 @@ public class FreeMarkerLanguageDriverConfig {
   static {
     Map<Class<?>, Function<String, Object>> converters = new HashMap<>();
     converters.put(String.class, String::trim);
-    converters.put(Version.class, v -> new Version(v.trim()));
-    converters.put(Charset.class, v -> Charset.forName(v.trim()));
     converters.put(Object.class, v -> v);
     TYPE_CONVERTERS = Collections.unmodifiableMap(converters);
   }
@@ -70,16 +68,6 @@ public class FreeMarkerLanguageDriverConfig {
    * The base directory for reading template resources.
    */
   private String basePackage = "";
-
-  /**
-   * The default encoding for reading template resources.
-   */
-  private Charset defaultEncoding = StandardCharsets.UTF_8;
-
-  /**
-   * The incompatible improvements version of freemarker.
-   */
-  private Version incompatibleImprovementsVersion = Configuration.VERSION_2_3_22;
 
   /**
    * Get FreeMarker settings.
@@ -113,50 +101,6 @@ public class FreeMarkerLanguageDriverConfig {
   }
 
   /**
-   * Get a default encoding for reading template resources.
-   * <p>
-   * Default is {@code UTF-8}.
-   * </p>
-   *
-   * @return a default encoding for reading template resources
-   */
-  public Charset getDefaultEncoding() {
-    return defaultEncoding;
-  }
-
-  /**
-   * Set a default encoding for reading template resources.
-   *
-   * @param defaultEncoding
-   *          a default encoding for reading template resources
-   */
-  public void setDefaultEncoding(Charset defaultEncoding) {
-    this.defaultEncoding = defaultEncoding;
-  }
-
-  /**
-   * Get an incompatible improvements version of freemarker.
-   * <p>
-   * Default is 2.3.22.
-   * </p>
-   * 
-   * @return an incompatible improvements version of freemarker
-   */
-  public Version getIncompatibleImprovementsVersion() {
-    return incompatibleImprovementsVersion;
-  }
-
-  /**
-   * Set an incompatible improvements version of freemarker.
-   *
-   * @param incompatibleImprovementsVersion
-   *          an incompatible improvements version of freemarker
-   */
-  public void setIncompatibleImprovementsVersion(Version incompatibleImprovementsVersion) {
-    this.incompatibleImprovementsVersion = incompatibleImprovementsVersion;
-  }
-
-  /**
    * Create an instance from default properties file. <br>
    * If you want to customize a default {@code TemplateEngine}, you can configure some property using
    * mybatis-freemarker.properties that encoded by UTF-8. Also, you can change the properties file that will read using
@@ -178,18 +122,8 @@ public class FreeMarkerLanguageDriverConfig {
    * <td>None(just under classpath)</td>
    * </tr>
    * <tr>
-   * <td>default-encoding</td>
-   * <td>The default encoding for reading template resources</td>
-   * <td>UTF-8</td>
-   * </tr>
-   * <tr>
-   * <td>incompatible-improvements-version</td>
-   * <td>The incompatible improvements version of freemarker</td>
-   * <td>2.3.22</td>
-   * </tr>
-   * <tr>
    * <td>freemarker-settings.*</td>
-   * <td>The settings of freemarker {@link Configuration#setSetting(String, String)}).</td>
+   * <td>The settings of freemarker {@link freemarker.core.Configurable#setSetting(String, String)}).</td>
    * <td>-</td>
    * </tr>
    * </table>

@@ -95,7 +95,7 @@ class CustomizedDataContextTest {
   public static class CustomFreeMarkerLanguageDriver extends FreeMarkerLanguageDriver {
     @Override
     protected SqlSource createSqlSource(Template template, Configuration configuration) {
-      return new CustomSqlSource(template, configuration, driverConfig.getIncompatibleImprovementsVersion());
+      return new CustomSqlSource(template, configuration, freemarkerCfg.getIncompatibleImprovements());
     }
   }
 

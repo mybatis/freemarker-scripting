@@ -21,6 +21,7 @@ import freemarker.template.Template;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.nio.charset.StandardCharsets;
 
 import freemarker.template.TemplateException;
 import org.apache.ibatis.executor.parameter.ParameterHandler;
@@ -71,15 +72,7 @@ public class FreeMarkerLanguageDriver implements LanguageDriver {
    */
   protected freemarker.template.Configuration createFreeMarkerConfiguration() {
     freemarker.template.Configuration cfg = new freemarker.template.Configuration(
-        driverConfig.getIncompatibleImprovementsVersion());
-    driverConfig.getFreemarkerSettings().forEach((name, value) -> {
-      try {
-        cfg.setSetting(name, value);
-      } catch (TemplateException e) {
-        throw new IllegalStateException(
-            String.format("Fail to configure FreeMarker template setting. name[%s] value[%s]", name, value), e);
-      }
-    });
+        freemarker.template.Configuration.VERSION_2_3_22);
 
     TemplateLoader templateLoader = new ClassTemplateLoader(this.getClass().getClassLoader(),
         driverConfig.getBasePackage());
@@ -89,7 +82,16 @@ public class FreeMarkerLanguageDriver implements LanguageDriver {
     cfg.setNumberFormat("computer");
 
     // Because it defaults to default system encoding, we should set it always explicitly
-    cfg.setDefaultEncoding(driverConfig.getDefaultEncoding().name());
+    cfg.setDefaultEncoding(StandardCharsets.UTF_8.name());
+
+    driverConfig.getFreemarkerSettings().forEach((name, value) -> {
+      try {
+        cfg.setSetting(name, value);
+      } catch (TemplateException e) {
+        throw new IllegalStateException(
+            String.format("Fail to configure FreeMarker template setting. name[%s] value[%s]", name, value), e);
+      }
+    });
 
     return cfg;
   }
@@ -147,7 +149,7 @@ public class FreeMarkerLanguageDriver implements LanguageDriver {
   }
 
   protected SqlSource createSqlSource(Template template, Configuration configuration) {
-    return new FreeMarkerSqlSource(template, configuration, driverConfig.getIncompatibleImprovementsVersion());
+    return new FreeMarkerSqlSource(template, configuration, freemarkerCfg.getIncompatibleImprovements());
   }
 
   private SqlSource createSqlSource(Configuration configuration, String scriptText) {

@@ -55,8 +55,6 @@ class FreeMarkerLanguageDriverConfigTest {
     System.setProperty("mybatis-freemarker.config.file", "mybatis-freemarker-empty.properties");
     FreeMarkerLanguageDriverConfig config = FreeMarkerLanguageDriverConfig.newInstance();
     Assertions.assertEquals("", config.getBasePackage());
-    Assertions.assertEquals(StandardCharsets.UTF_8, config.getDefaultEncoding());
-    Assertions.assertEquals(Configuration.VERSION_2_3_22, config.getIncompatibleImprovementsVersion());
   }
 
   @Test
@@ -64,8 +62,6 @@ class FreeMarkerLanguageDriverConfigTest {
     System.setProperty("mybatis-freemarker.config.file", "mybatis-freemarker-notfound.properties");
     FreeMarkerLanguageDriverConfig config = FreeMarkerLanguageDriverConfig.newInstance();
     Assertions.assertEquals("", config.getBasePackage());
-    Assertions.assertEquals(StandardCharsets.UTF_8, config.getDefaultEncoding());
-    Assertions.assertEquals(Configuration.VERSION_2_3_22, config.getIncompatibleImprovementsVersion());
   }
 
   @Test
@@ -73,8 +69,6 @@ class FreeMarkerLanguageDriverConfigTest {
     System.setProperty("mybatis-freemarker.config.file", "mybatis-freemarker-custom.properties");
     FreeMarkerLanguageDriverConfig config = FreeMarkerLanguageDriverConfig.newInstance();
     Assertions.assertEquals("sqls", config.getBasePackage());
-    Assertions.assertEquals(Charset.forName("Windows-31J"), config.getDefaultEncoding());
-    Assertions.assertEquals(Configuration.VERSION_2_3_28, config.getIncompatibleImprovementsVersion());
     Assertions.assertEquals(2, config.getFreemarkerSettings().size());
     Assertions.assertEquals("dollar", config.getFreemarkerSettings().get("interpolation_syntax"));
     Assertions.assertEquals("yes", config.getFreemarkerSettings().get("whitespace_stripping"));
@@ -83,15 +77,11 @@ class FreeMarkerLanguageDriverConfigTest {
   @Test
   void newInstanceWithCustomProperties() {
     Properties properties = new Properties();
-    properties.setProperty("defaultEncoding", " " + StandardCharsets.ISO_8859_1.name() + " ");
-    properties.setProperty("incompatibleImprovementsVersion", " 2.3.27 ");
     properties.setProperty("freemarkerSettings.interpolation_syntax", "dollar");
     properties.setProperty("freemarkerSettings.whitespace_stripping", "yes");
 
     FreeMarkerLanguageDriverConfig config = FreeMarkerLanguageDriverConfig.newInstance(properties);
     Assertions.assertEquals("sql", config.getBasePackage());
-    Assertions.assertEquals(StandardCharsets.ISO_8859_1, config.getDefaultEncoding());
-    Assertions.assertEquals(Configuration.VERSION_2_3_27, config.getIncompatibleImprovementsVersion());
     Assertions.assertEquals("dollar", config.getFreemarkerSettings().get("interpolation_syntax"));
     Assertions.assertEquals("yes", config.getFreemarkerSettings().get("whitespace_stripping"));
   }
@@ -100,12 +90,8 @@ class FreeMarkerLanguageDriverConfigTest {
   void newInstanceWithConsumer() {
     FreeMarkerLanguageDriverConfig config = FreeMarkerLanguageDriverConfig.newInstance(c -> {
       c.setBasePackage("sqls");
-      c.setDefaultEncoding(StandardCharsets.UTF_16);
-      c.setIncompatibleImprovementsVersion(Configuration.VERSION_2_3_26);
     });
     Assertions.assertEquals("sql", config.getBasePackage());
-    Assertions.assertEquals(StandardCharsets.UTF_16, config.getDefaultEncoding());
-    Assertions.assertEquals(Configuration.VERSION_2_3_26, config.getIncompatibleImprovementsVersion());
   }
 
 }
