@@ -15,11 +15,8 @@
  */
 package org.mybatis.scripting.freemarker;
 
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
-import freemarker.template.Configuration;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -54,21 +51,45 @@ class FreeMarkerLanguageDriverConfigTest {
   void newInstanceWithEmptyPropertiesFile() {
     System.setProperty("mybatis-freemarker.config.file", "mybatis-freemarker-empty.properties");
     FreeMarkerLanguageDriverConfig config = FreeMarkerLanguageDriverConfig.newInstance();
-    Assertions.assertEquals("", config.getBasePackage());
+    @SuppressWarnings("deprecation")
+    String basePackage = config.getBasePackage();
+    Assertions.assertEquals("", basePackage);
+    Assertions.assertEquals("", config.getTemplateFile().getBaseDir());
+    Assertions.assertEquals("", config.getTemplateFile().getPathProvider().getPrefix());
+    Assertions.assertTrue(config.getTemplateFile().getPathProvider().isIncludesPackagePath());
+    Assertions.assertTrue(config.getTemplateFile().getPathProvider().isSeparateDirectoryPerMapper());
+    Assertions.assertTrue(config.getTemplateFile().getPathProvider().isIncludesMapperNameWhenSeparateDirectory());
+    Assertions.assertTrue(config.getTemplateFile().getPathProvider().isCacheEnabled());
   }
 
   @Test
   void newInstanceWithPropertiesFileNotFound() {
     System.setProperty("mybatis-freemarker.config.file", "mybatis-freemarker-notfound.properties");
     FreeMarkerLanguageDriverConfig config = FreeMarkerLanguageDriverConfig.newInstance();
-    Assertions.assertEquals("", config.getBasePackage());
+    @SuppressWarnings("deprecation")
+    String basePackage = config.getBasePackage();
+    Assertions.assertEquals("", basePackage);
+    Assertions.assertEquals("", config.getTemplateFile().getBaseDir());
+    Assertions.assertEquals("", config.getTemplateFile().getPathProvider().getPrefix());
+    Assertions.assertTrue(config.getTemplateFile().getPathProvider().isIncludesPackagePath());
+    Assertions.assertTrue(config.getTemplateFile().getPathProvider().isSeparateDirectoryPerMapper());
+    Assertions.assertTrue(config.getTemplateFile().getPathProvider().isIncludesMapperNameWhenSeparateDirectory());
+    Assertions.assertTrue(config.getTemplateFile().getPathProvider().isCacheEnabled());
   }
 
   @Test
   void newInstanceWithCustomPropertiesFile() {
     System.setProperty("mybatis-freemarker.config.file", "mybatis-freemarker-custom.properties");
     FreeMarkerLanguageDriverConfig config = FreeMarkerLanguageDriverConfig.newInstance();
-    Assertions.assertEquals("sqls", config.getBasePackage());
+    @SuppressWarnings("deprecation")
+    String basePackage = config.getBasePackage();
+    Assertions.assertEquals("sqls", basePackage);
+    Assertions.assertEquals("sqls", config.getTemplateFile().getBaseDir());
+    Assertions.assertEquals("mappers", config.getTemplateFile().getPathProvider().getPrefix());
+    Assertions.assertFalse(config.getTemplateFile().getPathProvider().isIncludesPackagePath());
+    Assertions.assertFalse(config.getTemplateFile().getPathProvider().isSeparateDirectoryPerMapper());
+    Assertions.assertFalse(config.getTemplateFile().getPathProvider().isIncludesMapperNameWhenSeparateDirectory());
+    Assertions.assertFalse(config.getTemplateFile().getPathProvider().isCacheEnabled());
     Assertions.assertEquals(2, config.getFreemarkerSettings().size());
     Assertions.assertEquals("dollar", config.getFreemarkerSettings().get("interpolation_syntax"));
     Assertions.assertEquals("yes", config.getFreemarkerSettings().get("whitespace_stripping"));
@@ -77,21 +98,36 @@ class FreeMarkerLanguageDriverConfigTest {
   @Test
   void newInstanceWithCustomProperties() {
     Properties properties = new Properties();
+    properties.setProperty("templateFile.pathProvider.prefix", "mapper");
+    properties.setProperty("templateFile.pathProvider.includesPackagePath", "false");
+    properties.setProperty("templateFile.pathProvider.separateDirectoryPerMapper", "false");
+    properties.setProperty("templateFile.pathProvider.includesMapperNameWhenSeparateDirectory", "false");
+    properties.setProperty("templateFile.pathProvider.cacheEnabled", "false");
     properties.setProperty("freemarkerSettings.interpolation_syntax", "dollar");
     properties.setProperty("freemarkerSettings.whitespace_stripping", "yes");
 
     FreeMarkerLanguageDriverConfig config = FreeMarkerLanguageDriverConfig.newInstance(properties);
-    Assertions.assertEquals("sql", config.getBasePackage());
+    @SuppressWarnings("deprecation")
+    String basePackage = config.getBasePackage();
+    Assertions.assertEquals("sql", basePackage);
+    Assertions.assertEquals("sql", config.getTemplateFile().getBaseDir());
+    Assertions.assertEquals("mapper", config.getTemplateFile().getPathProvider().getPrefix());
+    Assertions.assertFalse(config.getTemplateFile().getPathProvider().isIncludesPackagePath());
+    Assertions.assertFalse(config.getTemplateFile().getPathProvider().isSeparateDirectoryPerMapper());
+    Assertions.assertFalse(config.getTemplateFile().getPathProvider().isIncludesMapperNameWhenSeparateDirectory());
+    Assertions.assertFalse(config.getTemplateFile().getPathProvider().isCacheEnabled());
     Assertions.assertEquals("dollar", config.getFreemarkerSettings().get("interpolation_syntax"));
     Assertions.assertEquals("yes", config.getFreemarkerSettings().get("whitespace_stripping"));
   }
 
   @Test
+  @SuppressWarnings("deprecation")
   void newInstanceWithConsumer() {
     FreeMarkerLanguageDriverConfig config = FreeMarkerLanguageDriverConfig.newInstance(c -> {
       c.setBasePackage("sqls");
     });
     Assertions.assertEquals("sql", config.getBasePackage());
+    Assertions.assertEquals("sql", config.getTemplateFile().getBaseDir());
   }
 
 }
