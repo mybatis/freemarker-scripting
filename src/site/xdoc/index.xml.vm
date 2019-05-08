@@ -336,7 +336,7 @@ templateFile.pathProvider.cacheEnabled = false
 
     <section name="Examples">
       <p>You can view full-featured example of configuring and of both XML-mapper and annotations-driven mapper usage
-        in <a href="https://github.com/elw00d/mybatis-freemarker/tree/master/src/test">test suite</a></p>
+        in <a href="https://github.com/mybatis/freemarker-scripting/tree/master/src/test">test suite</a></p>
     </section>
   </body>
 </document>
