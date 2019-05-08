@@ -32,6 +32,7 @@ import org.apache.ibatis.parsing.XNode;
 import org.apache.ibatis.scripting.LanguageDriver;
 import org.apache.ibatis.scripting.defaults.DefaultParameterHandler;
 import org.apache.ibatis.session.Configuration;
+import org.mybatis.scripting.freemarker.support.TemplateFilePathProvider;
 
 /**
  * Adds FreeMarker templates support to scripting in MyBatis. If you want to change or extend template loader
@@ -64,6 +65,7 @@ public class FreeMarkerLanguageDriver implements LanguageDriver {
   public FreeMarkerLanguageDriver(FreeMarkerLanguageDriverConfig driverConfig) {
     this.driverConfig = driverConfig;
     this.freemarkerCfg = createFreeMarkerConfiguration();
+    TemplateFilePathProvider.setLanguageDriverConfig(driverConfig);
   }
 
   /**
@@ -75,7 +77,7 @@ public class FreeMarkerLanguageDriver implements LanguageDriver {
         freemarker.template.Configuration.VERSION_2_3_22);
 
     TemplateLoader templateLoader = new ClassTemplateLoader(this.getClass().getClassLoader(),
-        driverConfig.getBasePackage());
+        driverConfig.getTemplateFile().getBaseDir());
     cfg.setTemplateLoader(templateLoader);
 
     // To avoid formatting numbers using spaces and commas in SQL

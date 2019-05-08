@@ -83,11 +83,26 @@ dependencies {
         </p>
         <ul>
           <li>
-            You can define the base package to search FreeMarker templates.
+            You can define the base directory to search FreeMarker templates.
             By default it is empty string, so you will need to provide full path to template every time.
+            <source><![CDATA[
+# 'template-file.base-dir' (kebab-case) can be used too
+templateFile.baseDir = sql
+]]></source>
+
+            The <code>basePackage</code> property supported for keeping backward compatibility with old versions(1.1.x or under).
             <source><![CDATA[
 # 'base-package' (kebab-case) can be used too
 basePackage = sql
+]]></source>
+          </li>
+          <li>
+            You can customize the path provider of SQL provider class that return the SQL template file path.
+            For details see the <a href="#TemplateFilePathProvider">"TemplateFilePathProvider"</a>
+            <source><![CDATA[
+# templateFile.pathProvider.{name} = {value}
+# 'template-file.path-provider' (kebab-case) can be used too
+templateFile.pathProvider.cacheEnabled = false
 ]]></source>
           </li>
           <li>
@@ -214,6 +229,109 @@ select * from names where firstName in (
           parameters, please don't forget about <code>@Param</code> annotation.
         </li>
       </ul>
+    </section>
+
+    <section name="TemplateFilePathProvider">
+
+      <p>
+        The <code>TemplateFilePathProvider</code> is SQL provider class that return the SQL template file path(Available since 1.2.0, and <b>this class required to use on MyBatis 3.5.1+</b>).
+        This class use with SQL provider annotation(<code>@InsertProvider</code>, <code>@UpdateProvider</code>, <code>@DeleteProvider</code> and <code>@SelectProvider</code>) as follow:
+      </p>
+
+      <source><![CDATA[
+package com.example.mapper;
+
+public interface BaseMapper<T> {
+
+  @Options(useGeneratedKeys = true, keyProperty = "id")
+  @InsertProvider(type = TemplateFilePathProvider.class)
+  void insert(T entity);
+
+  @UpdateProvider(type = TemplateFilePathProvider.class)
+  void update(T entity);
+
+  @DeleteProvider(type = TemplateFilePathProvider.class)
+  void delete(T entity);
+
+  @SelectProvider(type = TemplateFilePathProvider.class)
+  T findById(Integer id);
+
+}
+]]></source>
+
+      <source><![CDATA[
+package com.example.mapper;
+
+public interface NameMapper extends BaseMapper {
+
+  @SelectProvider(type = TemplateFilePathProvider.class)
+  List<Name> findByCondition(NameCondition condition);
+
+}
+]]></source>
+
+      <p>
+        By default implementation, a template file path resolve following format and priority order.
+        If does not match all, it throw an exception that indicate not found a template file.
+      </p>
+      <ul>
+        <li>
+          <code>com/example/mapper/NameMapper/NameMapper-{methodName}-{databaseId}.sql</code>
+        </li>
+        <li>
+          <code>com/example/mapper/NameMapper/NameMapper-{methodName}.sql</code> (fallback using default database)
+        </li>
+        <li>
+          <code>com/example/mapper/BaseMapper/BaseMapper-{methodName}-{databaseId}.sql</code> (fallback using declaring class of mapper method)
+        </li>
+        <li>
+          <code>com/example/mapper/BaseMapper/BaseMapper-{methodName}.sql</code> (fallback using declaring class of mapper method and default database)
+        </li>
+      </ul>
+
+      <p>
+        If you want to customize the template file path format,
+        you can customize using following configuration properties that start with <code>templateFile.pathProvider</code>.
+      </p>
+
+      <ul>
+        <li>
+          You can specify the prefix for adding to template file path. Default value is "".
+          <source><![CDATA[
+# 'template-file.path-provider.prefix' (kebab-case) can be used too
+templateFile.pathProvider.prefix = mapper
+]]></source>
+        </li>
+        <li>
+          You can specify whether includes package path part. Default value is <code>true</code>(= includes package path).
+          <source><![CDATA[
+# 'template-file.path-provider.includes-package-path' (kebab-case) can be used too
+templateFile.pathProvider.includesPackagePath = false
+]]></source>
+        </li>
+        <li>
+          You can specify whether separate directory per mapper. Default value is <code>true</code>(= separate directory per mapper).
+          <source><![CDATA[
+# 'template-file.path-provider.separate-directory-per-mapper' (kebab-case) can be used too
+templateFile.pathProvider.separateDirectoryPerMapper = false
+]]></source>
+        </li>
+        <li>
+          You can specify whether includes mapper name into file name when separate directory per mapper. Default value is <code>true</code>(= includes mapper name).
+          <source><![CDATA[
+# 'template-file.path-provider.includes-mapper-name-when-separate-directory' (kebab-case) can be used too
+templateFile.pathProvider.includesMapperNameWhenSeparateDirectory = false
+]]></source>
+        </li>
+        <li>
+          You can specify whether cache a resolved template file path. Default value is <code>true</code>(= cache a resolved template file path).
+          <source><![CDATA[
+# 'template-file.path-provider.cache-enabled' (kebab-case) can be used too
+templateFile.pathProvider.cacheEnabled = false
+]]></source>
+        </li>
+      </ul>
+
     </section>
 
     <section name="Examples">
