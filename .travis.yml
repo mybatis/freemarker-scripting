@@ -1,5 +1,8 @@
 language: java
 
+# workaround build error using oraclejdk8 on xenial
+dist: trusty
+
 jdk:
   - openjdk11
   - oraclejdk8
