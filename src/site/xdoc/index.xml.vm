@@ -276,16 +276,16 @@ public interface NameMapper extends BaseMapper {
       </p>
       <ul>
         <li>
-          <code>com/example/mapper/NameMapper/NameMapper-{methodName}-{databaseId}.sql</code>
+          <code>com/example/mapper/NameMapper/NameMapper-{methodName}-{databaseId}.ftl</code>
         </li>
         <li>
-          <code>com/example/mapper/NameMapper/NameMapper-{methodName}.sql</code> (fallback using default database)
+          <code>com/example/mapper/NameMapper/NameMapper-{methodName}.ftl</code> (fallback using default database)
         </li>
         <li>
-          <code>com/example/mapper/BaseMapper/BaseMapper-{methodName}-{databaseId}.sql</code> (fallback using declaring class of mapper method)
+          <code>com/example/mapper/BaseMapper/BaseMapper-{methodName}-{databaseId}.ftl</code> (fallback using declaring class of mapper method)
         </li>
         <li>
-          <code>com/example/mapper/BaseMapper/BaseMapper-{methodName}.sql</code> (fallback using declaring class of mapper method and default database)
+          <code>com/example/mapper/BaseMapper/BaseMapper-{methodName}.ftl</code> (fallback using declaring class of mapper method and default database)
         </li>
       </ul>
 
