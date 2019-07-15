@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+<rss version="0.91">
+  <channel>
+    <title>MyBatis FreeMarker - Checkstyle report</title>
+    <link>https://github.com/mybatis/freemarker-scripting</link>
+    <description>MyBatis FreeMarker - Checkstyle report</description>
+    <language>en-us</language>
+    <copyright>&#169;2015 - 2019 MyBatis.org</copyright>
+    <item>
+      <title>File: 14,
+             Errors: 0,
+             Warnings: 5,
+             Infos: 0
+      </title>
+            <link>https://github.com/mybatis/freemarker-scripting/checkstyle.html</link>
+      <description>
+        <p>Click <a href="https://github.com/mybatis/freemarker-scripting/checkstyle.html">here</a> for the full Checkstyle report.</p>
+
+        <table summary="Files" boder="1">
+          <thead>
+            <tr>
+              <th>Files</th>
+              <th style="width:30px;"><abbr title="Info">I</abbr></th>
+              <th style="width:30px;"><abbr title="Warning">W</abbr></th>
+              <th style="width:30px;"><abbr title="Error">E</abbr></th>
+            </tr>
+          </thead>
+          <tbody>
+                          <tr>
+                <td>
+                  <a href="https://github.com/mybatis/freemarker-scripting/checkstyle.html#src.test.resources.log4j.properties">src/test/resources/log4j.properties</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/mybatis/freemarker-scripting/checkstyle.html#org.mybatis.scripting.freemarker.FreeMarkerLanguageDriverConfig.java">org/mybatis/scripting/freemarker/FreeMarkerLanguageDriverConfig.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  2
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/mybatis/freemarker-scripting/checkstyle.html#target.formatter-maven-cache.properties">target/formatter-maven-cache.properties</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/mybatis/freemarker-scripting/checkstyle.html#org.mybatis.scripting.freemarker.FreeMarkerLanguageDriver.java">org/mybatis/scripting/freemarker/FreeMarkerLanguageDriver.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/mybatis/freemarker-scripting/checkstyle.html#src.test.resources.mybatis-freemarker.properties">src/test/resources/mybatis-freemarker.properties</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/mybatis/freemarker-scripting/checkstyle.html#release.properties">release.properties</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/mybatis/freemarker-scripting/checkstyle.html#org.mybatis.scripting.freemarker.MyBatisParamDirective.java">org/mybatis/scripting/freemarker/MyBatisParamDirective.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/mybatis/freemarker-scripting/checkstyle.html#.mvn.wrapper.maven-wrapper.properties">.mvn/wrapper/maven-wrapper.properties</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/mybatis/freemarker-scripting/checkstyle.html#src.test.resources.mybatis-freemarker-empty.properties">src/test/resources/mybatis-freemarker-empty.properties</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/mybatis/freemarker-scripting/checkstyle.html#src.test.resources.mybatis-freemarker-custom.properties">src/test/resources/mybatis-freemarker-custom.properties</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/mybatis/freemarker-scripting/checkstyle.html#org.mybatis.scripting.freemarker.ParamObjectAdapter.java">org/mybatis/scripting/freemarker/ParamObjectAdapter.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/mybatis/freemarker-scripting/checkstyle.html#org.mybatis.scripting.freemarker.support.TemplateFilePathProvider.java">org/mybatis/scripting/freemarker/support/TemplateFilePathProvider.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/mybatis/freemarker-scripting/checkstyle.html#org.mybatis.scripting.freemarker.FreeMarkerSqlSource.java">org/mybatis/scripting/freemarker/FreeMarkerSqlSource.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  2
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/mybatis/freemarker-scripting/checkstyle.html#org.mybatis.scripting.freemarker.GeneratedParamsTemplateModel.java">org/mybatis/scripting/freemarker/GeneratedParamsTemplateModel.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                      </tbody>
+        </table>
+        
+      </description>
+    </item>
+  </channel>
+</rss>
+
