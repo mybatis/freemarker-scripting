@@ -28,7 +28,7 @@
 
   <groupId>org.mybatis.scripting</groupId>
   <artifactId>mybatis-freemarker</artifactId>
-  <version>1.2.0</version>
+  <version>1.2.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>MyBatis FreeMarker</name>
@@ -56,7 +56,7 @@
     <url>https://github.com/mybatis/freemarker-scripting</url>
     <connection>scm:git:ssh://github.com/mybatis/freemarker-scripting.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/mybatis/freemarker-scripting.git</developerConnection>
-    <tag>mybatis-freemarker-1.2.0</tag>
+    <tag>HEAD</tag>
   </scm>
   <issueManagement>
     <system>GitHub Issue Management</system>
