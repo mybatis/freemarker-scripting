@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FreeMarkerLanguageDriverConfig.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MyBatis FreeMarker</a> &gt; <a href="index.source.html" class="el_package">org.mybatis.scripting.freemarker</a> &gt; <span class="el_source">FreeMarkerLanguageDriverConfig.java</span></div><h1>FreeMarkerLanguageDriverConfig.java</h1><pre class="source lang-java linenums">/**
+ *    Copyright 2015-2019 the original author or authors.
+ *
+ *    Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
+package org.mybatis.scripting.freemarker;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Properties;
+import java.util.function.Consumer;
+import java.util.function.Function;
+
+import freemarker.template.Configuration;
+import freemarker.template.Version;
+import org.apache.commons.text.WordUtils;
+import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.logging.Log;
+import org.apache.ibatis.logging.LogFactory;
+import org.apache.ibatis.reflection.DefaultReflectorFactory;
+import org.apache.ibatis.reflection.MetaObject;
+import org.apache.ibatis.reflection.factory.DefaultObjectFactory;
+import org.apache.ibatis.reflection.wrapper.DefaultObjectWrapperFactory;
+
+/**
+ * Configuration class for {@link FreeMarkerLanguageDriver}.
+ *
+ * @author Kazuki Shimizu
+ * @since 1.2.0
+ */
+<span class="fc" id="L50">public class FreeMarkerLanguageDriverConfig {</span>
+  private static final String PROPERTY_KEY_CONFIG_FILE = &quot;mybatis-freemarker.config.file&quot;;
+  private static final String PROPERTY_KEY_CONFIG_ENCODING = &quot;mybatis-freemarker.config.encoding&quot;;
+  private static final String DEFAULT_PROPERTIES_FILE = &quot;mybatis-freemarker.properties&quot;;
+  private static final Map&lt;Class&lt;?&gt;, Function&lt;String, Object&gt;&gt; TYPE_CONVERTERS;
+
+  static {
+<span class="fc" id="L57">    Map&lt;Class&lt;?&gt;, Function&lt;String, Object&gt;&gt; converters = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L58">    converters.put(String.class, String::trim);</span>
+<span class="fc" id="L59">    converters.put(boolean.class, v -&gt; Boolean.valueOf(v.trim()));</span>
+<span class="fc" id="L60">    converters.put(Object.class, v -&gt; v);</span>
+<span class="fc" id="L61">    TYPE_CONVERTERS = Collections.unmodifiableMap(converters);</span>
+  }
+
+<span class="fc" id="L64">  private static final Log log = LogFactory.getLog(FreeMarkerLanguageDriverConfig.class);</span>
+
+  /**
+   * The configuration properties.
+   */
+<span class="fc" id="L69">  private final Map&lt;String, String&gt; freemarkerSettings = new HashMap&lt;&gt;();</span>
+
+  /**
+   * Template file configuration.
+   */
+<span class="fc" id="L74">  private final TemplateFileConfig templateFile = new TemplateFileConfig();</span>
+
+  /**
+   * Get FreeMarker settings.
+   *
+   * @return FreeMarker settings
+   */
+  public Map&lt;String, String&gt; getFreemarkerSettings() {
+<span class="fc" id="L82">    return freemarkerSettings;</span>
+  }
+
+  /**
+   * Get a base directory for reading template resources.
+   * &lt;p&gt;
+   * Default is none (just under classpath).
+   * &lt;/p&gt;
+   *
+   * @return a base directory for reading template resources
+   * @deprecated Recommend to use the {@link TemplateFileConfig#getBaseDir()}} because this method defined for keeping
+   *             backward compatibility (There is possibility that this method removed at a future version)
+   */
+  @Deprecated
+  public String getBasePackage() {
+<span class="fc" id="L97">    return templateFile.getBaseDir();</span>
+  }
+
+  /**
+   * Set a base directory for reading template resources.
+   *
+   * @param basePackage
+   *          a base directory for reading template resources
+   * @deprecated Recommend to use the {@link TemplateFileConfig#setBaseDir(String)} because this method defined for
+   *             keeping backward compatibility (There is possibility that this method removed at a future version)
+   */
+  @Deprecated
+  public void setBasePackage(String basePackage) {
+<span class="fc" id="L110">    log.warn(&quot;The 'basePackage' has been deprecated since 1.2.0. Please use the 'templateFile.baseDir'.&quot;);</span>
+<span class="fc" id="L111">    templateFile.setBaseDir(basePackage);</span>
+<span class="fc" id="L112">  }</span>
+
+  /**
+   * Get a template file configuration.
+   *
+   * @return a template file configuration
+   */
+  public TemplateFileConfig getTemplateFile() {
+<span class="fc" id="L120">    return templateFile;</span>
+  }
+
+  /**
+   * Template file configuration.
+   */
+<span class="fc" id="L126">  public static class TemplateFileConfig {</span>
+
+    /**
+     * The base directory for reading template resources.
+     */
+<span class="fc" id="L131">    private String baseDir = &quot;&quot;;</span>
+
+    /**
+     * The template file path provider configuration.
+     */
+<span class="fc" id="L136">    private final PathProviderConfig pathProvider = new PathProviderConfig();</span>
+
+    /**
+     * Get the base directory for reading template resource file.
+     * &lt;p&gt;
+     * Default is {@code &quot;&quot;}(none).
+     * &lt;/p&gt;
+     *
+     * @return the base directory for reading template resource file
+     */
+    public String getBaseDir() {
+<span class="fc" id="L147">      return baseDir;</span>
+    }
+
+    /**
+     * Set the base directory for reading template resource file.
+     *
+     * @param baseDir
+     *          the base directory for reading template resource file
+     */
+    public void setBaseDir(String baseDir) {
+<span class="fc" id="L157">      this.baseDir = baseDir;</span>
+<span class="fc" id="L158">    }</span>
+
+    /**
+     * Get the template file path provider configuration.
+     *
+     * @return the template file path provider configuration
+     */
+    public PathProviderConfig getPathProvider() {
+<span class="fc" id="L166">      return pathProvider;</span>
+    }
+
+    /**
+     * The template file path provider configuration.
+     */
+<span class="fc" id="L172">    public static class PathProviderConfig {</span>
+
+      /**
+       * The prefix for adding to template file path.
+       */
+<span class="fc" id="L177">      private String prefix = &quot;&quot;;</span>
+
+      /**
+       * Whether includes package path part.
+       */
+<span class="fc" id="L182">      private boolean includesPackagePath = true;</span>
+
+      /**
+       * Whether separate directory per mapper.
+       */
+<span class="fc" id="L187">      private boolean separateDirectoryPerMapper = true;</span>
+
+      /**
+       * Whether includes mapper name into file name when separate directory per mapper.
+       */
+<span class="fc" id="L192">      private boolean includesMapperNameWhenSeparateDirectory = true;</span>
+
+      /**
+       * Whether cache a resolved template file path.
+       */
+<span class="fc" id="L197">      private boolean cacheEnabled = true;</span>
+
+      /**
+       * Get a prefix for adding to template file path.
+       * &lt;p&gt;
+       * Default is {@code &quot;&quot;}.
+       * &lt;/p&gt;
+       *
+       * @return a prefix for adding to template file path
+       */
+      public String getPrefix() {
+<span class="fc" id="L208">        return prefix;</span>
+      }
+
+      /**
+       * Set the prefix for adding to template file path.
+       *
+       * @param prefix
+       *          The prefix for adding to template file path
+       */
+      public void setPrefix(String prefix) {
+<span class="fc" id="L218">        this.prefix = prefix;</span>
+<span class="fc" id="L219">      }</span>
+
+      /**
+       * Get whether includes package path part.
+       * &lt;p&gt;
+       * Default is {@code true}.
+       * &lt;/p&gt;
+       *
+       * @return If includes package path, return {@code true}
+       */
+      public boolean isIncludesPackagePath() {
+<span class="fc" id="L230">        return includesPackagePath;</span>
+      }
+
+      /**
+       * Set whether includes package path part.
+       *
+       * @param includesPackagePath
+       *          If want to includes, set {@code true}
+       */
+      public void setIncludesPackagePath(boolean includesPackagePath) {
+<span class="fc" id="L240">        this.includesPackagePath = includesPackagePath;</span>
+<span class="fc" id="L241">      }</span>
+
+      /**
+       * Get whether separate directory per mapper.
+       *
+       * @return If separate directory per mapper, return {@code true}
+       */
+      public boolean isSeparateDirectoryPerMapper() {
+<span class="fc" id="L249">        return separateDirectoryPerMapper;</span>
+      }
+
+      /**
+       * Set whether separate directory per mapper.
+       * &lt;p&gt;
+       * Default is {@code true}.
+       * &lt;/p&gt;
+       *
+       * @param separateDirectoryPerMapper
+       *          If want to separate directory, set {@code true}
+       */
+      public void setSeparateDirectoryPerMapper(boolean separateDirectoryPerMapper) {
+<span class="fc" id="L262">        this.separateDirectoryPerMapper = separateDirectoryPerMapper;</span>
+<span class="fc" id="L263">      }</span>
+
+      /**
+       * Get whether includes mapper name into file name when separate directory per mapper.
+       * &lt;p&gt;
+       * Default is {@code true}.
+       * &lt;/p&gt;
+       *
+       * @return If includes mapper name, return {@code true}
+       */
+      public boolean isIncludesMapperNameWhenSeparateDirectory() {
+<span class="fc" id="L274">        return includesMapperNameWhenSeparateDirectory;</span>
+      }
+
+      /**
+       * Set whether includes mapper name into file name when separate directory per mapper.
+       * &lt;p&gt;
+       * Default is {@code true}.
+       * &lt;/p&gt;
+       *
+       * @param includesMapperNameWhenSeparateDirectory
+       *          If want to includes, set {@code true}
+       */
+      public void setIncludesMapperNameWhenSeparateDirectory(boolean includesMapperNameWhenSeparateDirectory) {
+<span class="fc" id="L287">        this.includesMapperNameWhenSeparateDirectory = includesMapperNameWhenSeparateDirectory;</span>
+<span class="fc" id="L288">      }</span>
+
+      /**
+       * Get whether cache a resolved template file path.
+       * &lt;p&gt;
+       * Default is {@code true}.
+       * &lt;/p&gt;
+       *
+       * @return If cache a resolved template file path, return {@code true}
+       */
+      public boolean isCacheEnabled() {
+<span class="fc" id="L299">        return cacheEnabled;</span>
+      }
+
+      /**
+       * Set whether cache a resolved template file path.
+       *
+       * @param cacheEnabled
+       *          If want to cache, set {@code true}
+       */
+      public void setCacheEnabled(boolean cacheEnabled) {
+<span class="fc" id="L309">        this.cacheEnabled = cacheEnabled;</span>
+<span class="fc" id="L310">      }</span>
+
+    }
+
+  }
+
+  /**
+   * Create an instance from default properties file. &lt;br&gt;
+   * If you want to customize a default {@code TemplateEngine}, you can configure some property using
+   * mybatis-freemarker.properties that encoded by UTF-8. Also, you can change the properties file that will read using
+   * system property (-Dmybatis-freemarker.config.file=... -Dmybatis-freemarker.config.encoding=...). &lt;br&gt;
+   * Supported properties are as follows:
+   * &lt;table border=&quot;1&quot;&gt;
+   * &lt;caption&gt;Supported properties&lt;/caption&gt;
+   * &lt;tr&gt;
+   * &lt;th&gt;Property Key&lt;/th&gt;
+   * &lt;th&gt;Description&lt;/th&gt;
+   * &lt;th&gt;Default&lt;/th&gt;
+   * &lt;/tr&gt;
+   * &lt;tr&gt;
+   * &lt;th colspan=&quot;3&quot;&gt;General configuration&lt;/th&gt;
+   * &lt;/tr&gt;
+   * &lt;tr&gt;
+   * &lt;td&gt;base-package&lt;/td&gt;
+   * &lt;td&gt;The base directory for reading template resources&lt;/td&gt;
+   * &lt;td&gt;None(just under classpath)&lt;/td&gt;
+   * &lt;/tr&gt;
+   * &lt;tr&gt;
+   * &lt;td&gt;freemarker-settings.*&lt;/td&gt;
+   * &lt;td&gt;The settings of freemarker {@link freemarker.core.Configurable#setSetting(String, String)}).&lt;/td&gt;
+   * &lt;td&gt;-&lt;/td&gt;
+   * &lt;/tr&gt;
+   * &lt;/table&gt;
+   *
+   * @return a configuration instance
+   */
+  public static FreeMarkerLanguageDriverConfig newInstance() {
+<span class="fc" id="L347">    return newInstance(loadDefaultProperties());</span>
+  }
+
+  /**
+   * Create an instance from specified properties.
+   *
+   * @param customProperties
+   *          custom configuration properties
+   * @return a configuration instance
+   * @see #newInstance()
+   */
+  public static FreeMarkerLanguageDriverConfig newInstance(Properties customProperties) {
+<span class="fc" id="L359">    FreeMarkerLanguageDriverConfig config = new FreeMarkerLanguageDriverConfig();</span>
+<span class="fc" id="L360">    Properties properties = loadDefaultProperties();</span>
+<span class="fc" id="L361">    Optional.ofNullable(customProperties).ifPresent(properties::putAll);</span>
+<span class="fc" id="L362">    override(config, properties);</span>
+<span class="fc" id="L363">    return config;</span>
+  }
+
+  /**
+   * Create an instance using specified customizer and override using a default properties file.
+   *
+   * @param customizer
+   *          baseline customizer
+   * @return a configuration instance
+   * @see #newInstance()
+   */
+  public static FreeMarkerLanguageDriverConfig newInstance(Consumer&lt;FreeMarkerLanguageDriverConfig&gt; customizer) {
+<span class="fc" id="L375">    FreeMarkerLanguageDriverConfig config = new FreeMarkerLanguageDriverConfig();</span>
+<span class="fc" id="L376">    customizer.accept(config);</span>
+<span class="fc" id="L377">    override(config, loadDefaultProperties());</span>
+<span class="fc" id="L378">    return config;</span>
+  }
+
+  private static void override(FreeMarkerLanguageDriverConfig config, Properties properties) {
+<span class="fc" id="L382">    MetaObject metaObject = MetaObject.forObject(config, new DefaultObjectFactory(), new DefaultObjectWrapperFactory(),</span>
+        new DefaultReflectorFactory());
+<span class="fc" id="L384">    properties.forEach((key, value) -&gt; {</span>
+<span class="fc" id="L385">      String propertyPath = WordUtils</span>
+<span class="fc" id="L386">          .uncapitalize(WordUtils.capitalize(Objects.toString(key), '-').replaceAll(&quot;-&quot;, &quot;&quot;));</span>
+<span class="fc" id="L387">      Optional.ofNullable(value).ifPresent(v -&gt; {</span>
+<span class="fc" id="L388">        Object convertedValue = TYPE_CONVERTERS.get(metaObject.getSetterType(propertyPath)).apply(value.toString());</span>
+<span class="fc" id="L389">        metaObject.setValue(propertyPath, convertedValue);</span>
+<span class="fc" id="L390">      });</span>
+<span class="fc" id="L391">    });</span>
+<span class="fc" id="L392">  }</span>
+
+  private static Properties loadDefaultProperties() {
+<span class="fc" id="L395">    return loadProperties(System.getProperty(PROPERTY_KEY_CONFIG_FILE, DEFAULT_PROPERTIES_FILE));</span>
+  }
+
+  private static Properties loadProperties(String resourcePath) {
+<span class="fc" id="L399">    Properties properties = new Properties();</span>
+    InputStream in;
+    try {
+<span class="fc" id="L402">      in = Resources.getResourceAsStream(resourcePath);</span>
+<span class="fc" id="L403">    } catch (IOException e) {</span>
+<span class="fc" id="L404">      in = null;</span>
+<span class="fc" id="L405">    }</span>
+<span class="fc bfc" id="L406" title="All 2 branches covered.">    if (in != null) {</span>
+<span class="fc" id="L407">      Charset encoding = Optional.ofNullable(System.getProperty(PROPERTY_KEY_CONFIG_ENCODING)).map(Charset::forName)</span>
+<span class="fc" id="L408">          .orElse(StandardCharsets.UTF_8);</span>
+<span class="fc" id="L409">      try (InputStreamReader inReader = new InputStreamReader(in, encoding);</span>
+<span class="fc" id="L410">          BufferedReader bufReader = new BufferedReader(inReader)) {</span>
+<span class="fc" id="L411">        properties.load(bufReader);</span>
+<span class="nc" id="L412">      } catch (IOException e) {</span>
+<span class="nc" id="L413">        throw new IllegalStateException(e);</span>
+<span class="fc" id="L414">      }</span>
+    }
+<span class="fc" id="L416">    return properties;</span>
+  }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

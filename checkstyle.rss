@@ -23,9 +23,9 @@ under the License.
     <link>https://github.com/mybatis/freemarker-scripting</link>
     <description>MyBatis FreeMarker - Checkstyle report</description>
     <language>en-us</language>
-    <copyright>&#169;2015 - 2019 MyBatis.org</copyright>
+    <copyright>&#169;2015 - 2020 MyBatis.org</copyright>
     <item>
-      <title>File: 14,
+      <title>File: 18,
              Errors: 0,
              Warnings: 5,
              Infos: 0
@@ -47,6 +47,20 @@ under the License.
                           <tr>
                 <td>
                   <a href="https://github.com/mybatis/freemarker-scripting/checkstyle.html#src.test.resources.log4j.properties">src/test/resources/log4j.properties</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/mybatis/freemarker-scripting/checkstyle.html#target.test-classes.log4j.properties">target/test-classes/log4j.properties</a>
                 </td>
                 <td>
                   0
@@ -116,7 +130,7 @@ under the License.
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/mybatis/freemarker-scripting/checkstyle.html#release.properties">release.properties</a>
+                  <a href="https://github.com/mybatis/freemarker-scripting/checkstyle.html#target.test-classes.mybatis-freemarker.properties">target/test-classes/mybatis-freemarker.properties</a>
                 </td>
                 <td>
                   0
@@ -145,6 +159,20 @@ under the License.
                           <tr>
                 <td>
                   <a href="https://github.com/mybatis/freemarker-scripting/checkstyle.html#.mvn.wrapper.maven-wrapper.properties">.mvn/wrapper/maven-wrapper.properties</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/mybatis/freemarker-scripting/checkstyle.html#target.test-classes.mybatis-freemarker-custom.properties">target/test-classes/mybatis-freemarker-custom.properties</a>
                 </td>
                 <td>
                   0
@@ -229,6 +257,34 @@ under the License.
                           <tr>
                 <td>
                   <a href="https://github.com/mybatis/freemarker-scripting/checkstyle.html#org.mybatis.scripting.freemarker.GeneratedParamsTemplateModel.java">org/mybatis/scripting/freemarker/GeneratedParamsTemplateModel.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/mybatis/freemarker-scripting/checkstyle.html#target.maven-archiver.pom.properties">target/maven-archiver/pom.properties</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/mybatis/freemarker-scripting/checkstyle.html#target.test-classes.mybatis-freemarker-empty.properties">target/test-classes/mybatis-freemarker-empty.properties</a>
                 </td>
                 <td>
                   0

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MyBatisParamDirective.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MyBatis FreeMarker</a> &gt; <a href="index.source.html" class="el_package">org.mybatis.scripting.freemarker</a> &gt; <span class="el_source">MyBatisParamDirective.java</span></div><h1>MyBatisParamDirective.java</h1><pre class="source lang-java linenums">/**
- *    Copyright 2015 the original author or authors.
+ *    Copyright 2015-2018 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *    you may not use this file except in compliance with the License.
@@ -17,83 +17,108 @@ package org.mybatis.scripting.freemarker;
 
 import freemarker.core.Environment;
 import freemarker.ext.util.WrapperTemplateModel;
-import freemarker.template.*;
+import freemarker.template.DefaultListAdapter;
+import freemarker.template.SimpleScalar;
+import freemarker.template.TemplateBooleanModel;
+import freemarker.template.TemplateDateModel;
+import freemarker.template.TemplateDirectiveBody;
+import freemarker.template.TemplateDirectiveModel;
+import freemarker.template.TemplateException;
+import freemarker.template.TemplateModel;
+import freemarker.template.TemplateNumberModel;
+import freemarker.template.TemplateScalarModel;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
 /**
- * Custom FreeMarker directive for generating &quot;#{paramName}&quot; declarations in convenient way.
- * Problem is FreeMarker supports this syntax natively and there are no chance to disable this
- * (although it is deprecated). And to get &quot;#{paramName}&quot; we should write ${r&quot;#{paramName}&quot;}.
- * With this directive you can write more simple:
+ * Custom FreeMarker directive for generating &quot;#{paramName}&quot; declarations in convenient way. Problem is FreeMarker
+ * supports this syntax natively and there are no chance to disable this (although it is deprecated). And to get
+ * &quot;#{paramName}&quot; we should write ${r&quot;#{paramName}&quot;}. With this directive you can write more simple:
  *
- * &lt;blockquote&gt;&lt;pre&gt;
+ * &lt;blockquote&gt;
+ * 
+ * &lt;pre&gt;
  *     &amp;lt;@p name=&quot;paramName&quot;/&amp;gt;
- * &lt;/pre&gt;&lt;/blockquote&gt;
+ * &lt;/pre&gt;
+ * 
+ * &lt;/blockquote&gt;
  *
- * Also directive supports `value` attribute. If it is specified, param will take passed value
- * and create the corresponding #{}-parameter. This is useful in loops:
+ * &lt;p&gt;
+ * Also directive supports `value` attribute. If it is specified, param will take passed value and create the
+ * corresponding #{}-parameter. This is useful in loops:
+ * &lt;/p&gt;
  *
- * &lt;blockquote&gt;&lt;pre&gt;
+ * &lt;blockquote&gt;
+ * 
+ * &lt;pre&gt;
  *     &amp;lt;#list ids as id&amp;gt;
  *       &amp;lt;@p value=id/&amp;gt;
  *       &amp;lt;#if id_has_next&amp;gt;,&amp;lt;/#if&amp;gt;
  *     &amp;lt;/#list&amp;gt;
- * &lt;/pre&gt;&lt;/blockquote&gt;
+ * &lt;/pre&gt;
+ * 
+ * &lt;/blockquote&gt;
  *
+ * &lt;p&gt;
  * will be translated into
+ * &lt;/p&gt;
  *
- * &lt;blockquote&gt;&lt;pre&gt;
+ * &lt;blockquote&gt;
+ * 
+ * &lt;pre&gt;
  *     #{_p0},#{_p1},#{_p2}
- * &lt;/pre&gt;&lt;/blockquote&gt;
+ * &lt;/pre&gt;
+ * 
+ * &lt;/blockquote&gt;
  *
+ * &lt;p&gt;
  * And MyBatis engine will convert it to `?`-params finally.
+ * &lt;/p&gt;
  *
  * @author elwood
  */
-<span class="fc" id="L56">public class MyBatisParamDirective implements TemplateDirectiveModel {</span>
-<span class="fc" id="L57">    public static String DEFAULT_KEY = &quot;p&quot;;</span>
+<span class="fc" id="L82">public class MyBatisParamDirective implements TemplateDirectiveModel {</span>
+<span class="fc" id="L83">  public static String DEFAULT_KEY = &quot;p&quot;;</span>
 
-    @Override
-    public void execute(Environment env, Map params, TemplateModel[] loopVars, TemplateDirectiveBody body) throws TemplateException, IOException {
-<span class="fc" id="L61">        SimpleScalar name = (SimpleScalar) params.get(&quot;name&quot;);</span>
-<span class="fc bfc" id="L62" title="All 2 branches covered.">        if (params.containsKey(&quot;value&quot;)) {</span>
-<span class="fc" id="L63">            Object valueObject = params.get(&quot;value&quot;);</span>
-            Object value;
-<span class="pc bpc" id="L65" title="1 of 2 branches missed.">            if (valueObject == null) {</span>
-<span class="nc" id="L66">                value = null;</span>
-<span class="fc bfc" id="L67" title="All 2 branches covered.">            } else if (valueObject instanceof WrapperTemplateModel) {</span>
-<span class="fc" id="L68">                value = ((WrapperTemplateModel) valueObject).getWrappedObject();</span>
-<span class="fc bfc" id="L69" title="All 2 branches covered.">            } else if (valueObject instanceof TemplateScalarModel) {</span>
-<span class="fc" id="L70">                value = ((TemplateScalarModel) valueObject).getAsString();</span>
-<span class="pc bpc" id="L71" title="1 of 2 branches missed.">            } else if (valueObject instanceof TemplateNumberModel) {</span>
-<span class="fc" id="L72">                value = ((TemplateNumberModel) valueObject).getAsNumber();</span>
-<span class="nc bnc" id="L73" title="All 2 branches missed.">            } else if (valueObject instanceof TemplateDateModel) {</span>
-<span class="nc" id="L74">                value = ((TemplateDateModel) valueObject).getAsDate();</span>
-<span class="nc bnc" id="L75" title="All 2 branches missed.">            } else if (valueObject instanceof TemplateBooleanModel) {</span>
-<span class="nc" id="L76">                value = ((TemplateBooleanModel) valueObject).getAsBoolean();</span>
-            } else {
-<span class="nc" id="L78">                throw new UnsupportedOperationException(</span>
-<span class="nc" id="L79">                        String.format(&quot;Type %s is not supported yet in this context.&quot;,</span>
-<span class="nc" id="L80">                                valueObject.getClass().getSimpleName()));</span>
-            }
+  @Override
+  public void execute(Environment env, Map params, TemplateModel[] loopVars, TemplateDirectiveBody body)
+      throws TemplateException, IOException {
+<span class="fc" id="L88">    SimpleScalar name = (SimpleScalar) params.get(&quot;name&quot;);</span>
+<span class="fc bfc" id="L89" title="All 2 branches covered.">    if (params.containsKey(&quot;value&quot;)) {</span>
+<span class="fc" id="L90">      Object valueObject = params.get(&quot;value&quot;);</span>
+      Object value;
+<span class="pc bpc" id="L92" title="1 of 2 branches missed.">      if (valueObject == null) {</span>
+<span class="nc" id="L93">        value = null;</span>
+<span class="fc bfc" id="L94" title="All 2 branches covered.">      } else if (valueObject instanceof WrapperTemplateModel) {</span>
+<span class="fc" id="L95">        value = ((WrapperTemplateModel) valueObject).getWrappedObject();</span>
+<span class="fc bfc" id="L96" title="All 2 branches covered.">      } else if (valueObject instanceof TemplateScalarModel) {</span>
+<span class="fc" id="L97">        value = ((TemplateScalarModel) valueObject).getAsString();</span>
+<span class="pc bpc" id="L98" title="1 of 2 branches missed.">      } else if (valueObject instanceof TemplateNumberModel) {</span>
+<span class="fc" id="L99">        value = ((TemplateNumberModel) valueObject).getAsNumber();</span>
+<span class="nc bnc" id="L100" title="All 2 branches missed.">      } else if (valueObject instanceof TemplateDateModel) {</span>
+<span class="nc" id="L101">        value = ((TemplateDateModel) valueObject).getAsDate();</span>
+<span class="nc bnc" id="L102" title="All 2 branches missed.">      } else if (valueObject instanceof TemplateBooleanModel) {</span>
+<span class="nc" id="L103">        value = ((TemplateBooleanModel) valueObject).getAsBoolean();</span>
+      } else {
+<span class="nc" id="L105">        throw new UnsupportedOperationException(</span>
+<span class="nc" id="L106">            String.format(&quot;Type %s is not supported yet in this context.&quot;, valueObject.getClass().getSimpleName()));</span>
+      }
 
-<span class="fc" id="L83">            TemplateModel generatedParamsObject = env.getGlobalVariables().get(FreeMarkerSqlSource.GENERATED_PARAMS_KEY);</span>
-            List generatedParams;
-<span class="fc bfc" id="L85" title="All 2 branches covered.">            if (generatedParamsObject instanceof DefaultListAdapter) {</span>
-<span class="fc" id="L86">                generatedParams = (List) ((DefaultListAdapter) generatedParamsObject).getWrappedObject();</span>
-            } else {
-<span class="fc" id="L88">                generatedParams = ((GeneratedParamsTemplateModel) generatedParamsObject)</span>
-<span class="fc" id="L89">                        .getGeneratedParams();</span>
-            }
-<span class="fc" id="L91">            String generatedParamName = &quot;_p&quot; + generatedParams.size();</span>
-<span class="fc" id="L92">            env.getOut().write(String.format(&quot;#{%s}&quot;, generatedParamName));</span>
-<span class="fc" id="L93">            generatedParams.add(value);</span>
-<span class="fc" id="L94">        } else {</span>
-<span class="fc" id="L95">            env.getOut().write(String.format(&quot;#{%s}&quot;, name));</span>
-        }
-<span class="fc" id="L97">    }</span>
+<span class="fc" id="L109">      TemplateModel generatedParamsObject = env.getGlobalVariables().get(FreeMarkerSqlSource.GENERATED_PARAMS_KEY);</span>
+      List generatedParams;
+<span class="fc bfc" id="L111" title="All 2 branches covered.">      if (generatedParamsObject instanceof DefaultListAdapter) {</span>
+<span class="fc" id="L112">        generatedParams = (List) ((DefaultListAdapter) generatedParamsObject).getWrappedObject();</span>
+      } else {
+<span class="fc" id="L114">        generatedParams = ((GeneratedParamsTemplateModel) generatedParamsObject).getGeneratedParams();</span>
+      }
+<span class="fc" id="L116">      String generatedParamName = &quot;_p&quot; + generatedParams.size();</span>
+<span class="fc" id="L117">      env.getOut().write(String.format(&quot;#{%s}&quot;, generatedParamName));</span>
+<span class="fc" id="L118">      generatedParams.add(value);</span>
+<span class="fc" id="L119">    } else {</span>
+<span class="fc" id="L120">      env.getOut().write(String.format(&quot;#{%s}&quot;, name));</span>
+    }
+<span class="fc" id="L122">  }</span>
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.7.201606060606</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
