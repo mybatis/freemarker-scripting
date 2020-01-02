@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-       Copyright 2015-2019 the original author or authors.
+       Copyright 2015-2020 the original author or authors.
 
        Licensed under the Apache License, Version 2.0 (the "License");
        you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@
 
   <groupId>org.mybatis.scripting</groupId>
   <artifactId>mybatis-freemarker</artifactId>
-  <version>1.2.1-SNAPSHOT</version>
+  <version>1.2.1</version>
 
   <name>MyBatis FreeMarker</name>
   <description>FreeMarker support for MyBatis</description>
@@ -55,7 +55,7 @@
     <url>https://github.com/mybatis/freemarker-scripting</url>
     <connection>scm:git:ssh://github.com/mybatis/freemarker-scripting.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/mybatis/freemarker-scripting.git</developerConnection>
-    <tag>HEAD</tag>
+    <tag>mybatis-freemarker-1.2.1</tag>
   </scm>
   <issueManagement>
     <system>GitHub Issue Management</system>
