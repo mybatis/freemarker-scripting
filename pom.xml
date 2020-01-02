@@ -29,7 +29,6 @@
   <groupId>org.mybatis.scripting</groupId>
   <artifactId>mybatis-freemarker</artifactId>
   <version>1.2.1-SNAPSHOT</version>
-  <packaging>jar</packaging>
 
   <name>MyBatis FreeMarker</name>
   <description>FreeMarker support for MyBatis</description>
