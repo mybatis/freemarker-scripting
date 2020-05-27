@@ -1,5 +1,5 @@
 /**
- *    Copyright 2015-2019 the original author or authors.
+ *    Copyright 2015-2020 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -208,7 +208,8 @@ public class TemplateFilePathProvider {
     String basePath = languageDriverConfig.getTemplateFile().getBaseDir();
     String actualPath = basePath.isEmpty() ? path : basePath + (basePath.endsWith("/") ? "" : "/") + path;
     try {
-      return Resources.getResourceAsFile(actualPath).exists();
+      Resources.getResourceURL(actualPath);
+      return true;
     } catch (IOException e) {
       return false;
     }
