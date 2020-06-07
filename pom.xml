@@ -76,9 +76,6 @@
   <properties>
     <clirr.comparisonVersion>1.1.2</clirr.comparisonVersion>
     <module.name>org.mybatis.scripting.freemarker</module.name>
-
-    <!-- Remove after parent 32 (support for jdk 13) -->
-    <jacoco.version>0.8.5</jacoco.version>
   </properties>
 
   <dependencies>
