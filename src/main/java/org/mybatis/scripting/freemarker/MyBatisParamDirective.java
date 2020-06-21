@@ -1,5 +1,5 @@
 /**
- *    Copyright 2015-2018 the original author or authors.
+ *    Copyright 2015-2020 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -15,6 +15,10 @@
  */
 package org.mybatis.scripting.freemarker;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+
 import freemarker.core.Environment;
 import freemarker.ext.util.WrapperTemplateModel;
 import freemarker.template.DefaultListAdapter;
@@ -28,21 +32,17 @@ import freemarker.template.TemplateModel;
 import freemarker.template.TemplateNumberModel;
 import freemarker.template.TemplateScalarModel;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-
 /**
  * Custom FreeMarker directive for generating "#{paramName}" declarations in convenient way. Problem is FreeMarker
  * supports this syntax natively and there are no chance to disable this (although it is deprecated). And to get
  * "#{paramName}" we should write ${r"#{paramName}"}. With this directive you can write more simple:
  *
  * <blockquote>
- * 
+ *
  * <pre>
  *     &lt;@p name="paramName"/&gt;
  * </pre>
- * 
+ *
  * </blockquote>
  *
  * <p>
@@ -51,14 +51,14 @@ import java.util.Map;
  * </p>
  *
  * <blockquote>
- * 
+ *
  * <pre>
  *     &lt;#list ids as id&gt;
  *       &lt;@p value=id/&gt;
  *       &lt;#if id_has_next&gt;,&lt;/#if&gt;
  *     &lt;/#list&gt;
  * </pre>
- * 
+ *
  * </blockquote>
  *
  * <p>
@@ -66,11 +66,11 @@ import java.util.Map;
  * </p>
  *
  * <blockquote>
- * 
+ *
  * <pre>
  *     #{_p0},#{_p1},#{_p2}
  * </pre>
- * 
+ *
  * </blockquote>
  *
  * <p>

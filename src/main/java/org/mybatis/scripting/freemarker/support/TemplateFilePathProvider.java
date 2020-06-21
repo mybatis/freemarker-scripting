@@ -32,7 +32,7 @@ import org.mybatis.scripting.freemarker.FreeMarkerLanguageDriverConfig.TemplateF
  * <b>IMPORTANT: This class required to use with mybatis 3.5.1+</b> and need to use with SQL provider annotation (such
  * as {@link org.apache.ibatis.annotations.SelectProvider} as follow: <br>
  * <br>
- * 
+ *
  * <pre>
  * package com.example.mapper;
  *
@@ -64,7 +64,7 @@ import org.mybatis.scripting.freemarker.FreeMarkerLanguageDriverConfig.TemplateF
  *
  * }
  * </pre>
- * 
+ *
  * @author Kazuki Shimizu
  * @version 1.2.0
  */
@@ -102,7 +102,7 @@ public class TemplateFilePathProvider {
    * If you applied an user define {@link FreeMarkerLanguageDriverConfig} for {@link FreeMarkerLanguageDriver}, please
    * same instance to the this class.
    * </p>
-   * 
+   *
    * @param languageDriverConfig
    *          A user defined {@link FreeMarkerLanguageDriverConfig}
    */

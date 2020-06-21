@@ -1,5 +1,5 @@
 /**
- *    Copyright 2015-2017 the original author or authors.
+ *    Copyright 2015-2020 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -15,9 +15,9 @@
  */
 package org.mybatis.scripting.freemarker;
 
-import freemarker.template.TemplateModel;
-
 import java.util.List;
+
+import freemarker.template.TemplateModel;
 
 /**
  * Just a wrapper for list of generated params. Only to be able to return this object from

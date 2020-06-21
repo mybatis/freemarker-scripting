@@ -1,5 +1,5 @@
 /**
- *    Copyright 2015-2019 the original author or authors.
+ *    Copyright 2015-2020 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -30,8 +30,6 @@ import java.util.Properties;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-import freemarker.template.Configuration;
-import freemarker.template.Version;
 import org.apache.commons.text.WordUtils;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.logging.Log;
@@ -40,6 +38,9 @@ import org.apache.ibatis.reflection.DefaultReflectorFactory;
 import org.apache.ibatis.reflection.MetaObject;
 import org.apache.ibatis.reflection.factory.DefaultObjectFactory;
 import org.apache.ibatis.reflection.wrapper.DefaultObjectWrapperFactory;
+
+import freemarker.template.Configuration;
+import freemarker.template.Version;
 
 /**
  * Configuration class for {@link FreeMarkerLanguageDriver}.

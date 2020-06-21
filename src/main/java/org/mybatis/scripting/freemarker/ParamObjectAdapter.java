@@ -1,5 +1,5 @@
 /**
- *    Copyright 2015-2019 the original author or authors.
+ *    Copyright 2015-2020 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -15,15 +15,15 @@
  */
 package org.mybatis.scripting.freemarker;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import freemarker.ext.beans.BeanModel;
 import freemarker.ext.beans.BeansWrapperBuilder;
 import freemarker.template.TemplateHashModel;
 import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
 import freemarker.template.Version;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Important: if you are using some object that already has property "p", then MyBatisParamDirective will be unavailable

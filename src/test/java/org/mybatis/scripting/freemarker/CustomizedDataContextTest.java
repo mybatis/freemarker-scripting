@@ -1,5 +1,5 @@
 /**
- *    Copyright 2015-2019 the original author or authors.
+ *    Copyright 2015-2020 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -15,9 +15,11 @@
  */
 package org.mybatis.scripting.freemarker;
 
-import freemarker.template.SimpleScalar;
-import freemarker.template.Template;
-import freemarker.template.Version;
+import java.io.Reader;
+import java.sql.Connection;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.jdbc.ScriptRunner;
 import org.apache.ibatis.mapping.Environment;
@@ -33,10 +35,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import java.io.Reader;
-import java.sql.Connection;
-import java.util.List;
-import java.util.Map;
+import freemarker.template.SimpleScalar;
+import freemarker.template.Template;
+import freemarker.template.Version;
 
 /**
  * @author elwood

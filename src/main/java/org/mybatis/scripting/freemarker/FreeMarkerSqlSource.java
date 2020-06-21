@@ -1,5 +1,5 @@
 /**
- *    Copyright 2015-2019 the original author or authors.
+ *    Copyright 2015-2020 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -15,20 +15,20 @@
  */
 package org.mybatis.scripting.freemarker;
 
-import freemarker.template.Template;
-import freemarker.template.TemplateException;
-
 import java.io.CharArrayWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import freemarker.template.Version;
 import org.apache.ibatis.builder.SqlSourceBuilder;
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.SqlSource;
 import org.apache.ibatis.session.Configuration;
+
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
+import freemarker.template.Version;
 
 /**
  * Applies provided parameter(s) to FreeMarker template. Then passes the result into default MyBatis engine (and it
