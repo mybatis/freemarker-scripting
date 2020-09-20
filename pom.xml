@@ -110,12 +110,4 @@
     </dependency>
   </dependencies>
 
-  <repositories>
-    <repository>
-      <id>sonatype-oss-snapshots</id>
-      <name>Sonatype OSS Snapshots Repository</name>
-      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-    </repository>
-  </repositories>
-
 </project>
