@@ -23,11 +23,11 @@ under the License.
     <link>https://github.com/mybatis/freemarker-scripting</link>
     <description>MyBatis FreeMarker - Checkstyle report</description>
     <language>en-us</language>
-    <copyright>&#169;2015 - 2020 MyBatis.org</copyright>
+    <copyright>&#169;2015 - 2021 MyBatis.org</copyright>
     <item>
       <title>File: 14,
              Errors: 0,
-             Warnings: 5,
+             Warnings: 38,
              Infos: 0
       </title>
             <link>https://github.com/mybatis/freemarker-scripting/checkstyle.html</link>
@@ -46,27 +46,13 @@ under the License.
           <tbody>
                           <tr>
                 <td>
-                  <a href="https://github.com/mybatis/freemarker-scripting/checkstyle.html#src.test.resources.log4j.properties">src/test/resources/log4j.properties</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
                   <a href="https://github.com/mybatis/freemarker-scripting/checkstyle.html#org.mybatis.scripting.freemarker.FreeMarkerLanguageDriverConfig.java">org/mybatis/scripting/freemarker/FreeMarkerLanguageDriverConfig.java</a>
                 </td>
                 <td>
                   0
                 </td>
                 <td>
-                  2
+                  3
                 </td>
                 <td>
                   0
@@ -94,7 +80,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  1
+                  6
                 </td>
                 <td>
                   0
@@ -130,13 +116,27 @@ under the License.
               </tr>
                           <tr>
                 <td>
+                  <a href="https://github.com/mybatis/freemarker-scripting/checkstyle.html#target.impsort-maven-cache.properties">target/impsort-maven-cache.properties</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
                   <a href="https://github.com/mybatis/freemarker-scripting/checkstyle.html#org.mybatis.scripting.freemarker.MyBatisParamDirective.java">org/mybatis/scripting/freemarker/MyBatisParamDirective.java</a>
                 </td>
                 <td>
                   0
                 </td>
                 <td>
-                  0
+                  13
                 </td>
                 <td>
                   0
@@ -192,7 +192,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  0
+                  7
                 </td>
                 <td>
                   0
@@ -206,7 +206,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  0
+                  1
                 </td>
                 <td>
                   0
@@ -220,7 +220,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  2
+                  6
                 </td>
                 <td>
                   0
@@ -234,7 +234,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  0
+                  2
                 </td>
                 <td>
                   0
