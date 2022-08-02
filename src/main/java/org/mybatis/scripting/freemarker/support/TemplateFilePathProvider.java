@@ -1,5 +1,5 @@
 /*
- *    Copyright 2015-2021 the original author or authors.
+ *    Copyright 2015-2022 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -66,6 +66,7 @@ import org.mybatis.scripting.freemarker.FreeMarkerLanguageDriverConfig.TemplateF
  * </pre>
  *
  * @author Kazuki Shimizu
+ *
  * @version 1.2.0
  */
 public class TemplateFilePathProvider {
@@ -129,6 +130,7 @@ public class TemplateFilePathProvider {
    *
    * @param context
    *          a context of SQL provider
+   *
    * @return an SQL scripting string(template file path)
    */
   @SuppressWarnings("unused")
@@ -230,6 +232,7 @@ public class TemplateFilePathProvider {
      *          a mapper method that specified provider
      * @param databaseId
      *          a database id that provided from {@link org.apache.ibatis.mapping.DatabaseIdProvider}
+     *
      * @return a template file path
      */
     String generatePath(Class<?> type, Method method, String databaseId);

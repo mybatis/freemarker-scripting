@@ -1,5 +1,5 @@
 /*
- *    Copyright 2015-2021 the original author or authors.
+ *    Copyright 2015-2022 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -60,6 +60,7 @@ public class FreeMarkerLanguageDriver implements LanguageDriver {
    *
    * @param driverConfig
    *          a language driver configuration
+   *
    * @since 1.2.0
    */
   public FreeMarkerLanguageDriver(FreeMarkerLanguageDriverConfig driverConfig) {
@@ -102,6 +103,7 @@ public class FreeMarkerLanguageDriver implements LanguageDriver {
    * Creates a {@link ParameterHandler} that passes the actual parameters to the the JDBC statement.
    *
    * @see DefaultParameterHandler
+   *
    * @param mappedStatement
    *          The mapped statement that is being executed
    * @param parameterObject

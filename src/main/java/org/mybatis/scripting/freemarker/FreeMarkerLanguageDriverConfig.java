@@ -1,5 +1,5 @@
 /*
- *    Copyright 2015-2021 the original author or authors.
+ *    Copyright 2015-2022 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -45,6 +45,7 @@ import freemarker.template.Configuration;
  * Configuration class for {@link FreeMarkerLanguageDriver}.
  *
  * @author Kazuki Shimizu
+ *
  * @since 1.2.0
  */
 public class FreeMarkerLanguageDriverConfig {
@@ -89,6 +90,7 @@ public class FreeMarkerLanguageDriverConfig {
    * </p>
    *
    * @return a base directory for reading template resources
+   *
    * @deprecated Recommend to use the {@link TemplateFileConfig#getBaseDir()}} because this method defined for keeping
    *             backward compatibility (There is possibility that this method removed at a future version)
    */
@@ -102,6 +104,7 @@ public class FreeMarkerLanguageDriverConfig {
    *
    * @param basePackage
    *          a base directory for reading template resources
+   *
    * @deprecated Recommend to use the {@link TemplateFileConfig#setBaseDir(String)} because this method defined for
    *             keeping backward compatibility (There is possibility that this method removed at a future version)
    */
@@ -352,7 +355,9 @@ public class FreeMarkerLanguageDriverConfig {
    *
    * @param customProperties
    *          custom configuration properties
+   *
    * @return a configuration instance
+   *
    * @see #newInstance()
    */
   public static FreeMarkerLanguageDriverConfig newInstance(Properties customProperties) {
@@ -368,7 +373,9 @@ public class FreeMarkerLanguageDriverConfig {
    *
    * @param customizer
    *          baseline customizer
+   *
    * @return a configuration instance
+   *
    * @see #newInstance()
    */
   public static FreeMarkerLanguageDriverConfig newInstance(Consumer<FreeMarkerLanguageDriverConfig> customizer) {
