@@ -1,5 +1,5 @@
 /*
- *    Copyright 2015-2021 the original author or authors.
+ *    Copyright 2015-2022 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -28,10 +28,11 @@ import org.mybatis.scripting.freemarker.FreeMarkerLanguageDriverConfig;
 import org.mybatis.scripting.freemarker.FreeMarkerLanguageDriverConfig.TemplateFileConfig.PathProviderConfig;
 
 /**
- * The SQL provider class that return the SQL template file path. <br>
+ * The SQL provider class that return the SQL template file path.
+ * <p>
  * <b>IMPORTANT: This class required to use with mybatis 3.5.1+</b> and need to use with SQL provider annotation (such
- * as {@link org.apache.ibatis.annotations.SelectProvider} as follow: <br>
- * <br>
+ * as {@link org.apache.ibatis.annotations.SelectProvider} as follow:
+ * <p>
  *
  * <pre>
  * package com.example.mapper;
@@ -66,6 +67,7 @@ import org.mybatis.scripting.freemarker.FreeMarkerLanguageDriverConfig.TemplateF
  * </pre>
  *
  * @author Kazuki Shimizu
+ *
  * @version 1.2.0
  */
 public class TemplateFilePathProvider {
@@ -97,11 +99,9 @@ public class TemplateFilePathProvider {
    * Set a configuration instance for {@link FreeMarkerLanguageDriver}.
    * <p>
    * By default, {@link FreeMarkerLanguageDriverConfig#newInstance()} will used.
-   * </p>
    * <p>
    * If you applied an user define {@link FreeMarkerLanguageDriverConfig} for {@link FreeMarkerLanguageDriver}, please
    * same instance to the this class.
-   * </p>
    *
    * @param languageDriverConfig
    *          A user defined {@link FreeMarkerLanguageDriverConfig}
@@ -113,8 +113,7 @@ public class TemplateFilePathProvider {
 
   /**
    * Provide an SQL scripting string(template file path).
-   *
-   * <br>
+   * <p>
    * By default implementation, a template file path resolve following format and priority order. If does not match all,
    * it throw an exception that indicate not found a template file.
    * <ul>
@@ -125,10 +124,10 @@ public class TemplateFilePathProvider {
    * <li>com/example/mapper/BaseMapper/BaseMapper-{methodName}.ftl (fallback using declaring class of method and default
    * database)</li>
    * </ul>
-   * <br>
    *
    * @param context
    *          a context of SQL provider
+   *
    * @return an SQL scripting string(template file path)
    */
   @SuppressWarnings("unused")
@@ -230,6 +229,7 @@ public class TemplateFilePathProvider {
      *          a mapper method that specified provider
      * @param databaseId
      *          a database id that provided from {@link org.apache.ibatis.mapping.DatabaseIdProvider}
+     *
      * @return a template file path
      */
     String generatePath(Class<?> type, Method method, String databaseId);

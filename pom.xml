@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-       Copyright 2015-2021 the original author or authors.
+       Copyright 2015-2022 the original author or authors.
 
        Licensed under the Apache License, Version 2.0 (the "License");
        you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.mybatis</groupId>
     <artifactId>mybatis-parent</artifactId>
-    <version>34</version>
+    <version>35</version>
     <relativePath />
   </parent>
 
@@ -105,43 +105,24 @@
     <dependency>
       <groupId>org.hsqldb</groupId>
       <artifactId>hsqldb</artifactId>
-      <version>2.5.1</version>
+      <version>2.7.0</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
 
-  <!-- Due to bug in package handling on formatter/impsort/license plugins, skip the 'DefaultPackageNameMapper' as it ends up adding duplicate headers. -->
   <build>
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <groupId>net.revelc.code.formatter</groupId>
-          <artifactId>formatter-maven-plugin</artifactId>
-          <configuration>
-            <excludes combine.children="append">
-              <exclude>**/DefaultPackageNameMapper.java</exclude>
-            </excludes>
-          </configuration>
-        </plugin>
-        <plugin>
-          <groupId>net.revelc.code</groupId>
-          <artifactId>impsort-maven-plugin</artifactId>
-          <configuration>
-            <excludes combine.children="append">
-              <exclude>**/DefaultPackageNameMapper.java</exclude>
-            </excludes>
-          </configuration>
-        </plugin>
-        <plugin>
-          <groupId>com.mycila</groupId>
-          <artifactId>license-maven-plugin</artifactId>
-          <configuration>
-            <excludes combine.children="append">
-              <exclude>**/DefaultPackageNameMapper.java</exclude>
-            </excludes>
-          </configuration>
-        </plugin>
-      </plugins>
-    </pluginManagement>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <configuration>
+          <rules>
+            <enforceBytecodeVersion>
+              <ignoredScopes>test</ignoredScopes>
+            </enforceBytecodeVersion>
+          </rules>
+        </configuration>
+      </plugin>
+    </plugins>
   </build>
 </project>
