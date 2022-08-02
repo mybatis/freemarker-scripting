@@ -1,5 +1,5 @@
 /*
- *    Copyright 2015-2021 the original author or authors.
+ *    Copyright 2015-2022 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@ import freemarker.template.TemplateScalarModel;
  * Custom FreeMarker directive for generating "#{paramName}" declarations in convenient way. Problem is FreeMarker
  * supports this syntax natively and there are no chance to disable this (although it is deprecated). And to get
  * "#{paramName}" we should write ${r"#{paramName}"}. With this directive you can write more simple:
- *
+ * <p>
  * <blockquote>
  *
  * <pre>
@@ -44,12 +44,10 @@ import freemarker.template.TemplateScalarModel;
  * </pre>
  *
  * </blockquote>
- *
  * <p>
  * Also directive supports `value` attribute. If it is specified, param will take passed value and create the
  * corresponding #{}-parameter. This is useful in loops:
  * </p>
- *
  * <blockquote>
  *
  * <pre>
@@ -60,11 +58,9 @@ import freemarker.template.TemplateScalarModel;
  * </pre>
  *
  * </blockquote>
- *
  * <p>
  * will be translated into
  * </p>
- *
  * <blockquote>
  *
  * <pre>
@@ -72,7 +68,6 @@ import freemarker.template.TemplateScalarModel;
  * </pre>
  *
  * </blockquote>
- *
  * <p>
  * And MyBatis engine will convert it to `?`-params finally.
  * </p>
