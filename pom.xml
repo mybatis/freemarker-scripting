@@ -110,40 +110,7 @@
     </dependency>
   </dependencies>
 
-  <!-- Due to bug in package handling on formatter/impsort/license plugins, skip the 'DefaultPackageNameMapper' as it ends up adding duplicate headers. -->
   <build>
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <groupId>net.revelc.code.formatter</groupId>
-          <artifactId>formatter-maven-plugin</artifactId>
-          <configuration>
-            <excludes combine.children="append">
-              <exclude>**/DefaultPackageNameMapper.java</exclude>
-            </excludes>
-          </configuration>
-        </plugin>
-        <plugin>
-          <groupId>net.revelc.code</groupId>
-          <artifactId>impsort-maven-plugin</artifactId>
-          <configuration>
-            <excludes combine.children="append">
-              <exclude>**/DefaultPackageNameMapper.java</exclude>
-            </excludes>
-          </configuration>
-        </plugin>
-        <plugin>
-          <groupId>com.mycila</groupId>
-          <artifactId>license-maven-plugin</artifactId>
-          <configuration>
-            <excludes combine.children="append">
-              <exclude>**/DefaultPackageNameMapper.java</exclude>
-            </excludes>
-          </configuration>
-        </plugin>
-      </plugins>
-    </pluginManagement>
-
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
