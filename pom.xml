@@ -63,8 +63,8 @@
     <url>https://github.com/mybatis/freemarker-scripting/issues</url>
   </issueManagement>
   <ciManagement>
-    <system>Travis CI</system>
-    <url>https://travis-ci.org/mybatis/freemarker-scripting</url>
+    <system>GitHub Actions</system>
+    <url>https://github.com/mybatis/freemarker-scripting/actions</url>
   </ciManagement>
   <distributionManagement>
     <site>
