@@ -7,7 +7,7 @@ MyBatis FreeMarker Support
 [![Sonatype Nexus (Snapshots)](https://img.shields.io/nexus/s/https/oss.sonatype.org/org.mybatis.scripting/mybatis-freemarker.svg)](https://oss.sonatype.org/content/repositories/snapshots/org/mybatis/scripting/mybatis-freemarker/)
 [![License](https://img.shields.io/:license-apache-brightgreen.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
 
-![freemarker-scripting](http://mybatis.github.io/images/mybatis-logo.png)
+![freemarker-scripting](https://mybatis.org/images/mybatis-logo.png)
 
 MyBatis FreeMarker Scripting Support.
 
@@ -21,5 +21,5 @@ Requirements
 Essentials
 ----------
 
-* [See the docs](http://mybatis.github.io/freemarker-scripting/)
+* [See the docs](https://mybatis.org/freemarker-scripting/)
 
