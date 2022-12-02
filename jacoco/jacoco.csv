@@ -7,4 +7,4 @@ MyBatis FreeMarker,org.mybatis.scripting.freemarker,GeneratedParamsTemplateModel
 MyBatis FreeMarker,org.mybatis.scripting.freemarker,FreeMarkerSqlSource,6,160,0,14,2,36,0,10,0,3
 MyBatis FreeMarker,org.mybatis.scripting.freemarker,MyBatisParamDirective,34,101,6,10,7,22,4,7,0,3
 MyBatis FreeMarker,org.mybatis.scripting.freemarker,FreeMarkerLanguageDriver,12,131,0,2,4,31,0,10,0,9
-MyBatis FreeMarker,org.mybatis.scripting.freemarker.support,TemplateFilePathProvider,2,276,1,39,0,58,1,28,0,9
+MyBatis FreeMarker,org.mybatis.scripting.freemarker.support,TemplateFilePathProvider,2,277,1,39,0,59,1,28,0,9
