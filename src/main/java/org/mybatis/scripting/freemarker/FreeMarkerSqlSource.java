@@ -1,5 +1,5 @@
 /*
- *    Copyright 2015-2022 the original author or authors.
+ *    Copyright 2015-2025 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -19,11 +19,15 @@ import java.io.CharArrayWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.builder.ParameterMappingTokenHandler;
 import org.apache.ibatis.builder.SqlSourceBuilder;
 import org.apache.ibatis.mapping.BoundSql;
+import org.apache.ibatis.mapping.ParameterMapping;
 import org.apache.ibatis.mapping.SqlSource;
+import org.apache.ibatis.parsing.GenericTokenParser;
 import org.apache.ibatis.session.Configuration;
 
 import freemarker.template.Template;
@@ -110,9 +114,18 @@ public class FreeMarkerSqlSource implements SqlSource {
     }
 
     // Pass retrieved SQL into MyBatis engine, it will substitute prepared-statements parameters
-    SqlSourceBuilder sqlSourceParser = new SqlSourceBuilder(configuration);
-    Class<?> parameterType1 = parameterObject == null ? Object.class : parameterObject.getClass();
-    SqlSource sqlSource = sqlSourceParser.parse(sql, parameterType1, new HashMap<String, Object>());
+    SqlSource sqlSource = parse(configuration, sql, parameterObject, new HashMap<String, Object>());
     return sqlSource.getBoundSql(parameterObject);
   }
+
+  private static SqlSource parse(Configuration configuration, String originalSql, Object parameterObject,
+      Map<String, Object> additionalParameters) {
+    Class<?> parameterType = parameterObject == null ? Object.class : parameterObject.getClass();
+    List<ParameterMapping> parameterMappings = new ArrayList<>();
+    ParameterMappingTokenHandler handler = new ParameterMappingTokenHandler(parameterMappings, configuration,
+        parameterObject, parameterType, additionalParameters, true);
+    GenericTokenParser parser = new GenericTokenParser("#{", "}", handler);
+    return SqlSourceBuilder.buildSqlSource(configuration, parser.parse(originalSql), parameterMappings);
+  }
+
 }
