@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import freemarker.template.SimpleScalar;
 import org.apache.ibatis.builder.SqlSourceBuilder;
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.SqlSource;
@@ -40,6 +41,7 @@ public class FreeMarkerSqlSource implements SqlSource {
   private final Template template;
   private final Configuration configuration;
   private final Version incompatibleImprovementsVersion;
+  private final String databaseId;
 
   public static final String GENERATED_PARAMS_KEY = "__GENERATED__";
 
@@ -47,6 +49,7 @@ public class FreeMarkerSqlSource implements SqlSource {
     this.template = template;
     this.configuration = configuration;
     this.incompatibleImprovementsVersion = incompatibleImprovementsVersion;
+    this.databaseId = configuration.getDatabaseId();
   }
 
   /**
@@ -56,9 +59,12 @@ public class FreeMarkerSqlSource implements SqlSource {
   protected Object preProcessDataContext(Object dataContext, boolean isMap) {
     if (isMap) {
       ((Map<String, Object>) dataContext).put(MyBatisParamDirective.DEFAULT_KEY, new MyBatisParamDirective());
+      ((Map<String, Object>) dataContext).put(MyBatisParamDirective.DATABASE_ID_KEY,new SimpleScalar(this.databaseId));
     } else {
       ((ParamObjectAdapter) dataContext).putAdditionalParam(MyBatisParamDirective.DEFAULT_KEY,
           new MyBatisParamDirective());
+      ((ParamObjectAdapter) dataContext).putAdditionalParam(MyBatisParamDirective.DATABASE_ID_KEY,
+              new SimpleScalar(this.databaseId));
     }
     return dataContext;
   }
