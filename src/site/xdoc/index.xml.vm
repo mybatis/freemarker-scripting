@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-       Copyright 2015-2022 the original author or authors.
+       Copyright 2015-2023 the original author or authors.
 
        Licensed under the Apache License, Version 2.0 (the "License");
        you may not use this file except in compliance with the License.
@@ -331,6 +331,30 @@ templateFile.pathProvider.cacheEnabled = false
 ]]></source>
         </li>
       </ul>
+
+      <p>
+        <span class="label important">TIPS</span><br/>
+        Since the MyBatis 3.5.6, you can omit the type attribute at each annotations when specify the default provider class as global configuration as follow:<br/>
+        Mapper interface:
+        <source><![CDATA[
+public interface NameMapper extends BaseMapper {
+  @SelectProvider
+  List<Name> findByCondition(NameCondition condition);
+}
+]]></source>
+        Java based configuration:
+        <source><![CDATA[
+Configuration configuration = new Configuration();
+configuration.setDefaultSqlProviderType(TemplateFilePathProvider.class);
+]]></source>
+        XML based configuration:
+        <source><![CDATA[
+<settings>
+  <setting name="defaultSqlProviderType" value="org.mybatis.scripting.freemarker.support.TemplateFilePathProvider"/>
+</settings>
+]]></source>
+
+      </p>
 
     </section>
 
