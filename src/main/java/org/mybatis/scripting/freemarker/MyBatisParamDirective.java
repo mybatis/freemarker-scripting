@@ -76,6 +76,7 @@ import freemarker.template.TemplateScalarModel;
  */
 public class MyBatisParamDirective implements TemplateDirectiveModel {
   public static String DEFAULT_KEY = "p";
+  public static String DATABASE_ID_KEY = "_databaseId";
 
   @Override
   public void execute(Environment env, Map params, TemplateModel[] loopVars, TemplateDirectiveBody body)
