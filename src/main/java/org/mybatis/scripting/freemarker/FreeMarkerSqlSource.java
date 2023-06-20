@@ -1,5 +1,5 @@
 /*
- *    Copyright 2015-2022 the original author or authors.
+ *    Copyright 2015-2023 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -21,12 +21,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import freemarker.template.SimpleScalar;
 import org.apache.ibatis.builder.SqlSourceBuilder;
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.SqlSource;
 import org.apache.ibatis.session.Configuration;
 
+import freemarker.template.SimpleScalar;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import freemarker.template.Version;
@@ -59,12 +59,12 @@ public class FreeMarkerSqlSource implements SqlSource {
   protected Object preProcessDataContext(Object dataContext, boolean isMap) {
     if (isMap) {
       ((Map<String, Object>) dataContext).put(MyBatisParamDirective.DEFAULT_KEY, new MyBatisParamDirective());
-      ((Map<String, Object>) dataContext).put(MyBatisParamDirective.DATABASE_ID_KEY,new SimpleScalar(this.databaseId));
+      ((Map<String, Object>) dataContext).put(MyBatisParamDirective.DATABASE_ID_KEY, new SimpleScalar(this.databaseId));
     } else {
       ((ParamObjectAdapter) dataContext).putAdditionalParam(MyBatisParamDirective.DEFAULT_KEY,
           new MyBatisParamDirective());
       ((ParamObjectAdapter) dataContext).putAdditionalParam(MyBatisParamDirective.DATABASE_ID_KEY,
-              new SimpleScalar(this.databaseId));
+          new SimpleScalar(this.databaseId));
     }
     return dataContext;
   }
