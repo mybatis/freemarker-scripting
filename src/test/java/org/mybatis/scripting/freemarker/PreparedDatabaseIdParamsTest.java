@@ -17,10 +17,8 @@ package org.mybatis.scripting.freemarker;
 
 import java.io.Reader;
 import java.sql.Connection;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 
-import org.apache.ibatis.exceptions.PersistenceException;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.jdbc.ScriptRunner;
 import org.apache.ibatis.mapping.Environment;
@@ -34,8 +32,6 @@ import org.hsqldb.jdbc.JDBCDataSource;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-
-import java.util.Optional;
 
 /**
  * Test of using FreeMarker to generate prepared statements parameters.
@@ -81,13 +77,25 @@ class PreparedDatabaseIdParamsTest {
   }
 
   @Test
-  void testInCall() {
+  void testReferDatabaseIdInTemplate() {
     try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
       PreparedDatabaseIdParamsMapper mapper = sqlSession.getMapper(PreparedDatabaseIdParamsMapper.class);
       Optional<Name> nameList = mapper.getDatabaseIdTest();
-      Assertions.assertEquals(true, nameList.isPresent());
+      Assertions.assertTrue(nameList.isPresent());
       Assertions.assertEquals("Fred", nameList.get().getFirstName());
       Assertions.assertEquals("Flintstone", nameList.get().getLastName());
     }
   }
+
+  @Test
+  void testReferDatabaseIdInTemplateWithParam() {
+    try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+      PreparedDatabaseIdParamsMapper mapper = sqlSession.getMapper(PreparedDatabaseIdParamsMapper.class);
+      Optional<Name> nameList = mapper.getDatabaseIdTestWithParam(new PreparedParam());
+      Assertions.assertTrue(nameList.isPresent());
+      Assertions.assertEquals("Fred", nameList.get().getFirstName());
+      Assertions.assertEquals("Flintstone", nameList.get().getLastName());
+    }
+  }
+
 }

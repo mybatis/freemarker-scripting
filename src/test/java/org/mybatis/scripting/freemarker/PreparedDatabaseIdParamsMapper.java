@@ -15,15 +15,17 @@
  */
 package org.mybatis.scripting.freemarker;
 
-import org.apache.ibatis.annotations.Lang;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
-
-import java.util.List;
 import java.util.Optional;
+
+import org.apache.ibatis.annotations.Lang;
+import org.apache.ibatis.annotations.Select;
 
 public interface PreparedDatabaseIdParamsMapper {
   @Lang(FreeMarkerLanguageDriver.class)
   @Select("preparedDatabaseIdTest.ftl")
   Optional<Name> getDatabaseIdTest();
+
+  @Lang(FreeMarkerLanguageDriver.class)
+  @Select("preparedDatabaseIdTest.ftl")
+  Optional<Name> getDatabaseIdTestWithParam(PreparedParam param);
 }
