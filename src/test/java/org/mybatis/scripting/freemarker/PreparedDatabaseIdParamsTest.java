@@ -40,7 +40,7 @@ import java.util.Optional;
 /**
  * Test of using FreeMarker to generate prepared statements parameters.
  *
- * @author elwood
+ * @author s-nakao
  */
 class PreparedDatabaseIdParamsTest {
   private static SqlSessionFactory sqlSessionFactory;
@@ -50,7 +50,7 @@ class PreparedDatabaseIdParamsTest {
     Class.forName("org.hsqldb.jdbcDriver");
 
     JDBCDataSource dataSource = new JDBCDataSource();
-    dataSource.setUrl("jdbc:hsqldb:mem:db3");
+    dataSource.setUrl("jdbc:hsqldb:mem:db5");
     dataSource.setUser("sa");
     dataSource.setPassword("");
 
