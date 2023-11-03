@@ -54,7 +54,7 @@
 
   <scm>
     <url>https://github.com/mybatis/freemarker-scripting</url>
-    <connection>scm:git:ssh://github.com/mybatis/freemarker-scripting.git</connection>
+    <connection>scm:git:ssh://git@github.com/mybatis/freemarker-scripting.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/mybatis/freemarker-scripting.git</developerConnection>
     <tag>HEAD</tag>
   </scm>
@@ -68,9 +68,9 @@
   </ciManagement>
   <distributionManagement>
     <site>
-      <id>gh-pages</id>
+      <id>gh-pages-scm</id>
       <name>Mybatis GitHub Pages</name>
-      <url>git:ssh://git@github.com/mybatis/freemarker-scripting.git?gh-pages#</url>
+      <url>scm:git:ssh://git@github.com/mybatis/freemarker-scripting.git</url>
     </site>
   </distributionManagement>
 
