@@ -24,7 +24,7 @@
     <groupId>org.mybatis</groupId>
     <artifactId>mybatis-parent</artifactId>
     <version>39</version>
-    <relativePath />
+    <relativePath/>
   </parent>
 
   <groupId>org.mybatis.scripting</groupId>
@@ -53,10 +53,10 @@
   </contributors>
 
   <scm>
-    <url>https://github.com/mybatis/freemarker-scripting</url>
     <connection>scm:git:ssh://git@github.com/mybatis/freemarker-scripting.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/mybatis/freemarker-scripting.git</developerConnection>
     <tag>HEAD</tag>
+    <url>https://github.com/mybatis/freemarker-scripting</url>
   </scm>
   <issueManagement>
     <system>GitHub Issue Management</system>
