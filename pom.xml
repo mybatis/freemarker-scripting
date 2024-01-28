@@ -33,7 +33,7 @@
 
   <name>MyBatis FreeMarker</name>
   <description>FreeMarker support for MyBatis</description>
-  <url>https://github.com/freemarker-scripting/</url>
+  <url>https://www.mybatis.org/freemarker-scripting/</url>
 
   <inceptionYear>2015</inceptionYear>
 
