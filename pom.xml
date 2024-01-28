@@ -33,7 +33,7 @@
 
   <name>MyBatis FreeMarker</name>
   <description>FreeMarker support for MyBatis</description>
-  <url>https://github.com/mybatis/freemarker-scripting</url>
+  <url>https://github.com/freemarker-scripting/</url>
 
   <inceptionYear>2015</inceptionYear>
 
@@ -56,7 +56,7 @@
     <connection>scm:git:ssh://git@github.com/mybatis/freemarker-scripting.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/mybatis/freemarker-scripting.git</developerConnection>
     <tag>HEAD</tag>
-    <url>https://github.com/mybatis/freemarker-scripting</url>
+    <url>https://github.com/mybatis/freemarker-scripting/</url>
   </scm>
   <issueManagement>
     <system>GitHub Issue Management</system>
