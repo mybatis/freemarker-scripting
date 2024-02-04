@@ -19,10 +19,10 @@
 <site name="${project.name}" xmlns="http://maven.apache.org/SITE/2.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/SITE/2.0.0 https://maven.apache.org/xsd/site-2.0.0.xsd">
 
-	<bannerRight>
-		<src>http://mybatis.github.com/images/mybatis-logo.png</src>
-		<href>https://mybatis.github.io/mybatis-freemarker/</href>
-	</bannerRight>
+  <bannerRight href="https://mybatis.github.io/mybatis-freemarker/">
+    <image src="http://mybatis.github.com/images/mybatis-logo.png" />
+  </bannerRight>
+
   <body>
     <menu name="Documentation">
       <item name="Getting started" href="index.html"/>
