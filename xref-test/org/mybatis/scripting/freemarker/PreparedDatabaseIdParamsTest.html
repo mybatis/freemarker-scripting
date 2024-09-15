@@ -7,7 +7,7 @@
 <body>
 <div id="overview"><a href="../../../../../testapidocs/org/mybatis/scripting/freemarker/PreparedDatabaseIdParamsTest.html">View Javadoc</a></div><pre>
 <a class="jxr_linenumber" name="L1" href="#L1">1</a>   <em class="jxr_comment">/*</em>
-<a class="jxr_linenumber" name="L2" href="#L2">2</a>   <em class="jxr_comment"> *    Copyright 2015-2023 the original author or authors.</em>
+<a class="jxr_linenumber" name="L2" href="#L2">2</a>   <em class="jxr_comment"> *    Copyright 2015-2024 the original author or authors.</em>
 <a class="jxr_linenumber" name="L3" href="#L3">3</a>   <em class="jxr_comment"> *</em>
 <a class="jxr_linenumber" name="L4" href="#L4">4</a>   <em class="jxr_comment"> *    Licensed under the Apache License, Version 2.0 (the "License");</em>
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>   <em class="jxr_comment"> *    you may not use this file except in compliance with the License.</em>
@@ -85,24 +85,24 @@
 <a class="jxr_linenumber" name="L77" href="#L77">77</a>    }
 <a class="jxr_linenumber" name="L78" href="#L78">78</a>  
 <a class="jxr_linenumber" name="L79" href="#L79">79</a>    @Test
-<a class="jxr_linenumber" name="L80" href="#L80">80</a>    <strong class="jxr_keyword">void</strong> testReferDatabaseIdInTemplate() {
+<a class="jxr_linenumber" name="L80" href="#L80">80</a>    <strong class="jxr_keyword">void</strong> testReferDatabaseIdInTemplate() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L81" href="#L81">81</a>      <strong class="jxr_keyword">try</strong> (SqlSession sqlSession = sqlSessionFactory.openSession()) {
 <a class="jxr_linenumber" name="L82" href="#L82">82</a>        <a name="PreparedDatabaseIdParamsMapper" href="../../../../org/mybatis/scripting/freemarker/PreparedDatabaseIdParamsMapper.html#PreparedDatabaseIdParamsMapper">PreparedDatabaseIdParamsMapper</a> mapper = sqlSession.getMapper(PreparedDatabaseIdParamsMapper.<strong class="jxr_keyword">class</strong>);
 <a class="jxr_linenumber" name="L83" href="#L83">83</a>        Optional&lt;Name&gt; nameList = mapper.getDatabaseIdTest();
 <a class="jxr_linenumber" name="L84" href="#L84">84</a>        Assertions.assertTrue(nameList.isPresent());
-<a class="jxr_linenumber" name="L85" href="#L85">85</a>        Assertions.assertEquals(<span class="jxr_string">"Fred"</span>, nameList.get().getFirstName());
-<a class="jxr_linenumber" name="L86" href="#L86">86</a>        Assertions.assertEquals(<span class="jxr_string">"Flintstone"</span>, nameList.get().getLastName());
+<a class="jxr_linenumber" name="L85" href="#L85">85</a>        Assertions.assertEquals(<span class="jxr_string">"Fred"</span>, nameList.orElseThrow(() -&gt; <strong class="jxr_keyword">new</strong> Exception()).getFirstName());
+<a class="jxr_linenumber" name="L86" href="#L86">86</a>        Assertions.assertEquals(<span class="jxr_string">"Flintstone"</span>, nameList.orElseThrow(() -&gt; <strong class="jxr_keyword">new</strong> Exception()).getLastName());
 <a class="jxr_linenumber" name="L87" href="#L87">87</a>      }
 <a class="jxr_linenumber" name="L88" href="#L88">88</a>    }
 <a class="jxr_linenumber" name="L89" href="#L89">89</a>  
 <a class="jxr_linenumber" name="L90" href="#L90">90</a>    @Test
-<a class="jxr_linenumber" name="L91" href="#L91">91</a>    <strong class="jxr_keyword">void</strong> testReferDatabaseIdInTemplateWithParam() {
+<a class="jxr_linenumber" name="L91" href="#L91">91</a>    <strong class="jxr_keyword">void</strong> testReferDatabaseIdInTemplateWithParam() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L92" href="#L92">92</a>      <strong class="jxr_keyword">try</strong> (SqlSession sqlSession = sqlSessionFactory.openSession()) {
 <a class="jxr_linenumber" name="L93" href="#L93">93</a>        <a name="PreparedDatabaseIdParamsMapper" href="../../../../org/mybatis/scripting/freemarker/PreparedDatabaseIdParamsMapper.html#PreparedDatabaseIdParamsMapper">PreparedDatabaseIdParamsMapper</a> mapper = sqlSession.getMapper(PreparedDatabaseIdParamsMapper.<strong class="jxr_keyword">class</strong>);
 <a class="jxr_linenumber" name="L94" href="#L94">94</a>        Optional&lt;Name&gt; nameList = mapper.getDatabaseIdTestWithParam(<strong class="jxr_keyword">new</strong> <a name="PreparedParam" href="../../../../org/mybatis/scripting/freemarker/PreparedParam.html#PreparedParam">PreparedParam</a>());
 <a class="jxr_linenumber" name="L95" href="#L95">95</a>        Assertions.assertTrue(nameList.isPresent());
-<a class="jxr_linenumber" name="L96" href="#L96">96</a>        Assertions.assertEquals(<span class="jxr_string">"Fred"</span>, nameList.get().getFirstName());
-<a class="jxr_linenumber" name="L97" href="#L97">97</a>        Assertions.assertEquals(<span class="jxr_string">"Flintstone"</span>, nameList.get().getLastName());
+<a class="jxr_linenumber" name="L96" href="#L96">96</a>        Assertions.assertEquals(<span class="jxr_string">"Fred"</span>, nameList.orElseThrow(() -&gt; <strong class="jxr_keyword">new</strong> Exception()).getFirstName());
+<a class="jxr_linenumber" name="L97" href="#L97">97</a>        Assertions.assertEquals(<span class="jxr_string">"Flintstone"</span>, nameList.orElseThrow(() -&gt; <strong class="jxr_keyword">new</strong> Exception()).getLastName());
 <a class="jxr_linenumber" name="L98" href="#L98">98</a>      }
 <a class="jxr_linenumber" name="L99" href="#L99">99</a>    }
 <a class="jxr_linenumber" name="L100" href="#L100">100</a> 
