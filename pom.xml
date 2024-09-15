@@ -29,7 +29,7 @@
 
   <groupId>org.mybatis.scripting</groupId>
   <artifactId>mybatis-freemarker</artifactId>
-  <version>1.2.5-SNAPSHOT</version>
+  <version>1.3.0</version>
 
   <name>MyBatis FreeMarker</name>
   <description>FreeMarker support for MyBatis</description>
@@ -55,7 +55,7 @@
   <scm>
     <connection>scm:git:ssh://git@github.com/mybatis/freemarker-scripting.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/mybatis/freemarker-scripting.git</developerConnection>
-    <tag>HEAD</tag>
+    <tag>mybatis-freemarker-1.3.0</tag>
     <url>https://github.com/mybatis/freemarker-scripting/</url>
   </scm>
   <issueManagement>
@@ -83,7 +83,7 @@
     <module.name>org.mybatis.scripting.freemarker</module.name>
 
     <!-- Reproducible Builds -->
-    <project.build.outputTimestamp>1670023392</project.build.outputTimestamp>
+    <project.build.outputTimestamp>1726441184</project.build.outputTimestamp>
   </properties>
 
   <dependencies>
