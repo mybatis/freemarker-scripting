@@ -75,6 +75,10 @@
   </distributionManagement>
 
   <properties>
+    <!-- Maven compiler options -->
+    <java.version>11</java.version>
+    <java.release.version>11</java.release.version>
+
     <clirr.comparisonVersion>1.1.2</clirr.comparisonVersion>
     <module.name>org.mybatis.scripting.freemarker</module.name>
 
