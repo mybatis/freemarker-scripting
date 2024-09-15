@@ -1,5 +1,5 @@
 /*
- *    Copyright 2015-2023 the original author or authors.
+ *    Copyright 2015-2024 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -77,24 +77,24 @@ class PreparedDatabaseIdParamsTest {
   }
 
   @Test
-  void testReferDatabaseIdInTemplate() {
+  void testReferDatabaseIdInTemplate() throws Exception {
     try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
       PreparedDatabaseIdParamsMapper mapper = sqlSession.getMapper(PreparedDatabaseIdParamsMapper.class);
       Optional<Name> nameList = mapper.getDatabaseIdTest();
       Assertions.assertTrue(nameList.isPresent());
-      Assertions.assertEquals("Fred", nameList.get().getFirstName());
-      Assertions.assertEquals("Flintstone", nameList.get().getLastName());
+      Assertions.assertEquals("Fred", nameList.orElseThrow(() -> new Exception()).getFirstName());
+      Assertions.assertEquals("Flintstone", nameList.orElseThrow(() -> new Exception()).getLastName());
     }
   }
 
   @Test
-  void testReferDatabaseIdInTemplateWithParam() {
+  void testReferDatabaseIdInTemplateWithParam() throws Exception {
     try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
       PreparedDatabaseIdParamsMapper mapper = sqlSession.getMapper(PreparedDatabaseIdParamsMapper.class);
       Optional<Name> nameList = mapper.getDatabaseIdTestWithParam(new PreparedParam());
       Assertions.assertTrue(nameList.isPresent());
-      Assertions.assertEquals("Fred", nameList.get().getFirstName());
-      Assertions.assertEquals("Flintstone", nameList.get().getLastName());
+      Assertions.assertEquals("Fred", nameList.orElseThrow(() -> new Exception()).getFirstName());
+      Assertions.assertEquals("Flintstone", nameList.orElseThrow(() -> new Exception()).getLastName());
     }
   }
 
