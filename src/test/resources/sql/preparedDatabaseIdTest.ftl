@@ -1,7 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
+<#--
 
-       Copyright 2015-2024 the original author or authors.
+       Copyright 2015-2023 the original author or authors.
 
        Licensed under the Apache License, Version 2.0 (the "License");
        you may not use this file except in compliance with the License.
@@ -16,10 +15,9 @@
        limitations under the License.
 
 -->
-<extensions>
-    <extension>
-      <groupId>fr.jcgay.maven</groupId>
-      <artifactId>maven-profiler</artifactId>
-      <version>3.2</version>
-    </extension>
-</extensions>
+select
+    *
+from
+    names
+where
+    <#if '${_databaseId}' == 'hsqldb'>firstName = 'Fred' and lastName = 'Flintstone'</#if>

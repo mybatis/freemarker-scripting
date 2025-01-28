@@ -1,5 +1,5 @@
 /*
- *    Copyright 2015-2022 the original author or authors.
+ *    Copyright 2015-2023 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -76,6 +76,7 @@ import freemarker.template.TemplateScalarModel;
  */
 public class MyBatisParamDirective implements TemplateDirectiveModel {
   public static String DEFAULT_KEY = "p";
+  public static String DATABASE_ID_KEY = "_databaseId";
 
   @Override
   public void execute(Environment env, Map params, TemplateModel[] loopVars, TemplateDirectiveBody body)
