@@ -388,7 +388,7 @@ public class FreeMarkerLanguageDriverConfig {
         new DefaultReflectorFactory());
     properties.forEach((key, value) -> {
       String propertyPath = WordUtils
-          .uncapitalize(WordUtils.capitalize(Objects.toString(key), '-').replaceAll("-", ""));
+          .uncapitalize(WordUtils.capitalize(Objects.toString(key), '-').replace("-", ""));
       Optional.ofNullable(value).ifPresent(v -> {
         Object convertedValue = TYPE_CONVERTERS.get(metaObject.getSetterType(propertyPath)).apply(value.toString());
         metaObject.setValue(propertyPath, convertedValue);

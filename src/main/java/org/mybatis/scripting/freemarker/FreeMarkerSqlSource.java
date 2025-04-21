@@ -118,7 +118,7 @@ public class FreeMarkerSqlSource implements SqlSource {
     // Pass retrieved SQL into MyBatis engine, it will substitute prepared-statements parameters
     SqlSourceBuilder sqlSourceParser = new SqlSourceBuilder(configuration);
     Class<?> parameterType1 = parameterObject == null ? Object.class : parameterObject.getClass();
-    SqlSource sqlSource = sqlSourceParser.parse(sql, parameterType1, new HashMap<String, Object>());
+    SqlSource sqlSource = sqlSourceParser.parse(sql, parameterType1, new HashMap<>());
     return sqlSource.getBoundSql(parameterObject);
   }
 }
