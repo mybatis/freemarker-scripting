@@ -15,8 +15,8 @@
  */
 package org.mybatis.scripting.freemarker;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import freemarker.ext.beans.BeanModel;
 import freemarker.ext.beans.BeansWrapperBuilder;
@@ -33,10 +33,10 @@ import freemarker.template.Version;
  */
 public class ParamObjectAdapter implements TemplateHashModel {
   private final BeanModel beanModel;
-  private final ArrayList generatedParams;
+  private final List generatedParams;
   private HashMap<String, TemplateModel> additionalParams;
 
-  public ParamObjectAdapter(Object paramObject, ArrayList generatedParams, Version incompatibleImprovementsVersion) {
+  public ParamObjectAdapter(Object paramObject, List generatedParams, Version incompatibleImprovementsVersion) {
     beanModel = new BeanModel(paramObject, new BeansWrapperBuilder(incompatibleImprovementsVersion).build());
     this.generatedParams = generatedParams;
   }
@@ -52,7 +52,7 @@ public class ParamObjectAdapter implements TemplateHashModel {
     additionalParams.put(key, value);
   }
 
-  public ArrayList getGeneratedParams() {
+  public List getGeneratedParams() {
     return generatedParams;
   }
 

@@ -19,6 +19,7 @@ import java.io.CharArrayWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.builder.SqlSourceBuilder;
@@ -74,7 +75,7 @@ public class FreeMarkerSqlSource implements SqlSource {
     // Add to passed parameterObject our predefined directive - MyBatisParamDirective
     // It will be available as "p" inside templates
     Object dataContext;
-    ArrayList generatedParams = new ArrayList<>();
+    List generatedParams = new ArrayList<>();
     if (parameterObject != null) {
       if (parameterObject instanceof Map) {
         HashMap<String, Object> map = new HashMap<>((Map<String, Object>) parameterObject);
