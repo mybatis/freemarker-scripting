@@ -1,5 +1,5 @@
 /*
- *    Copyright 2015-2023 the original author or authors.
+ *    Copyright 2015-2025 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -387,8 +387,7 @@ public class FreeMarkerLanguageDriverConfig {
     MetaObject metaObject = MetaObject.forObject(config, new DefaultObjectFactory(), new DefaultObjectWrapperFactory(),
         new DefaultReflectorFactory());
     properties.forEach((key, value) -> {
-      String propertyPath = WordUtils
-          .uncapitalize(WordUtils.capitalize(Objects.toString(key), '-').replace("-", ""));
+      String propertyPath = WordUtils.uncapitalize(WordUtils.capitalize(Objects.toString(key), '-').replace("-", ""));
       Optional.ofNullable(value).ifPresent(v -> {
         Object convertedValue = TYPE_CONVERTERS.get(metaObject.getSetterType(propertyPath)).apply(value.toString());
         metaObject.setValue(propertyPath, convertedValue);
