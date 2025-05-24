@@ -7,7 +7,7 @@
 <body>
 <div id="overview"><a href="../../../../../apidocs/org/mybatis/scripting/freemarker/FreeMarkerLanguageDriverConfig.html">View Javadoc</a></div><pre>
 <a class="jxr_linenumber" name="L1" href="#L1">1</a>   <em class="jxr_comment">/*</em>
-<a class="jxr_linenumber" name="L2" href="#L2">2</a>   <em class="jxr_comment"> *    Copyright 2015-2023 the original author or authors.</em>
+<a class="jxr_linenumber" name="L2" href="#L2">2</a>   <em class="jxr_comment"> *    Copyright 2015-2025 the original author or authors.</em>
 <a class="jxr_linenumber" name="L3" href="#L3">3</a>   <em class="jxr_comment"> *</em>
 <a class="jxr_linenumber" name="L4" href="#L4">4</a>   <em class="jxr_comment"> *    Licensed under the Apache License, Version 2.0 (the "License");</em>
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>   <em class="jxr_comment"> *    you may not use this file except in compliance with the License.</em>
@@ -395,41 +395,40 @@
 <a class="jxr_linenumber" name="L387" href="#L387">387</a>     MetaObject metaObject = MetaObject.forObject(config, <strong class="jxr_keyword">new</strong> DefaultObjectFactory(), <strong class="jxr_keyword">new</strong> DefaultObjectWrapperFactory(),
 <a class="jxr_linenumber" name="L388" href="#L388">388</a>         <strong class="jxr_keyword">new</strong> DefaultReflectorFactory());
 <a class="jxr_linenumber" name="L389" href="#L389">389</a>     properties.forEach((key, value) -&gt; {
-<a class="jxr_linenumber" name="L390" href="#L390">390</a>       String propertyPath = WordUtils
-<a class="jxr_linenumber" name="L391" href="#L391">391</a>           .uncapitalize(WordUtils.capitalize(Objects.toString(key), '-').replaceAll(<span class="jxr_string">"-"</span>, <span class="jxr_string">""</span>));
-<a class="jxr_linenumber" name="L392" href="#L392">392</a>       Optional.ofNullable(value).ifPresent(v -&gt; {
-<a class="jxr_linenumber" name="L393" href="#L393">393</a>         Object convertedValue = TYPE_CONVERTERS.get(metaObject.getSetterType(propertyPath)).apply(value.toString());
-<a class="jxr_linenumber" name="L394" href="#L394">394</a>         metaObject.setValue(propertyPath, convertedValue);
-<a class="jxr_linenumber" name="L395" href="#L395">395</a>       });
-<a class="jxr_linenumber" name="L396" href="#L396">396</a>     });
-<a class="jxr_linenumber" name="L397" href="#L397">397</a>   }
-<a class="jxr_linenumber" name="L398" href="#L398">398</a> 
-<a class="jxr_linenumber" name="L399" href="#L399">399</a>   <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> Properties loadDefaultProperties() {
-<a class="jxr_linenumber" name="L400" href="#L400">400</a>     <strong class="jxr_keyword">return</strong> loadProperties(System.getProperty(PROPERTY_KEY_CONFIG_FILE, DEFAULT_PROPERTIES_FILE));
-<a class="jxr_linenumber" name="L401" href="#L401">401</a>   }
-<a class="jxr_linenumber" name="L402" href="#L402">402</a> 
-<a class="jxr_linenumber" name="L403" href="#L403">403</a>   <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> Properties loadProperties(String resourcePath) {
-<a class="jxr_linenumber" name="L404" href="#L404">404</a>     Properties properties = <strong class="jxr_keyword">new</strong> Properties();
-<a class="jxr_linenumber" name="L405" href="#L405">405</a>     InputStream in;
-<a class="jxr_linenumber" name="L406" href="#L406">406</a>     <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L407" href="#L407">407</a>       in = Resources.getResourceAsStream(resourcePath);
-<a class="jxr_linenumber" name="L408" href="#L408">408</a>     } <strong class="jxr_keyword">catch</strong> (IOException e) {
-<a class="jxr_linenumber" name="L409" href="#L409">409</a>       in = <strong class="jxr_keyword">null</strong>;
-<a class="jxr_linenumber" name="L410" href="#L410">410</a>     }
-<a class="jxr_linenumber" name="L411" href="#L411">411</a>     <strong class="jxr_keyword">if</strong> (in != <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L412" href="#L412">412</a>       Charset encoding = Optional.ofNullable(System.getProperty(PROPERTY_KEY_CONFIG_ENCODING)).map(Charset::forName)
-<a class="jxr_linenumber" name="L413" href="#L413">413</a>           .orElse(StandardCharsets.UTF_8);
-<a class="jxr_linenumber" name="L414" href="#L414">414</a>       <strong class="jxr_keyword">try</strong> (InputStreamReader inReader = <strong class="jxr_keyword">new</strong> InputStreamReader(in, encoding);
-<a class="jxr_linenumber" name="L415" href="#L415">415</a>           BufferedReader bufReader = <strong class="jxr_keyword">new</strong> BufferedReader(inReader)) {
-<a class="jxr_linenumber" name="L416" href="#L416">416</a>         properties.load(bufReader);
-<a class="jxr_linenumber" name="L417" href="#L417">417</a>       } <strong class="jxr_keyword">catch</strong> (IOException e) {
-<a class="jxr_linenumber" name="L418" href="#L418">418</a>         <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalStateException(e);
-<a class="jxr_linenumber" name="L419" href="#L419">419</a>       }
-<a class="jxr_linenumber" name="L420" href="#L420">420</a>     }
-<a class="jxr_linenumber" name="L421" href="#L421">421</a>     <strong class="jxr_keyword">return</strong> properties;
-<a class="jxr_linenumber" name="L422" href="#L422">422</a>   }
-<a class="jxr_linenumber" name="L423" href="#L423">423</a> 
-<a class="jxr_linenumber" name="L424" href="#L424">424</a> }
+<a class="jxr_linenumber" name="L390" href="#L390">390</a>       String propertyPath = WordUtils.uncapitalize(WordUtils.capitalize(Objects.toString(key), '-').replace(<span class="jxr_string">"-"</span>, <span class="jxr_string">""</span>));
+<a class="jxr_linenumber" name="L391" href="#L391">391</a>       Optional.ofNullable(value).ifPresent(v -&gt; {
+<a class="jxr_linenumber" name="L392" href="#L392">392</a>         Object convertedValue = TYPE_CONVERTERS.get(metaObject.getSetterType(propertyPath)).apply(value.toString());
+<a class="jxr_linenumber" name="L393" href="#L393">393</a>         metaObject.setValue(propertyPath, convertedValue);
+<a class="jxr_linenumber" name="L394" href="#L394">394</a>       });
+<a class="jxr_linenumber" name="L395" href="#L395">395</a>     });
+<a class="jxr_linenumber" name="L396" href="#L396">396</a>   }
+<a class="jxr_linenumber" name="L397" href="#L397">397</a> 
+<a class="jxr_linenumber" name="L398" href="#L398">398</a>   <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> Properties loadDefaultProperties() {
+<a class="jxr_linenumber" name="L399" href="#L399">399</a>     <strong class="jxr_keyword">return</strong> loadProperties(System.getProperty(PROPERTY_KEY_CONFIG_FILE, DEFAULT_PROPERTIES_FILE));
+<a class="jxr_linenumber" name="L400" href="#L400">400</a>   }
+<a class="jxr_linenumber" name="L401" href="#L401">401</a> 
+<a class="jxr_linenumber" name="L402" href="#L402">402</a>   <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> Properties loadProperties(String resourcePath) {
+<a class="jxr_linenumber" name="L403" href="#L403">403</a>     Properties properties = <strong class="jxr_keyword">new</strong> Properties();
+<a class="jxr_linenumber" name="L404" href="#L404">404</a>     InputStream in;
+<a class="jxr_linenumber" name="L405" href="#L405">405</a>     <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L406" href="#L406">406</a>       in = Resources.getResourceAsStream(resourcePath);
+<a class="jxr_linenumber" name="L407" href="#L407">407</a>     } <strong class="jxr_keyword">catch</strong> (IOException e) {
+<a class="jxr_linenumber" name="L408" href="#L408">408</a>       in = <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="L409" href="#L409">409</a>     }
+<a class="jxr_linenumber" name="L410" href="#L410">410</a>     <strong class="jxr_keyword">if</strong> (in != <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L411" href="#L411">411</a>       Charset encoding = Optional.ofNullable(System.getProperty(PROPERTY_KEY_CONFIG_ENCODING)).map(Charset::forName)
+<a class="jxr_linenumber" name="L412" href="#L412">412</a>           .orElse(StandardCharsets.UTF_8);
+<a class="jxr_linenumber" name="L413" href="#L413">413</a>       <strong class="jxr_keyword">try</strong> (InputStreamReader inReader = <strong class="jxr_keyword">new</strong> InputStreamReader(in, encoding);
+<a class="jxr_linenumber" name="L414" href="#L414">414</a>           BufferedReader bufReader = <strong class="jxr_keyword">new</strong> BufferedReader(inReader)) {
+<a class="jxr_linenumber" name="L415" href="#L415">415</a>         properties.load(bufReader);
+<a class="jxr_linenumber" name="L416" href="#L416">416</a>       } <strong class="jxr_keyword">catch</strong> (IOException e) {
+<a class="jxr_linenumber" name="L417" href="#L417">417</a>         <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalStateException(e);
+<a class="jxr_linenumber" name="L418" href="#L418">418</a>       }
+<a class="jxr_linenumber" name="L419" href="#L419">419</a>     }
+<a class="jxr_linenumber" name="L420" href="#L420">420</a>     <strong class="jxr_keyword">return</strong> properties;
+<a class="jxr_linenumber" name="L421" href="#L421">421</a>   }
+<a class="jxr_linenumber" name="L422" href="#L422">422</a> 
+<a class="jxr_linenumber" name="L423" href="#L423">423</a> }
 </pre>
 <hr/>
 <div id="footer">© 2015–2025 <a href="https://www.mybatis.org/">MyBatis.org</a></div>
