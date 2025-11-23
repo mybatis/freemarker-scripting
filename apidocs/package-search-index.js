@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"org.mybatis.scripting.freemarker"},{"l":"org.mybatis.scripting.freemarker.support"}];updateSearchResults();
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html","k":"18"},{"l":"org.mybatis.scripting.freemarker"},{"l":"org.mybatis.scripting.freemarker.support"}];updateSearchResults();
