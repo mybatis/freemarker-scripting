@@ -1,5 +1,5 @@
 /*
- *    Copyright 2015-2025 the original author or authors.
+ *    Copyright 2015-2026 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -28,6 +28,7 @@ import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.ParameterMapping;
 import org.apache.ibatis.mapping.SqlSource;
 import org.apache.ibatis.parsing.GenericTokenParser;
+import org.apache.ibatis.reflection.ParamNameResolver;
 import org.apache.ibatis.session.Configuration;
 
 import freemarker.template.SimpleScalar;
@@ -46,14 +47,21 @@ public class FreeMarkerSqlSource implements SqlSource {
   private final Configuration configuration;
   private final Version incompatibleImprovementsVersion;
   private final String databaseId;
+  private final ParamNameResolver paramNameResolver;
 
   public static final String GENERATED_PARAMS_KEY = "__GENERATED__";
 
   public FreeMarkerSqlSource(Template template, Configuration configuration, Version incompatibleImprovementsVersion) {
+    this(template, configuration, incompatibleImprovementsVersion, null);
+  }
+
+  public FreeMarkerSqlSource(Template template, Configuration configuration, Version incompatibleImprovementsVersion,
+      ParamNameResolver paramNameResolver) {
     this.template = template;
     this.configuration = configuration;
     this.incompatibleImprovementsVersion = incompatibleImprovementsVersion;
     this.databaseId = configuration.getDatabaseId();
+    this.paramNameResolver = paramNameResolver;
   }
 
   /**
@@ -78,7 +86,7 @@ public class FreeMarkerSqlSource implements SqlSource {
     // Add to passed parameterObject our predefined directive - MyBatisParamDirective
     // It will be available as "p" inside templates
     Object dataContext;
-    ArrayList generatedParams = new ArrayList<>();
+    List generatedParams = new ArrayList<>();
     if (parameterObject != null) {
       if (parameterObject instanceof Map) {
         HashMap<String, Object> map = new HashMap<>((Map<String, Object>) parameterObject);
@@ -120,16 +128,16 @@ public class FreeMarkerSqlSource implements SqlSource {
     }
 
     // Pass retrieved SQL into MyBatis engine, it will substitute prepared-statements parameters
-    SqlSource sqlSource = parse(configuration, sql, parameterObject, new HashMap<String, Object>());
+    SqlSource sqlSource = parse(configuration, sql, parameterObject, new HashMap<>());
     return sqlSource.getBoundSql(parameterObject);
   }
 
-  private static SqlSource parse(Configuration configuration, String originalSql, Object parameterObject,
+  private SqlSource parse(Configuration configuration, String originalSql, Object parameterObject,
       Map<String, Object> additionalParameters) {
     Class<?> parameterType = parameterObject == null ? Object.class : parameterObject.getClass();
     List<ParameterMapping> parameterMappings = new ArrayList<>();
     ParameterMappingTokenHandler handler = new ParameterMappingTokenHandler(parameterMappings, configuration,
-        parameterObject, parameterType, additionalParameters, true);
+        parameterObject, parameterType, additionalParameters, paramNameResolver, true);
     GenericTokenParser parser = new GenericTokenParser("#{", "}", handler);
     return SqlSourceBuilder.buildSqlSource(configuration, parser.parse(originalSql), parameterMappings);
   }
