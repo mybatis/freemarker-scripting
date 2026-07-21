@@ -1,5 +1,5 @@
 /*
- *    Copyright 2015-2022 the original author or authors.
+ *    Copyright 2015-2026 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@ import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.jdbc.ScriptRunner;
 import org.apache.ibatis.mapping.Environment;
 import org.apache.ibatis.mapping.SqlSource;
+import org.apache.ibatis.reflection.ParamNameResolver;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -76,8 +77,9 @@ class CustomizedDataContextTest {
   }
 
   public static class CustomSqlSource extends FreeMarkerSqlSource {
-    CustomSqlSource(Template template, Configuration configuration, Version version) {
-      super(template, configuration, version);
+    CustomSqlSource(Template template, Configuration configuration, Version version,
+        ParamNameResolver paramNameResolver) {
+      super(template, configuration, version, paramNameResolver);
     }
 
     @Override
@@ -95,8 +97,10 @@ class CustomizedDataContextTest {
 
   public static class CustomFreeMarkerLanguageDriver extends FreeMarkerLanguageDriver {
     @Override
-    protected SqlSource createSqlSource(Template template, Configuration configuration) {
-      return new CustomSqlSource(template, configuration, freemarkerCfg.getIncompatibleImprovements());
+    protected SqlSource createSqlSource(Template template, Configuration configuration,
+        ParamNameResolver paramNameResolver) {
+      return new CustomSqlSource(template, configuration, freemarkerCfg.getIncompatibleImprovements(),
+          paramNameResolver);
     }
   }
 
