@@ -4,6 +4,7 @@ MyBatis FreeMarker Support
 [![Java CI](https://github.com/mybatis/freemarker-scripting/actions/workflows/ci.yaml/badge.svg)](https://github.com/mybatis/freemarker-scripting/actions/workflows/ci.yaml)
 [![Coverage Status](https://coveralls.io/repos/mybatis/freemarker-scripting/badge.svg?branch=master&service=github)](https://coveralls.io/github/mybatis/freemarker-scripting?branch=master)
 [![Maven Central](https://img.shields.io/maven-central/v/org.mybatis.scripting/mybatis-freemarker)](https://central.sonatype.com/artifact/org.mybatis.scripting/mybatis-freemarker)
+[![Docs](https://img.shields.io/badge/docs-mybatis.org-blue?logo=github)](https://mybatis.org/freemarker-scripting/)
 [![License](https://img.shields.io/:license-apache-brightgreen.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
 
 ![freemarker-scripting](https://mybatis.org/images/mybatis-logo.png)
