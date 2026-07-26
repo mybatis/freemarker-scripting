@@ -1,5 +1,5 @@
 /*
- *    Copyright 2015-2022 the original author or authors.
+ *    Copyright 2015-2026 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -15,12 +15,21 @@
  */
 package org.mybatis.scripting.freemarker;
 
+import java.io.IOException;
 import java.util.Properties;
 
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import mockit.Expectations;
+
+import org.apache.ibatis.parsing.XNode;
+import org.apache.ibatis.session.Configuration;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.w3c.dom.DOMException;
 
 class FreeMarkerLanguageDriverConfigTest {
 
@@ -128,6 +137,37 @@ class FreeMarkerLanguageDriverConfigTest {
     });
     Assertions.assertEquals("sql", config.getBasePackage());
     Assertions.assertEquals("sql", config.getTemplateFile().getBaseDir());
+  }
+
+  @Test
+  void createSqlSourceXNodeException() throws DOMException, ParserConfigurationException, IOException {
+    FreeMarkerLanguageDriver driver = new FreeMarkerLanguageDriver();
+
+    XNode node = new XNode(null,
+        DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument().createElement("script"), null);
+
+    node.getNode().setTextContent("invalid template");
+
+    new Expectations(driver) {
+      {
+        driver.createSqlSource((Configuration) any, "invalid template");
+        result = new IOException("boom");
+      }
+    };
+    Assertions.assertThrows(RuntimeException.class, () -> driver.createSqlSource(null, node, Object.class));
+  }
+
+  @Test
+  void createSqlSourceStringException() throws IOException {
+    FreeMarkerLanguageDriver driver = new FreeMarkerLanguageDriver();
+    new Expectations(driver) {
+      {
+        driver.createSqlSource((Configuration) any, "invalid template");
+        result = new IOException("boom");
+      }
+    };
+    Assertions.assertThrows(RuntimeException.class,
+        () -> driver.createSqlSource(null, "invalid template", Object.class));
   }
 
 }

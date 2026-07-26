@@ -1,5 +1,5 @@
 /*
- *    Copyright 2015-2022 the original author or authors.
+ *    Copyright 2015-2026 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -132,7 +132,11 @@ public class FreeMarkerLanguageDriver implements LanguageDriver {
    */
   @Override
   public SqlSource createSqlSource(Configuration configuration, XNode script, Class<?> parameterType) {
-    return createSqlSource(configuration, script.getNode().getTextContent());
+    try {
+      return createSqlSource(configuration, script.getNode().getTextContent());
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   /**
@@ -149,29 +153,25 @@ public class FreeMarkerLanguageDriver implements LanguageDriver {
    */
   @Override
   public SqlSource createSqlSource(Configuration configuration, String script, Class<?> parameterType) {
-    return createSqlSource(configuration, script);
+    try {
+      return createSqlSource(configuration, script);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   protected SqlSource createSqlSource(Template template, Configuration configuration) {
     return new FreeMarkerSqlSource(template, configuration, freemarkerCfg.getIncompatibleImprovements());
   }
 
-  private SqlSource createSqlSource(Configuration configuration, String scriptText) {
+  protected SqlSource createSqlSource(Configuration configuration, String scriptText) throws IOException {
     Template template;
     if (scriptText.trim().contains(" ")) {
       // Consider that script is inline script
-      try {
-        template = new Template(null, new StringReader(scriptText), freemarkerCfg);
-      } catch (IOException e) {
-        throw new RuntimeException(e);
-      }
+      template = new Template(null, new StringReader(scriptText), freemarkerCfg);
     } else {
       // Consider that script is template name, trying to find the template in classpath
-      try {
-        template = freemarkerCfg.getTemplate(scriptText.trim());
-      } catch (IOException e) {
-        throw new RuntimeException(e);
-      }
+      template = freemarkerCfg.getTemplate(scriptText.trim());
     }
 
     return createSqlSource(template, configuration);

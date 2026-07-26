@@ -15,11 +15,9 @@
        limitations under the License.
 
 -->
-<#-- model is a ParamObjectAdapter, so this forces ParamObjectAdapter#isEmpty() to be exercised. -->
-<#if .data_model?has_content></#if>
-select
-    *
-from
-    names
-where
-    <#if '${_databaseId}' == 'hsqldb'>firstName = 'Fred' and lastName = 'Flintstone'</#if>
+<#-- A native FreeMarker sequence is not a TemplateScalarModel, TemplateNumberModel, -->
+<#-- TemplateDateModel, TemplateBooleanModel nor WrapperTemplateModel, so it triggers -->
+<#-- the UnsupportedOperationException branch in MyBatisParamDirective. -->
+<#assign unsupportedValue = ["a", "b", "c"]>
+
+select * from names where firstName = <@p value=unsupportedValue/>

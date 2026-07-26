@@ -15,11 +15,8 @@
        limitations under the License.
 
 -->
-<#-- model is a ParamObjectAdapter, so this forces ParamObjectAdapter#isEmpty() to be exercised. -->
-<#if .data_model?has_content></#if>
-select
-    *
-from
-    names
-where
-    <#if '${_databaseId}' == 'hsqldb'>firstName = 'Fred' and lastName = 'Flintstone'</#if>
+<#-- nullParam is a top-level @Param bound to a real null value (not a bean property), so FreeMarker's -->
+<#-- SimpleHash#get() -> ObjectWrapper#wrap(null) yields an actual TemplateModel null, guaranteeing -->
+<#-- valueObject == null in MyBatisParamDirective.execute. -->
+select * from names where firstName = 'Wilma'
+and <@p value=nullParam/> is null

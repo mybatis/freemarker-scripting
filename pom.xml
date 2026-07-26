@@ -82,8 +82,12 @@
     <clirr.comparisonVersion>1.1.2</clirr.comparisonVersion>
     <module.name>org.mybatis.scripting.freemarker</module.name>
 
+    <jmockit.version>2.3.0</jmockit.version>
+
     <!-- Reproducible Builds -->
     <project.build.outputTimestamp>1782671152</project.build.outputTimestamp>
+
+    <argLine>-javaagent:${settings.localRepository}/com/github/hazendaz/jmockit/jmockit/${jmockit.version}/jmockit-${jmockit.version}.jar</argLine>
   </properties>
 
   <dependencies>
@@ -104,6 +108,12 @@
     </dependency>
 
     <!-- TEST -->
+    <dependency>
+      <groupId>com.github.hazendaz.jmockit</groupId>
+      <artifactId>jmockit</artifactId>
+      <version>${jmockit.version}</version>
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>

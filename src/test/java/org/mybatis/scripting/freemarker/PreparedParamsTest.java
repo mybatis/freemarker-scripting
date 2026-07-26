@@ -1,5 +1,5 @@
 /*
- *    Copyright 2015-2022 the original author or authors.
+ *    Copyright 2015-2026 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -108,4 +108,50 @@ class PreparedParamsTest {
       Assertions.assertTrue(name != null && name.getFirstName().equals("Wilma"));
     }
   }
+
+  /**
+   * Exercises the {@code TemplateBooleanModel} and {@code TemplateDateModel} branches of
+   * {@link MyBatisParamDirective#execute}, via the {@code booleanValue}/{@code dateValue} params declared in
+   * {@code prepared.ftl}.
+   */
+  @Test
+  void testDateAndBooleanValueCall() {
+    try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+      PreparedParamsMapper mapper = sqlSession.getMapper(PreparedParamsMapper.class);
+      Name name = mapper.findUsingParams(new PreparedParam.InnerClass());
+      Assertions.assertNotNull(name);
+      Assertions.assertEquals("Wilma", name.getFirstName());
+    }
+  }
+
+  /**
+   * Passing a value type not handled by {@link MyBatisParamDirective#execute} (a native FreeMarker sequence) must throw
+   * {@link UnsupportedOperationException}, wrapped by MyBatis as {@link PersistenceException}.
+   */
+  @Test
+  void testUnsupportedValueTypeCall() {
+    try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+      final PreparedParamsMapper mapper = sqlSession.getMapper(PreparedParamsMapper.class);
+      PersistenceException ex = Assertions.assertThrows(PersistenceException.class,
+          () -> mapper.findUsingUnsupportedType("dummy"));
+      Assertions.assertInstanceOf(UnsupportedOperationException.class, ex.getCause());
+      Assertions.assertTrue(ex.getCause().getMessage().contains("is not supported yet in this context"));
+    }
+  }
+
+  /**
+   * Exercises the {@code valueObject == null} branch of {@link MyBatisParamDirective#execute}, via the
+   * {@code nullParam} @Param bound directly to a real {@code null} (not a bean property), as declared in
+   * {@code preparedNullValue.ftl}.
+   */
+  @Test
+  void testNullValueCall() {
+    try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+      PreparedParamsMapper mapper = sqlSession.getMapper(PreparedParamsMapper.class);
+      Name name = mapper.findUsingNullValue(null);
+      Assertions.assertNotNull(name);
+      Assertions.assertEquals("Wilma", name.getFirstName());
+    }
+  }
+
 }
