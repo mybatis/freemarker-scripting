@@ -164,7 +164,7 @@ public class FreeMarkerLanguageDriver implements LanguageDriver {
     return new FreeMarkerSqlSource(template, configuration, freemarkerCfg.getIncompatibleImprovements());
   }
 
-  private SqlSource createSqlSource(Configuration configuration, String scriptText) throws IOException {
+  protected SqlSource createSqlSource(Configuration configuration, String scriptText) throws IOException {
     Template template;
     if (scriptText.trim().contains(" ")) {
       // Consider that script is inline script
