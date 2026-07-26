@@ -1,5 +1,5 @@
 /*
- *    Copyright 2015-2022 the original author or authors.
+ *    Copyright 2015-2026 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -42,4 +42,13 @@ public interface PreparedParamsMapper {
   @Lang(FreeMarkerLanguageDriver.class)
   @Select("prepared.ftl")
   Name findUsingParams(@Param("innerObject") PreparedParam.InnerClass innerClass);
+
+  /**
+   * Passing an unsupported value type (a native FreeMarker sequence) to the {@code @p} directive. This will throw
+   * {@link UnsupportedOperationException} from {@link MyBatisParamDirective#execute}.
+   */
+  @Lang(FreeMarkerLanguageDriver.class)
+  @Select("preparedUnsupportedType.ftl")
+  Name findUsingUnsupportedType(@Param("dummy") String dummy);
+
 }

@@ -108,4 +108,20 @@ class PreparedParamsTest {
       Assertions.assertTrue(name != null && name.getFirstName().equals("Wilma"));
     }
   }
+
+  /**
+   * Passing a value type not handled by {@link MyBatisParamDirective#execute} (a native FreeMarker sequence) must throw
+   * {@link UnsupportedOperationException}, wrapped by MyBatis as {@link PersistenceException}.
+   */
+  @Test
+  void testUnsupportedValueTypeCall() {
+    try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+      final PreparedParamsMapper mapper = sqlSession.getMapper(PreparedParamsMapper.class);
+      PersistenceException ex = Assertions.assertThrows(PersistenceException.class,
+          () -> mapper.findUsingUnsupportedType("dummy"));
+      Assertions.assertInstanceOf(UnsupportedOperationException.class, ex.getCause());
+      Assertions.assertTrue(ex.getCause().getMessage().contains("is not supported yet in this context"));
+    }
+  }
+
 }
