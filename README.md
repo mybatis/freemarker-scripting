@@ -16,10 +16,3 @@ Requirements
 
 * master(1.2.x) : MyBatis 3.5+, FreeMarker 2.3.22+ and Java 8+
 * 1.1.x : MyBatis 3.4+, FreeMarker 2.3.22+ and Java 7+
-
-
-Essentials
-----------
-
-* [See the docs](https://mybatis.org/freemarker-scripting/)
-
