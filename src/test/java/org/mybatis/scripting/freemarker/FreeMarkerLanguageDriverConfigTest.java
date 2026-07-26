@@ -166,7 +166,8 @@ class FreeMarkerLanguageDriverConfigTest {
         result = new IOException("boom");
       }
     };
-    Assertions.assertThrows(RuntimeException.class, () -> driver.createSqlSource(null, "invalid template", Object.class));
+    Assertions.assertThrows(RuntimeException.class,
+        () -> driver.createSqlSource(null, "invalid template", Object.class));
   }
 
 }
