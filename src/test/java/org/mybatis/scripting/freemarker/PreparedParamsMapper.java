@@ -51,4 +51,12 @@ public interface PreparedParamsMapper {
   @Select("preparedUnsupportedType.ftl")
   Name findUsingUnsupportedType(@Param("dummy") String dummy);
 
+  /**
+   * Passing a {@code null} value (a real top-level null, not a bean property) to the {@code @p} directive. This
+   * exercises the {@code valueObject == null} branch of {@link MyBatisParamDirective#execute}.
+   */
+  @Lang(FreeMarkerLanguageDriver.class)
+  @Select("preparedNullValue.ftl")
+  Name findUsingNullValue(@Param("nullParam") String nullParam);
+
 }

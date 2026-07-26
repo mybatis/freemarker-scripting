@@ -139,4 +139,19 @@ class PreparedParamsTest {
     }
   }
 
+  /**
+   * Exercises the {@code valueObject == null} branch of {@link MyBatisParamDirective#execute}, via the
+   * {@code nullParam} @Param bound directly to a real {@code null} (not a bean property), as declared in
+   * {@code preparedNullValue.ftl}.
+   */
+  @Test
+  void testNullValueCall() {
+    try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+      PreparedParamsMapper mapper = sqlSession.getMapper(PreparedParamsMapper.class);
+      Name name = mapper.findUsingNullValue(null);
+      Assertions.assertNotNull(name);
+      Assertions.assertEquals("Wilma", name.getFirstName());
+    }
+  }
+
 }
