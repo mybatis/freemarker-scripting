@@ -1,6 +1,6 @@
 <#--
 
-       Copyright 2015-2022 the original author or authors.
+       Copyright 2015-2026 the original author or authors.
 
        Licensed under the Apache License, Version 2.0 (the "License");
        you may not use this file except in compliance with the License.
@@ -20,9 +20,13 @@
 <#assign doubleValue=10.5/>
 <#assign objectValue=innerObject/>
 <#assign innerStringProp=innerObject.strValue/>
+<#assign booleanValue=true/>
+<#assign dateValue = "2024-01-01"?date("yyyy-MM-dd")/>
 
 select * from names where firstName = <@p value='Wilma'/>
 and '${strValue}' = <@p value=strValue/>
 and ${intValue} = <@p value=intValue/>
 and ${doubleValue} = <@p value=doubleValue/>
 and '${innerStringProp}' = <@p value=innerObject.strValue/>
+and TRUE = <@p value=booleanValue/>
+and DATE '2024-01-01' = <@p value=dateValue/>

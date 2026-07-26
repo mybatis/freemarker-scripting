@@ -1,5 +1,5 @@
 /*
- *    Copyright 2015-2022 the original author or authors.
+ *    Copyright 2015-2026 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -106,6 +106,21 @@ class PreparedParamsTest {
       PreparedParamsMapper mapper = sqlSession.getMapper(PreparedParamsMapper.class);
       Name name = mapper.findUsingParams(new PreparedParam.InnerClass());
       Assertions.assertTrue(name != null && name.getFirstName().equals("Wilma"));
+    }
+  }
+
+  /**
+   * Exercises the {@code TemplateBooleanModel} and {@code TemplateDateModel} branches of
+   * {@link MyBatisParamDirective#execute}, via the {@code booleanValue}/{@code dateValue} params declared in
+   * {@code prepared.ftl}.
+   */
+  @Test
+  void testDateAndBooleanValueCall() {
+    try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+      PreparedParamsMapper mapper = sqlSession.getMapper(PreparedParamsMapper.class);
+      Name name = mapper.findUsingParams(new PreparedParam.InnerClass());
+      Assertions.assertNotNull(name);
+      Assertions.assertEquals("Wilma", name.getFirstName());
     }
   }
 
