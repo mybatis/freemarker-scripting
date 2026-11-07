@@ -21,8 +21,7 @@ import java.util.Properties;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import mockit.Expectations;
-
+import org.apache.ibatis.mapping.SqlSource;
 import org.apache.ibatis.parsing.XNode;
 import org.apache.ibatis.session.Configuration;
 import org.junit.jupiter.api.AfterEach;
@@ -141,33 +140,28 @@ class FreeMarkerLanguageDriverConfigTest {
 
   @Test
   void createSqlSourceXNodeException() throws DOMException, ParserConfigurationException, IOException {
-    FreeMarkerLanguageDriver driver = new FreeMarkerLanguageDriver();
+    FreeMarkerLanguageDriver driver = new ThrowingFreeMarkerLanguageDriver();
 
     XNode node = new XNode(null,
         DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument().createElement("script"), null);
 
     node.getNode().setTextContent("invalid template");
 
-    new Expectations(driver) {
-      {
-        driver.createSqlSource((Configuration) any, "invalid template");
-        result = new IOException("boom");
-      }
-    };
     Assertions.assertThrows(RuntimeException.class, () -> driver.createSqlSource(null, node, Object.class));
   }
 
   @Test
   void createSqlSourceStringException() throws IOException {
-    FreeMarkerLanguageDriver driver = new FreeMarkerLanguageDriver();
-    new Expectations(driver) {
-      {
-        driver.createSqlSource((Configuration) any, "invalid template");
-        result = new IOException("boom");
-      }
-    };
+    FreeMarkerLanguageDriver driver = new ThrowingFreeMarkerLanguageDriver();
     Assertions.assertThrows(RuntimeException.class,
         () -> driver.createSqlSource(null, "invalid template", Object.class));
+  }
+
+  private static class ThrowingFreeMarkerLanguageDriver extends FreeMarkerLanguageDriver {
+    @Override
+    protected SqlSource createSqlSource(Configuration configuration, String scriptText) throws IOException {
+      throw new IOException("boom");
+    }
   }
 
 }
