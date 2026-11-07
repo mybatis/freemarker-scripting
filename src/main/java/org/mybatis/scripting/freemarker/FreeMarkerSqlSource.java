@@ -89,7 +89,7 @@ public class FreeMarkerSqlSource implements SqlSource {
     List generatedParams = new ArrayList<>();
     if (parameterObject != null) {
       if (parameterObject instanceof Map) {
-        HashMap<String, Object> map = new HashMap<>((Map<String, Object>) parameterObject);
+        Map<String, Object> map = new HashMap<>((Map<String, Object>) parameterObject);
         map.put(GENERATED_PARAMS_KEY, generatedParams);
         dataContext = preProcessDataContext(map, true);
       } else {
@@ -98,7 +98,7 @@ public class FreeMarkerSqlSource implements SqlSource {
         dataContext = preProcessDataContext(adapter, false);
       }
     } else {
-      HashMap<Object, Object> map = new HashMap<>();
+      Map<Object, Object> map = new HashMap<>();
       map.put(GENERATED_PARAMS_KEY, generatedParams);
       dataContext = preProcessDataContext(map, true);
     }

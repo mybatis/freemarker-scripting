@@ -1,5 +1,5 @@
 /*
- *    Copyright 2015-2022 the original author or authors.
+ *    Copyright 2015-2026 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -175,7 +175,7 @@ public class TemplateFilePathProvider {
 
   private static String generateTemplatePath(Class<?> type, Method method, String databaseId) {
     Package pkg = type.getPackage();
-    String packageName = pkg == null ? "" : pkg.getName();
+    String packageName = pkg.getName();
     String className = type.getName().substring(packageName.length() + (packageName.isEmpty() ? 0 : 1));
 
     PathProviderConfig pathProviderConfig = languageDriverConfig.getTemplateFile().getPathProvider();
