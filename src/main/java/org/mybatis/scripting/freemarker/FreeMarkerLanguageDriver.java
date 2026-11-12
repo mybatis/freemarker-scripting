@@ -24,6 +24,7 @@ import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.SqlSource;
 import org.apache.ibatis.parsing.XNode;
+import org.apache.ibatis.reflection.ParamNameResolver;
 import org.apache.ibatis.scripting.LanguageDriver;
 import org.apache.ibatis.scripting.defaults.DefaultParameterHandler;
 import org.apache.ibatis.session.Configuration;
@@ -132,8 +133,14 @@ public class FreeMarkerLanguageDriver implements LanguageDriver {
    */
   @Override
   public SqlSource createSqlSource(Configuration configuration, XNode script, Class<?> parameterType) {
+    return createSqlSource(configuration, script, parameterType, null);
+  }
+
+  @Override
+  public SqlSource createSqlSource(Configuration configuration, XNode script, Class<?> parameterType,
+      ParamNameResolver paramNameResolver) {
     try {
-      return createSqlSource(configuration, script.getNode().getTextContent());
+      return createSqlSource(configuration, script.getNode().getTextContent(), paramNameResolver);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -153,18 +160,27 @@ public class FreeMarkerLanguageDriver implements LanguageDriver {
    */
   @Override
   public SqlSource createSqlSource(Configuration configuration, String script, Class<?> parameterType) {
+    return createSqlSource(configuration, script, null, null);
+  }
+
+  @Override
+  public SqlSource createSqlSource(Configuration configuration, String script, Class<?> parameterType,
+      ParamNameResolver paramNameResolver) {
     try {
-      return createSqlSource(configuration, script);
+      return createSqlSource(configuration, script, paramNameResolver);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
   }
 
-  protected SqlSource createSqlSource(Template template, Configuration configuration) {
-    return new FreeMarkerSqlSource(template, configuration, freemarkerCfg.getIncompatibleImprovements());
+  protected SqlSource createSqlSource(Template template, Configuration configuration,
+      ParamNameResolver paramNameResolver) {
+    return new FreeMarkerSqlSource(template, configuration, freemarkerCfg.getIncompatibleImprovements(),
+        paramNameResolver);
   }
 
-  protected SqlSource createSqlSource(Configuration configuration, String scriptText) throws IOException {
+  protected SqlSource createSqlSource(Configuration configuration, String scriptText,
+      ParamNameResolver paramNameResolver) throws IOException {
     Template template;
     if (scriptText.trim().contains(" ")) {
       // Consider that script is inline script
@@ -174,7 +190,7 @@ public class FreeMarkerLanguageDriver implements LanguageDriver {
       template = freemarkerCfg.getTemplate(scriptText.trim());
     }
 
-    return createSqlSource(template, configuration);
+    return createSqlSource(template, configuration, paramNameResolver);
   }
 
 }

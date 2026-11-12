@@ -23,6 +23,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.ibatis.mapping.SqlSource;
 import org.apache.ibatis.parsing.XNode;
+import org.apache.ibatis.reflection.ParamNameResolver;
 import org.apache.ibatis.session.Configuration;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -159,7 +160,7 @@ class FreeMarkerLanguageDriverConfigTest {
 
   private static class ThrowingFreeMarkerLanguageDriver extends FreeMarkerLanguageDriver {
     @Override
-    protected SqlSource createSqlSource(Configuration configuration, String scriptText) throws IOException {
+    protected SqlSource createSqlSource(Configuration configuration, String scriptText, ParamNameResolver paramNameResolver) throws IOException {
       throw new IOException("boom");
     }
   }
